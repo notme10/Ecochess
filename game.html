@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="styles.css">
+	</head>
+
+	<body>
+		<div id='board'></div>
+
+		<script src="class.js"></script>
+		<script>
+			// Major Steps
+			// 1. Pieces can block each other
+			// 2. Eating other pieces
+			// 3. Checks
+			// 4. Making sure a King can't move onto a checked square
+
+			var pieceInfo;
+			var cellCoord;
+
+			console.log(document.querySelectorAll(".cell"));
+
+
+			document.addEventListener('keypress', e => {
+				// console.log(e.key)
+				// when press q, it will make the selected go away
+				if (e.key == 'q') {
+					let selectedCell = document.querySelector(".selected")
+
+					if (selectedCell) {
+						selectedCell.className = selectedCell.className.replace(' selected', '')
+					}
+
+					pieceInfo = null;
+				}
+			})
+
+			let board = document.getElementById('board'); // We are getting the board into the JS
+			var width = 8, height = 8;
+
+			var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
+			var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
+
+
+			for (row = 0; row < height; row++){
+				for (col = 0; col < width; col++){
+					var cell = document.createElement('div');
+
+					cell.addEventListener('click', e => {
+						cellCoord = e.target.id; // get cellCoord
+
+						if (cellCoord) { // clicked on a tile w/o piece
+							if (pieceInfo) { // clicked on a piece before
+								let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
+								let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+								virtualBoard[rowPrevious][colPrevious].move() // we move the rook
+
+								console.log(virtualBoard)
+
+								// 2. It's making random divs with undefined coordinates
+							}
+						} else { // clicked on a piece
+							// clear old selected pieces
+							let selectedCell = document.querySelector(".selected") // gets the cell that is selected
+
+							if (selectedCell) {
+								selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
+							}
+
+							pieceInfo = e.target.className.split(" ");
+
+							document.getElementById(pieceInfo[1]).className += " selected"
+						}
+					});
+
+
+					board.appendChild(cell);
+					if ((row + col) % 2 == 0) { // white
+						cell.className = "cell white";
+					}
+
+					else { // black
+						cell.className = "cell black";
+					}
+
+					cell.id = columns[col] + rows[row];
+				}
+			}
+
+			let virtualBoard =
+			[
+				[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
+				[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
+				[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
+			];
+
+			for (let i = 0; i < 8; i++) {
+				for (let j = 0; j < 8; j++) {
+					if (virtualBoard[i][j]) {
+						virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+
+						p = document.createElement('div'); // creates a piece
+						p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+						document.getElementById(columns[j] + rows[i]).appendChild(p);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
