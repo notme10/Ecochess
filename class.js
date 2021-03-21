@@ -20,7 +20,7 @@ class Piece {
 		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 
 		this.coords = cellCoord;
-		
+
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 		let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
@@ -65,32 +65,46 @@ class Rook extends Piece {
 		// cellCoord, virtualBoard, this.coords, this.pieceName
 		// make a nested for loop to go through the virtualBoard
 
-		for (let r = 0; r < 8; r++) {
-			for (let c = 0; c < 8; c++) {
-				// what goes in here
-				// console.log(virtualBoard[r][c])
+		// for (let r = 0; r < 8; r++) {
+		// 	for (let c = 0; c < 8; c++) {
+		// 		// what goes in here
+		// 		// console.log(virtualBoard[r][c])
+    //
+		// 		if (virtualBoard[r][c] && this.coords[1] == virtualBoard[r][c].coords[1]) {
+		// 			// don't allow move on or past that space
+		// 			// need to check if it's on left or right by comparing the columns
+		// 			if (this.coords[0] < virtualBoard[r][c].coords[0]) {
+		// 				cellCoords
+		// 			}
+    //
+		// 			if (/* a piece is BETWEEEN this.coords and cellCoords, don't allow it */true) {
+		// 				// make a utility function that determines if a coord is between two coordinates diagonally, horizontally, or vertically
+		// 				// if it is, return;
+		// 				// if it is not, allow the move
+		// 			}
+		// 			// what if it's left
+		// 			//// if the piece is on the left of the rook, cannot click to the left of that piece
+		// 		}
+    //
+		// 		// check if row of piece on board and row of rook are equal
+		// 		//// don't allow move on or past that space
+		// 		// same for column
+		// 	}
+		// }
 
-				if (virtualBoard[r][c] && this.coords[1] == virtualBoard[r][c].coords[1]) {
-					// don't allow move on or past that space
-					// need to check if it's on left or right by comparing the columns
-					if (this.coords[0] < virtualBoard[r][c].coords[0]) {
-						cellCoords
-					}
 
-					if (/* a piece is BETWEEEN this.coords and cellCoords, don't allow it */true) {
-						// make a utility function that determines if a coord is between two coordinates diagonally, horizontally, or vertically
-						// if it is, return;
-						// if it is not, allow the move
-					}
-					// what if it's left
-					//// if the piece is on the left of the rook, cannot click to the left of that piece
-				}
+    if(this.coords[1] == cellCoord[1]) {
 
-				// check if row of piece on board and row of rook are equal
-				//// don't allow move on or past that space
-				// same for column
-			}
-		}
+      //check if theres a piece in the way of where the piece has to go
+
+      for(var i = 0; i < 8; i++ ) {
+
+          console.log(virtualBoard[rows.indexOf("1")][i] );
+
+      }
+
+    }
+
 
 		////////////////////////////////////////////////////////
 
