@@ -40,11 +40,55 @@ class Piece {
 		pieceInfo = null;
 	}
 
+	blockedHorizontal(){
+
+			for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
+					i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
+
+					if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) {
+
+							return true;
+
+					}
+			}
+
+	}
+
+	blockedVertical(){
+
+			for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+					i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+
+					if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
+
+							return true;
+
+					}
+			}
+
+	}
+
+	blockedDiagonal(){
+
+		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+				i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+
+					// dont touch the part above bc its fine as it is
+
+				if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
+
+					// if there is something in that position in the vitual board, then return true
+
+						return true;
+
+				}
+		}
+
+	}
+
 	// FUNCTIONS
-	// move
 	// eat
 	// consumed
-
 
 }
 
@@ -58,57 +102,12 @@ class Rook extends Piece {
 	}
 
 	move() {
-		// if there is a piece in the same row or column as the rook it cannot move on or past it
-		// how do we know if there's a piece there?
-		// how do we ensure that the rook can move before the piece not not past it?
 
-		// cellCoord, virtualBoard, this.coords, this.pieceName
-		// make a nested for loop to go through the virtualBoard
+		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {
 
-		// for (let r = 0; r < 8; r++) {
-		// 	for (let c = 0; c < 8; c++) {
-		// 		// what goes in here
-		// 		// console.log(virtualBoard[r][c])
-    //
-		// 		if (virtualBoard[r][c] && this.coords[1] == virtualBoard[r][c].coords[1]) {
-		// 			// don't allow move on or past that space
-		// 			// need to check if it's on left or right by comparing the columns
-		// 			if (this.coords[0] < virtualBoard[r][c].coords[0]) {
-		// 				cellCoords
-		// 			}
-    //
-		// 			if (/* a piece is BETWEEEN this.coords and cellCoords, don't allow it */true) {
-		// 				// make a utility function that determines if a coord is between two coordinates diagonally, horizontally, or vertically
-		// 				// if it is, return;
-		// 				// if it is not, allow the move
-		// 			}
-		// 			// what if it's left
-		// 			//// if the piece is on the left of the rook, cannot click to the left of that piece
-		// 		}
-    //
-		// 		// check if row of piece on board and row of rook are equal
-		// 		//// don't allow move on or past that space
-		// 		// same for column
-		// 	}
-		// }
+			if(this.blockedHorizontal()){ return; }
+		 	if(this.blockedVertical()){ return; }
 
-
-    if(this.coords[1] == cellCoord[1]) {
-
-      //check if theres a piece in the way of where the piece has to go
-
-      for(var i = 0; i < 8; i++ ) {
-
-          console.log(virtualBoard[rows.indexOf("1")][i] );
-
-      }
-
-    }
-
-
-		////////////////////////////////////////////////////////
-
-		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // if cell clicked on row = the piece's row or same with
 			this.movePiece();
 		}
 
@@ -127,8 +126,8 @@ class Bishop extends Piece {
 
 	move() {
 
-		let rowsMoved = Math.abs(rows.indexOf(this.coords[1]) - rows.indexOf(cellCoord[1]));
-		let colsMoved = Math.abs(columns.indexOf(this.coords[0]) - columns.indexOf(cellCoord[0]));
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved) {
 			this.movePiece();
@@ -148,8 +147,8 @@ class Queen extends Piece {
 
 	move() {
 
-		let rowsMoved = Math.abs(rows.indexOf(this.coords[1]) - rows.indexOf(cellCoord[1]));
-		let colsMoved = Math.abs(columns.indexOf(this.coords[0]) - columns.indexOf(cellCoord[0]));
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
 			this.movePiece()
@@ -169,8 +168,8 @@ class King extends Piece {
 
 	move() {
 
-		let rowsMoved = Math.abs(rows.indexOf(this.coords[1]) - rows.indexOf(cellCoord[1]));
-		let colsMoved = Math.abs(columns.indexOf(this.coords[0]) - columns.indexOf(cellCoord[0]));
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved <= 1 && colsMoved <= 1) {
 			this.movePiece()
@@ -190,8 +189,8 @@ class Knight extends Piece {
 
 	move() {
 
-		let rowsMoved = Math.abs(rows.indexOf(this.coords[1]) - rows.indexOf(cellCoord[1]));
-		let colsMoved = Math.abs(columns.indexOf(this.coords[0]) - columns.indexOf(cellCoord[0]));
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
 			this.movePiece()
@@ -211,8 +210,8 @@ class Pawn extends Piece {
 
 	move() {
 
-		let rowsMoved = rows.indexOf(this.coords[1]) - rows.indexOf(cellCoord[1]);
-		let colsMoved = columns.indexOf(this.coords[0]) - columns.indexOf(cellCoord[0]);
+		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
+		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 || this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
