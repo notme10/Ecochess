@@ -42,48 +42,62 @@ class Piece {
 
 	blockedHorizontal(){
 
-			for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
-					i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
+		for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
+		i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
 
-					if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) {
+			if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) {
 
-							return true;
+				return true;
 
-					}
 			}
+		}
 
 	}
 
 	blockedVertical(){
 
-			for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-					i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
 
-					if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
+			if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
 
-							return true;
+				return true;
 
-					}
 			}
+		}
 
 	}
 
 	blockedDiagonal(){
 
 		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-				i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
 
-					// dont touch the part above bc its fine as it is
 
-				if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
+			if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1]) ) {
 
-					// if there is something in that position in the vitual board, then return true
+				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {
 
-						return true;
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+
+				}else {
+
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
 
 				}
-		}
+			} else {
 
+				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {
+
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
+
+				} else {
+
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+
+				}
+			}
+		}
 	}
 
 	// FUNCTIONS
@@ -106,7 +120,7 @@ class Rook extends Piece {
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {
 
 			if(this.blockedHorizontal()){ return; }
-		 	if(this.blockedVertical()){ return; }
+			if(this.blockedVertical()){ return; }
 
 			this.movePiece();
 		}
@@ -130,6 +144,9 @@ class Bishop extends Piece {
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved) {
+
+			if(this.blockedDiagonal()) { return }
+
 			this.movePiece();
 		}
 
@@ -151,6 +168,11 @@ class Queen extends Piece {
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
+
+			if(this.blockedDiagonal()) { return }
+			if(this.blockedHorizontal()) { return }
+			if(this.blockedVertical()) { return }
+
 			this.movePiece()
 		}
 
@@ -215,6 +237,9 @@ class Pawn extends Piece {
 
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 || this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
+
+			if(this.blockedVertical()) { return }
+
 			this.movePiece()
 		}
 
