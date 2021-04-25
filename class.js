@@ -78,22 +78,43 @@ class Piece {
 
 				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {
 
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { // bottom right
 
-				}else {
+						return true;
 
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
-
-				}
-			} else {
-
-				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {
-
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
+					}
 
 				} else {
 
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+					console.log(i, convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1)
+
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { // bottom left
+
+						console.log(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1])
+						
+						return true
+
+					}
+
+				}
+
+			} else {
+
+				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {  // top right
+
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) {
+
+						return true
+
+					}
+
+				} else {
+
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { // top left
+
+						return true
+
+					}
 
 				}
 			}
@@ -169,9 +190,9 @@ class Queen extends Piece {
 
 		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
 
-			if(this.blockedDiagonal()) { return }
-			if(this.blockedHorizontal()) { return }
-			if(this.blockedVertical()) { return }
+			if(rowsMoved == colsMoved && this.blockedDiagonal()) { return }
+			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
+			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
 
 			this.movePiece()
 		}
