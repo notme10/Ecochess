@@ -38,6 +38,11 @@ class Piece {
 
 		// resets pieceInfo
 		pieceInfo = null;
+
+		turn++;
+
+		console.log(turn);
+
 	}
 
 	blockedHorizontal(){
@@ -91,7 +96,7 @@ class Piece {
 					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { // bottom left
 
 						console.log(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1])
-						
+
 						return true
 
 					}
@@ -121,9 +126,6 @@ class Piece {
 		}
 	}
 
-	// FUNCTIONS
-	// eat
-	// consumed
 
 }
 
@@ -257,6 +259,7 @@ class Pawn extends Piece {
 		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
 		// if on 2nd row or 7th row, can move 1 or 2
+
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 || this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
 
 			if(this.blockedVertical()) { return }

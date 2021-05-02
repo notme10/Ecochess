@@ -22,6 +22,10 @@
 			console.log(document.querySelectorAll(".cell"));
 
 
+			var turn = 0;
+
+
+
 			document.addEventListener('keypress', e => {
 				// console.log(e.key)
 				// when press q, it will make the selected go away
@@ -60,7 +64,7 @@
 
 								// 2. It's making random divs with undefined coordinates
 							}
-						} else { // clicked on a piece
+						} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
 							// clear old selected pieces
 							let selectedCell = document.querySelector(".selected") // gets the cell that is selected
 
