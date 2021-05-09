@@ -45,6 +45,18 @@ class Piece {
 
 	}
 
+	eatPiece(){
+
+		document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
+		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
+
+		this.movePiece();
+
+
+	}
+
+
+
 	blockedHorizontal(){
 
 		for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
@@ -140,12 +152,25 @@ class Rook extends Piece {
 
 	move() {
 
-		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {
+		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
 
-			if(this.blockedHorizontal()){ return; }
-			if(this.blockedVertical()){ return; }
+			if(this.blockedHorizontal()){ return; }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()){ return; }  // if blocked vertically, do nothing
 
-			this.movePiece();
+			this.movePiece();	// moves the piece
+		}
+
+	}
+
+	eat() {
+
+		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
+
+			if(this.blockedHorizontal()){ return; }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()){ return; }  // if blocked vertically, do nothing
+
+			this.eatPiece();
+
 		}
 
 	}
@@ -174,6 +199,22 @@ class Bishop extends Piece {
 		}
 
 	}
+
+	eat() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if (rowsMoved == colsMoved) {
+
+			if(this.blockedDiagonal()) { return }
+
+			this.eatPiece();
+
+		}
+
+	}
+
 }
 
 class Queen extends Piece {
@@ -200,6 +241,25 @@ class Queen extends Piece {
 		}
 
 	}
+
+
+	eat() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
+
+			if(rowsMoved == colsMoved && this.blockedDiagonal()) { return }
+			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
+			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
+
+			this.eatPiece();
+
+		}
+
+	}
+
 }
 
 class King extends Piece {
@@ -221,6 +281,20 @@ class King extends Piece {
 		}
 
 	}
+
+	eat() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if (rowsMoved <= 1 && colsMoved <= 1) {
+
+			this.eatPiece();
+
+		}
+
+	}
+
 }
 
 class Knight extends Piece {
@@ -242,6 +316,20 @@ class Knight extends Piece {
 		}
 
 	}
+
+	eat() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
+
+			this.eatPiece();
+
+		}
+
+	}
+
 }
 
 class Pawn extends Piece {
@@ -260,12 +348,27 @@ class Pawn extends Piece {
 
 		// if on 2nd row or 7th row, can move 1 or 2
 
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 || this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
-
-			if(this.blockedVertical()) { return }
+		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
+				this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
 
 			this.movePiece()
 		}
 
 	}
+
+
+
+	eat() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) {
+
+			this.eatPiece();
+
+		}
+
+	}
+
 }

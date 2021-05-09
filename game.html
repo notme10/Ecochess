@@ -10,11 +10,32 @@
 		<script src="class.js"></script>
 		<script>
 
-			// Major Steps
-			// 1. Pieces can block each other
-			// 2. Eating other pieces
-			// 3. Checks
-			// 4. Making sure a King can't move onto a checked square
+
+
+
+
+/*
+
+			 Major Steps
+
+			1. Eating other pieces
+
+ 					a. White's turn
+					b. White queen clicked
+					c. Click on black Pawn
+					d. Black pawn disappears
+							i. Virtual board square replaced with empty string
+							ii. Piece visibly vanishes! magic!
+					e. Queen moves to where the black pawn was
+
+			2. Checks
+			3. Making sure a King can't move onto a checked square
+
+*/
+
+
+
+
 
 			var pieceInfo;
 			var cellCoord;
@@ -75,6 +96,21 @@
 							pieceInfo = e.target.className.split(" ");
 
 							document.getElementById(pieceInfo[1]).className += " selected"
+
+						} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
+
+							// whites turn, going on to Black
+
+							if (pieceInfo) {
+
+								cellCoord = e.target.className.split(" ")[1];
+
+								let rowPrevious = rows.indexOf(pieceInfo[1][1]);
+								let colPrevious = columns.indexOf(pieceInfo[1][0]);
+								virtualBoard[rowPrevious][colPrevious].eat() 
+
+							}
+
 						}
 					});
 
