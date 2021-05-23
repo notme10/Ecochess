@@ -49,10 +49,7 @@ class Piece {
 
 		this.movePiece();
 
-
 	}
-
-
 
 	blockedHorizontal(){
 
@@ -277,15 +274,16 @@ class King extends Piece {
 
 	}
 
-	potentialThreatChecker(potentialThreat, PieceType) {
+	potentialThreatChecker(potentialThreat, pieceType) {
 		if(potentialThreat) {
+			console.log(potentialThreat);
 			var oppColor = this.color=="w" ? "b" : "w";
-			if(potentialThreat.color == oppColor && potentialThreat.pieceName[1] == PieceType) {
+			if(potentialThreat.color == oppColor && potentialThreat.pieceName[1] == pieceType) {
 
 				console.log("I am in check!")
-
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 		else {
 			return 0;
@@ -295,7 +293,7 @@ class King extends Piece {
 
 
 	checked() {
-		isPieceChecked(convertColsToIndex(this.coords[0]), convertRowsToIndex(this.coords[1]));
+		this.isPieceChecked(convertColsToIndex(this.coords[0]), convertRowsToIndex(this.coords[1]));
 		return 0;
 	}
 
@@ -304,12 +302,14 @@ class King extends Piece {
 
 		var potentialThreat;
 
-		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right
+		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right\
 			potentialThreat = virtualBoard[y][i];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 
 				return 1;
 			}
+			if(potentialThreat){ break; }
+
 		}
 
 		for(var i = x - 1; i > -1; i-- ) {  // blocked horizontal, to the left
@@ -317,197 +317,210 @@ class King extends Piece {
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
 			}
+			if(potentialThreat){ break; }
 		}
 
-		for(var i = convertRowsToIndex(this.coords[1])+1; i < 8; i++ ) {  // blocked vertical, to the down
-			potentialThreat = virtualBoard[y][i];
+		for(var i = y+1; i < 8; i++ ) {  // blocked vertical, to the down
+			potentialThreat = virtualBoard[i][x];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
 			}
+			if(potentialThreat){ break; }
 		}
 		for(var i = y-1; i > -1; i-- ) {  // blocked vertical, to the up
-			potentialThreat = virtualBoard[y][i];
+			potentialThreat = virtualBoard[i][x];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
 			}
+			if(potentialThreat){ break; }
 		}
+
+		// diagonals
 
 		for(var i = y+1; i < 8 &&
-		x + i - y < 8; i++ ) {  // blocked diagonal, to the down and right
-			potentialThreat = virtualBoard[i][x + i - y];
+			x + i - y < 8; i++ ) {  // blocked diagonal, to the down and right
+				potentialThreat = virtualBoard[i][x + i - y];
 
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
+				if(this.potentialThreatChecker(potentialThreat, "b")) {
+					return 1;
+				}
+				if(this.potentialThreatChecker(potentialThreat, "q")) {
+					return 1;
+				}
+				if(potentialThreat){ break; }
 			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-		}
 
-		for(var i = y+1; i < 8 &&
-		x - i + y < 8; i++ ) {  // blocked diagonal, to the down and left
-			potentialThreat = virtualBoard[i][x - i + y];
+			for(var i = y+1; i < 8 &&
+				x - i + y < 8; i++ ) {  // blocked diagonal, to the down and left
+					potentialThreat = virtualBoard[i][x - i + y];
 
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-		}
-
-		for(var i = y-1; i > -1 &&
-		x - i + y > -1; i-- ) {  // blocked diagonal, to the up and right
-			potentialThreat = virtualBoard[i][x - i + y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-		}
-
-		for(var i = y-1; i > -1 &&
-		x + i - y > -1; i-- ) {  // blocked diagonal, to the up and left
-			potentialThreat = virtualBoard[i][x + i - y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-		}
-
-		// knights
-
-		for(var i = -2; i < 3; i++) {
-			if(i == -2 || i == 2) { // check two left, two right
-				if(x + i > -1 && x + i < 8) {
-					if(y + 1 < 8 && virtualBoard[y + 1][x + i]) {
-						potentialThreat = virtualBoard[y + 1][x + i];
-						this.potentialThreatChecker(potentialThreat, "n");
+					if(this.potentialThreatChecker(potentialThreat, "b")) {
 						return 1;
 					}
-
-					if(y - 1 > -1 && virtualBoard[y - 1][x + i]) {
-						potentialThreat = virtualBoard[y - 1][x + i];
-						this.potentialThreatChecker(potentialThreat, "n");
+					if(this.potentialThreatChecker(potentialThreat, "q")) {
 						return 1;
+					}
+					if(potentialThreat){ break; }
+				}
+
+				for(var i = y-1; i > -1 &&
+					x - i + y > -1; i-- ) {  // blocked diagonal, to the up and right
+						potentialThreat = virtualBoard[i][x - i + y];
+
+						if(this.potentialThreatChecker(potentialThreat, "b")) {
+							return 1;
+						}
+						if(this.potentialThreatChecker(potentialThreat, "q")) {
+							return 1;
+						}
+						if(potentialThreat){ break; }
+					}
+
+					for(var i = y-1; i > -1 &&
+						x + i - y > -1; i-- ) {  // blocked diagonal, to the up and left
+							potentialThreat = virtualBoard[i][x + i - y];
+
+							if(this.potentialThreatChecker(potentialThreat, "b")) {
+								return 1;
+							}
+							if(this.potentialThreatChecker(potentialThreat, "q")) {
+								return 1;
+							}
+							if(potentialThreat){ break; }
+						}
+
+						// knights
+
+						for(var i = -2; i < 3; i++) {
+							if(i == -2 || i == 2) { // check two left, two right
+								if(x + i > -1 && x + i < 8) {
+									if(y + 1 < 8 && virtualBoard[y + 1][x + i]) {
+										potentialThreat = virtualBoard[y + 1][x + i];
+										this.potentialThreatChecker(potentialThreat, "n");
+										return 1;
+									}
+
+									if(y - 1 > -1 && virtualBoard[y - 1][x + i]) {
+										potentialThreat = virtualBoard[y - 1][x + i];
+										this.potentialThreatChecker(potentialThreat, "n");
+										return 1;
+									}
+								}
+							}
+
+							else if(i == -1 || i == 1) { // check one to the left, one to the right
+								if(x + i > -1 && x + i < 8) { // makes sure x coord is inside the virtualBoard
+									if((y + 2 < 8) && virtualBoard[y + 2][x + i]) { // makes sure y coord is inside the virtualBoard
+										potentialThreat = virtualBoard[y + 2][x + i];
+										this.potentialThreatChecker(potentialThreat, "n");
+										return 1;
+									}
+
+									if(y - 2 > -1 && virtualBoard[y - 2][x + i]) { // makes sure y coord is inside the virtualBoard
+										potentialThreat = virtualBoard[y - 2][x + i];
+										this.potentialThreatChecker(potentialThreat, "n");
+										return 1;
+									}
+								}
+							}
+						}
+						return 0;
+					}
+
+					move() {
+
+						let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+						let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+						if (rowsMoved <= 1 && colsMoved <= 1) {
+							if(this.isPieceChecked(convertColsToIndex(cellCoord[0]), convertRowsToIndex(cellCoord[1]))){
+								this.movePiece();
+							}
+							else {
+								console.log("You cannot go there!");
+							}
+						}
 					}
 				}
-			}
 
-			else if(i == -1 || i == 1) { // check one to the left, one to the right
-				if(x + i > -1 && x + i < 8) { // makes sure x coord is inside the virtualBoard
-					if((y + 2 < 8) && virtualBoard[y + 2][x + i]) { // makes sure y coord is inside the virtualBoard
-						potentialThreat = virtualBoard[y + 2][x + i];
-						this.potentialThreatChecker(potentialThreat, "n");
-						return 1;
+				// King is a potential threat
+				// King can move into checked squares
+
+
+
+
+				class Knight extends Piece {
+					constructor(color, row, column) {
+
+						super(color, row, column);
+
+						this.pieceName = color + "n";
+
 					}
 
-					if(y - 2 > -1 && virtualBoard[y - 2][x + i]) { // makes sure y coord is inside the virtualBoard
-						potentialThreat = virtualBoard[y - 2][x + i];
-						this.potentialThreatChecker(potentialThreat, "n");
-						return 1;
+					move() {
+
+						let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+						let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+						if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
+							this.movePiece()
+						}
+
 					}
+
+					eat() {
+
+						let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+						let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+						if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
+
+							this.eatPiece();
+
+						}
+
+					}
+
 				}
-			}
-		}
-		return 0;
-	}
 
-	move() {
+				class Pawn extends Piece {
+					constructor(color, row, column) {
 
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+						super(color, row, column);
 
-		if (rowsMoved <= 1 && colsMoved <= 1) {
-			if(this.isPieceChecked(colsMoved, rowsMoved)){
-				this.movePiece();
-			}
-			else {
-				console.log("You cannot go there!");
-			}
-		}
-	}
-}
+						this.pieceName = color + "p";
 
+					}
 
+					move() {
 
-class Knight extends Piece {
-	constructor(color, row, column) {
+						let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
+						let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
-		super(color, row, column);
+						// if on 2nd row or 7th row, can move 1 or 2
 
-		this.pieceName = color + "n";
+						if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
+						this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
 
-	}
+							this.movePiece()
+						}
 
-	move() {
-
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
-
-		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
-			this.movePiece()
-		}
-
-	}
-
-	eat() {
-
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
-
-		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
-
-			this.eatPiece();
-
-		}
-
-	}
-
-}
-
-class Pawn extends Piece {
-	constructor(color, row, column) {
-
-		super(color, row, column);
-
-		this.pieceName = color + "p";
-
-	}
-
-	move() {
-
-		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
-		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
-
-		// if on 2nd row or 7th row, can move 1 or 2
-
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
-		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
-
-			this.movePiece()
-		}
-
-	}
+					}
 
 
 
-	eat() {
+					eat() {
 
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+						let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+						let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) {
+						if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) {
 
-			this.eatPiece();
+							this.eatPiece();
 
-		}
+						}
 
-	}
+					}
 
-}
+				}
