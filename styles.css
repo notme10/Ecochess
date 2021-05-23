@@ -16,6 +16,21 @@ body {
 	grid-template-rows: repeat(8, 1fr);
 	border: 2px solid black;
 }
+/* #sidebar {
+	height: 80vmin;
+	width: 10vmin;
+	position: absolute;
+  left: 95vmin;
+	border: 2px solid white;
+}
+
+#bottombar {
+	height: 10vmin;
+	width: 80vmin;
+	position: absolute;
+	top: 92vmin;
+	border: 2px solid white;
+} */
 
 .white {
 	background-color: white;
@@ -29,28 +44,28 @@ body {
 	background-color: pink;
 }
 
-.wp {
+.wp { /* white pawn */
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png');
 	background-size: 100%;
 }
 
-.wr {
+.wr { /* white rook */
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png');
 	background-size: 100%;
 }
 
-.wn {
+.wn { /* white knight */
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png');
 	background-size: 100%;
 }
 
-.wb {
+.wb { /* white bishop */
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png');

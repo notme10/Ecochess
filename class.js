@@ -40,9 +40,6 @@ class Piece {
 		pieceInfo = null;
 
 		turn++;
-
-		console.log(turn);
-
 	}
 
 	eatPiece(){
@@ -249,17 +246,13 @@ class Queen extends Piece {
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
-
 			if(rowsMoved == colsMoved && this.blockedDiagonal()) { return }
 			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
-
 			this.eatPiece();
 
 		}
-
 	}
-
 }
 
 class King extends Piece {
@@ -268,17 +261,6 @@ class King extends Piece {
 		super(color, row, column);
 
 		this.pieceName = color + "k";
-
-	}
-
-	move() {
-
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
-
-		if (rowsMoved <= 1 && colsMoved <= 1) {
-			this.movePiece()
-		}
 
 	}
 
@@ -295,7 +277,164 @@ class King extends Piece {
 
 	}
 
+	potentialThreatChecker(potentialThreat, PieceType) {
+		if(potentialThreat) {
+			var oppColor = this.color=="w" ? "b" : "w";
+			if(potentialThreat.color == oppColor && potentialThreat.pieceName[1] == PieceType) {
+
+				console.log("I am in check!")
+
+			}
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
+	}
+
+
+	checked() {
+		isPieceChecked(convertColsToIndex(this.coords[0]), convertRowsToIndex(this.coords[1]));
+		return 0;
+	}
+
+
+	isPieceChecked(x, y) { // checks if a tile a piece is trying to go to is in check
+
+		var potentialThreat;
+
+		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right
+			potentialThreat = virtualBoard[y][i];
+			if(this.potentialThreatChecker(potentialThreat, "r")) {
+
+				return 1;
+			}
+		}
+
+		for(var i = x - 1; i > -1; i-- ) {  // blocked horizontal, to the left
+			potentialThreat = virtualBoard[y][i];
+			if(this.potentialThreatChecker(potentialThreat, "r")) {
+				return 1;
+			}
+		}
+
+		for(var i = convertRowsToIndex(this.coords[1])+1; i < 8; i++ ) {  // blocked vertical, to the down
+			potentialThreat = virtualBoard[y][i];
+			if(this.potentialThreatChecker(potentialThreat, "r")) {
+				return 1;
+			}
+		}
+		for(var i = y-1; i > -1; i-- ) {  // blocked vertical, to the up
+			potentialThreat = virtualBoard[y][i];
+			if(this.potentialThreatChecker(potentialThreat, "r")) {
+				return 1;
+			}
+		}
+
+		for(var i = y+1; i < 8 &&
+		x + i - y < 8; i++ ) {  // blocked diagonal, to the down and right
+			potentialThreat = virtualBoard[i][x + i - y];
+
+			if(this.potentialThreatChecker(potentialThreat, "b")) {
+				return 1;
+			}
+			if(this.potentialThreatChecker(potentialThreat, "q")) {
+				return 1;
+			}
+		}
+
+		for(var i = y+1; i < 8 &&
+		x - i + y < 8; i++ ) {  // blocked diagonal, to the down and left
+			potentialThreat = virtualBoard[i][x - i + y];
+
+			if(this.potentialThreatChecker(potentialThreat, "b")) {
+				return 1;
+			}
+			if(this.potentialThreatChecker(potentialThreat, "q")) {
+				return 1;
+			}
+		}
+
+		for(var i = y-1; i > -1 &&
+		x - i + y > -1; i-- ) {  // blocked diagonal, to the up and right
+			potentialThreat = virtualBoard[i][x - i + y];
+
+			if(this.potentialThreatChecker(potentialThreat, "b")) {
+				return 1;
+			}
+			if(this.potentialThreatChecker(potentialThreat, "q")) {
+				return 1;
+			}
+		}
+
+		for(var i = y-1; i > -1 &&
+		x + i - y > -1; i-- ) {  // blocked diagonal, to the up and left
+			potentialThreat = virtualBoard[i][x + i - y];
+
+			if(this.potentialThreatChecker(potentialThreat, "b")) {
+				return 1;
+			}
+			if(this.potentialThreatChecker(potentialThreat, "q")) {
+				return 1;
+			}
+		}
+
+		// knights
+
+		for(var i = -2; i < 3; i++) {
+			if(i == -2 || i == 2) { // check two left, two right
+				if(x + i > -1 && x + i < 8) {
+					if(y + 1 < 8 && virtualBoard[y + 1][x + i]) {
+						potentialThreat = virtualBoard[y + 1][x + i];
+						this.potentialThreatChecker(potentialThreat, "n");
+						return 1;
+					}
+
+					if(y - 1 > -1 && virtualBoard[y - 1][x + i]) {
+						potentialThreat = virtualBoard[y - 1][x + i];
+						this.potentialThreatChecker(potentialThreat, "n");
+						return 1;
+					}
+				}
+			}
+
+			else if(i == -1 || i == 1) { // check one to the left, one to the right
+				if(x + i > -1 && x + i < 8) { // makes sure x coord is inside the virtualBoard
+					if((y + 2 < 8) && virtualBoard[y + 2][x + i]) { // makes sure y coord is inside the virtualBoard
+						potentialThreat = virtualBoard[y + 2][x + i];
+						this.potentialThreatChecker(potentialThreat, "n");
+						return 1;
+					}
+
+					if(y - 2 > -1 && virtualBoard[y - 2][x + i]) { // makes sure y coord is inside the virtualBoard
+						potentialThreat = virtualBoard[y - 2][x + i];
+						this.potentialThreatChecker(potentialThreat, "n");
+						return 1;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	move() {
+
+		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+
+		if (rowsMoved <= 1 && colsMoved <= 1) {
+			if(this.isPieceChecked(colsMoved, rowsMoved)){
+				this.movePiece();
+			}
+			else {
+				console.log("You cannot go there!");
+			}
+		}
+	}
 }
+
+
 
 class Knight extends Piece {
 	constructor(color, row, column) {
@@ -349,7 +488,7 @@ class Pawn extends Piece {
 		// if on 2nd row or 7th row, can move 1 or 2
 
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
-				this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
+		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
 
 			this.movePiece()
 		}

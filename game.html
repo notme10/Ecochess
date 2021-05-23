@@ -7,6 +7,10 @@
 	<body>
 		<div id='board'></div>
 
+		<div id='sidebar'></div>
+
+		<div id='bottombar'></div>
+
 		<script src="class.js"></script>
 		<script>
 
@@ -15,18 +19,6 @@
 
 
 /*
-
-			 Major Steps
-
-			1. Eating other pieces
-
- 					a. White's turn
-					b. White queen clicked
-					c. Click on black Pawn
-					d. Black pawn disappears
-							i. Virtual board square replaced with empty string
-							ii. Piece visibly vanishes! magic!
-					e. Queen moves to where the black pawn was
 
 			2. Checks
 			3. Making sure a King can't move onto a checked square
@@ -107,7 +99,7 @@
 
 								let rowPrevious = rows.indexOf(pieceInfo[1][1]);
 								let colPrevious = columns.indexOf(pieceInfo[1][0]);
-								virtualBoard[rowPrevious][colPrevious].eat() 
+								virtualBoard[rowPrevious][colPrevious].eat()
 
 							}
 
@@ -128,7 +120,10 @@
 				}
 			}
 
-			let virtualBoard =
+			var virtualBoard;
+
+			if (0) { // full board
+			virtualBoard =
 			[
 				[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
 				[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
@@ -139,6 +134,36 @@
 				[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
 				[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
 			];
+			}
+			if (0) { // bishop testing
+				virtualBoard =
+			[
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','',new King('w'),'','',''],
+				['','','','','',new Bishop('b'),'',''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','','','','','']
+			];
+		}
+
+		if (1) { // testing
+			virtualBoard =
+			[
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','',new King('w'),'','',''],
+				['','','','','','',new Knight('b'),''],
+				['','','','','','','',''],
+				['','','','','','','',''],
+				['','','','',new Rook('b'),'','','']
+			];
+		}
+
+
 
 			for (let i = 0; i < 8; i++) {
 				for (let j = 0; j < 8; j++) {
