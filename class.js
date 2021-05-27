@@ -299,8 +299,13 @@ class King extends Piece {
 	isPieceChecked(x, y) { // checks if a tile a piece is trying to go to is in check
 
 		var potentialThreat;
+		var cur_x = convertColsToIndex(this.coords[0])
+		var cur_y = convertRowsToIndex(this.coords[1])
 
-		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right\
+		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right
+
+			if (  (cur_x == x) && (cur_y == i) ) { continue; }
+
 			potentialThreat = virtualBoard[y][i];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
@@ -309,6 +314,9 @@ class King extends Piece {
 		}
 
 		for(var i = x - 1; i > -1; i-- ) {  // blocked horizontal, to the left
+
+			if (  (cur_x == x) && (cur_y == i) ) { continue; }
+
 			potentialThreat = virtualBoard[y][i];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
@@ -317,6 +325,9 @@ class King extends Piece {
 		}
 
 		for(var i = y+1; i < 8; i++ ) {  // blocked vertical, to the down
+
+			if (  (cur_x == x) && (cur_y == i) ) { continue; }
+
 			potentialThreat = virtualBoard[i][x];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
@@ -325,6 +336,9 @@ class King extends Piece {
 		}
 
 		for(var i = y-1; i > -1; i-- ) {  // blocked vertical, to the up
+
+			if (  (cur_x == x) && (cur_y == i) ) { continue; } // it is myself
+
 			potentialThreat = virtualBoard[i][x];
 			if(this.potentialThreatChecker(potentialThreat, "r")) {
 				return 1;
@@ -335,6 +349,7 @@ class King extends Piece {
 		// diagonals
 
 		for(var i = y+1; i < 8 && x + i - y < 8; i++ ) {  // blocked diagonal, to the down and right
+			if (  (cur_x == (x + i - y)) && (cur_y == i) ) { continue; } // it is myself
 			potentialThreat = virtualBoard[i][x + i - y];
 
 			if(this.potentialThreatChecker(potentialThreat, "b")) {
@@ -347,6 +362,7 @@ class King extends Piece {
 		}
 
 		for(var i = y+1; i < 8 && x - i + y < 8; i++ ) {  // blocked diagonal, to the down and left
+			if (  (cur_x == (x - i + y)) && (cur_y == i) ) { continue; } // it is myself
 			potentialThreat = virtualBoard[i][x - i + y];
 
 			if(this.potentialThreatChecker(potentialThreat, "b")) {
@@ -359,6 +375,7 @@ class King extends Piece {
 		}
 
 		for(var i = y-1; i > -1 && x - i + y > -1; i-- ) {  // blocked diagonal, to the up and right
+			if (  (cur_x == (x - i + y)) && (cur_y == i) ) { continue; } // it is myself
 			potentialThreat = virtualBoard[i][x - i + y];
 
 			if(this.potentialThreatChecker(potentialThreat, "b")) {
@@ -371,6 +388,7 @@ class King extends Piece {
 		}
 
 		for(var i = y-1; i > -1 && x + i - y > -1; i-- ) {  // blocked diagonal, to the up and left
+			if (  (cur_x == (x + i - y)) && (cur_y == i) ) { continue; } // it is myself
 			potentialThreat = virtualBoard[i][x + i - y];
 
 			if(this.potentialThreatChecker(potentialThreat, "b")) {
@@ -426,11 +444,12 @@ class King extends Piece {
 
 	move() {
 
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+		var cur_x = convertColsToIndex(this.coords[0]);
+		var cur_y = convertRowsToIndex(this.coords[1]);
+		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved <= 1 && colsMoved <= 1) {
-			console.log(this.isPieceChecked(convertColsToIndex(cellCoord[0]), convertRowsToIndex(cellCoord[1])))
 			if(!this.isPieceChecked(convertColsToIndex(cellCoord[0]), convertRowsToIndex(cellCoord[1]))){
 				this.movePiece();
 			}
