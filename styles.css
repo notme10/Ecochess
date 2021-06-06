@@ -37,17 +37,17 @@ body {
 }
 
 .black {
-	background-color: green;
+	background-color: skyblue;
 }
 
 .selected {
-	background-color: pink;
+	background-color: blue;
 }
 
 .wp { /* white pawn */
 	height: 100%;
 	width: 100%;
-	background-image: url('https://www.medievalcollectibles.com/wp-content/uploads/2019/04/ED71163.png');
+	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png');
 	/* background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png'); */
 	background-size: 100%;
 
@@ -60,7 +60,7 @@ body {
 .wr { /* white rook */
 	height: 100%;
 	width: 100%;
-	background-image: url('https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-05-02-travel-places-place-building-medieval-tower-with-fleur-de-lys-flag-72dpi-forPersonalUseOnly.png');
+	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png');
 	background-size: cover;
 	background-repeat:no-repeat;
 
@@ -71,21 +71,21 @@ body {
 .wn { /* white knight */
 	height: 100%;
 	width: 100%;
-	background-image: url('https://officialpsds.com/imageview/7y/94/7y94qq_large.png?1522674119');
+	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png');
 	background-size: 100%;
 }
 
 .wb { /* white bishop */
 	height: 100%;
 	width: 100%;
-	background-image: url('http://assets.stickpng.com/thumbs/584aba7d1da7ae6ee4705dca.png');
+	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png');
 	background-size: 100%;
 }
 
 .wq {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://static.wikia.nocookie.net/southpark/images/3/3a/Queen-elizabeth-ii.png/revision/latest/top-crop/width/360/height/450?cb=20191104054006');
+	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png');
 	background-size: 100%;
 }
 
