@@ -71,11 +71,9 @@
 							if (pieceInfo) { // clicked on a piece before
 								let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 								let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
-								console.log(rowPrevious);
-								console.log(colPrevious);
-								console.log(virtualBoard[rowPrevious][colPrevious]);
-								console.log(virtualBoard)
-								virtualBoard[rowPrevious][colPrevious].move() // we move the piece
+								virtualBoard[rowPrevious][colPrevious].move() // we move the rook
+
+								//console.log(virtualBoard)
 
 								// 2. It's making random divs with undefined coordinates
 							}
@@ -124,6 +122,8 @@
 
 			var virtualBoard;
 
+			var tempVB;
+		
 
 			if (1) { // full board
 			virtualBoard =

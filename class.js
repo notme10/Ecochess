@@ -48,21 +48,6 @@ class Piece {
 		virtualBoard[rowNow][colNow] = virtualBoard[rowPrevious][colPrevious]; // new virtual space = old virt space
 		virtualBoard[rowPrevious][colPrevious] = ''; // old virt space is set back to ''
 
-		console.log("Row Previous and Column previous:");
-
-		console.log(rowPrevious);
-		console.log(colPrevious);
-
-		console.log(virtualBoard[rowPrevious][colPrevious]);
-
-		console.log("Row Now and Column Now:");
-
-		console.log(rowNow);
-		console.log(colNow);
-
-
-		console.log(virtualBoard[rowNow][colNow]);
-
 		let selectedCell = document.querySelector(".selected") // gets the cell that is selected
 
 		if (selectedCell) {
@@ -222,49 +207,40 @@ class Bishop extends Piece {
 
 			if(this.blockedDiagonal()) { return }
 
+			tempVB = virtualBoard;
+
 			let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 			let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
 			let rowNow = rows.indexOf(cellCoord[1]); // we get row of now pos
 			let colNow = columns.indexOf(cellCoord[0]); // we get col of now pos
 
-			virtualBoard[rowNow][colNow] = virtualBoard[rowPrevious][colPrevious]; // new virtual space = old virt space
-			virtualBoard[rowPrevious][colPrevious] = ''; // old virt space is set back to ''
+			tempVB[rowNow][colNow] = tempVB[rowPrevious][colPrevious]; // new virtual space = old virt space
+			tempVB[rowPrevious][colPrevious] = ''; // old virt space is set back to ''
 
-			var pieceIsChecked = 0;
+			var king_x;
+			var king_y;
 
 			for(var i = 0; i < 8; i++){
 				for(var j = 0; j < 8; j++){
 
-					if( (virtualBoard[i][j] !== '') && (virtualBoard[i][j].color !== (this.color== "w" ? "b" : "w") ) ) {
+					if( (tempVB[i][j] !== '') && (tempVB[i][j].color !== (this.color== "w" ? "b" : "w") ) ) {
 
-						if(virtualBoard[i][j].pieceName[1] == "k") {
+						if(tempVB[i][j].pieceName[1] == "k") {
 
 							console.log("King's coords are: " + i + ", " + j);
 
-							if (  virtualBoard[i][j].isPieceChecked(i, j, virtualBoard) ) {
-							  console.log(virtualBoard[i][j].isPieceChecked(i, j, virtualBoard));
-								pieceIsChecked = 1;
-								break;
-							}
+							tempVB[i][j].isPieceChecked(i, j, tempVB);
+							console.log(tempVB[i][j].isPieceChecked(i, j, tempVB));
+
 						}
 					}
 				}
 			}
 
-			virtualBoard[rowPrevious][colPrevious] = virtualBoard[rowNow][colNow]; // old virtual board space goes to new vb space
-			virtualBoard[rowNow][colNow] = ''; // new virt space is set back to ''
-
-			if(pieceIsChecked == 1) {
-
-				console.log("piece is checked!");
-
-			} else {
-
 			this.movePiece();
-
-			}
 		}
+
 	}
 
 	eat() {
