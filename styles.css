@@ -44,6 +44,20 @@ body {
 	background-color: blue;
 }
 
+.testing1 {
+	background-color: orange;
+}
+.testing2 {
+	background-color: purple;
+}
+.testing3 {
+	background-color: green;
+}
+.testing4 {
+	background-color: pink;
+}
+
+
 .wp { /* white pawn */
 	height: 100%;
 	width: 100%;

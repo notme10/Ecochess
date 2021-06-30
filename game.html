@@ -14,21 +14,6 @@
 		<script src="class.js"></script>
 		<script>
 
-
-
-
-
-/*
-
-			2. Checks
-			3. Making sure a King can't move onto a checked square
-
-*/
-
-
-
-
-
 			var pieceInfo;
 			var cellCoord;
 
@@ -59,7 +44,6 @@
 			var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 			var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-
 			for (row = 0; row < height; row++){
 				for (col = 0; col < width; col++){
 					var cell = document.createElement('div');
@@ -71,6 +55,12 @@
 							if (pieceInfo) { // clicked on a piece before
 								let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 								let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+
+								// console.log("row Previous is " + rowPrevious);
+								// console.log("col previous is " + colPrevious);
+
+								// console.log(virtualBoard);
+
 								virtualBoard[rowPrevious][colPrevious].move() // we move the rook
 
 								//console.log(virtualBoard)
@@ -90,8 +80,6 @@
 							document.getElementById(pieceInfo[1]).className += " selected"
 
 						} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
-
-							// whites turn, going on to Black
 
 							if (pieceInfo) {
 
@@ -122,10 +110,7 @@
 
 			var virtualBoard;
 
-			var tempVB;
-		
-
-			if (1) { // full board
+			if (0) { // full board
 			virtualBoard =
 			[
 				[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
@@ -138,21 +123,21 @@
 				[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
 			];
 			}
-			if (0) { // bishop testing
+			if (1) {
 				virtualBoard =
 			[
 				['','','','','','','',''],
-				['','','','','','',new Bishop('b'),''],
+				['','','','','','','',''],
+				['',new Bishop('b'),'','','','','',''],
+				['','','','','','','',''],
 				['','','','','','','',''],
 				['','','','',new King('w'),'','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
 				['','','','','','','',''],
 				['','','','','','','','']
 			];
 		}
 
-		if (0) { // testing
+		if (0) {
 			virtualBoard =
 			[
 				['','','','','','','',''],
@@ -191,6 +176,19 @@
 					return columns.indexOf(col);
 
 			}
+
+			function convertIndexToRows(index) {
+
+				return rows[index];
+
+			}
+
+			function convertIndexToCols(index) {
+
+				return columns[index];
+
+			}
+
 
 		</script>
 	</body>
