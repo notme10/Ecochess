@@ -10,6 +10,8 @@ class Piece {
 
 	movePiece() {
 
+		// console.log("inside move piece");
+
 		this.coords = cellCoord;
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
@@ -26,7 +28,7 @@ class Piece {
 		if (selectedCell) {
 			selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
 		}
-
+		// console.log("smelly banana");
 		for(var i = 0; i<8; i++){
 			for(var j = 0; j<8; j++){
 
@@ -48,7 +50,7 @@ class Piece {
 				}
 			}
 		}
-
+		// console.log("blah blah blah");
 		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove() // removes piece from old square
 
 
@@ -326,6 +328,79 @@ class Piece {
 		return 0;
 	}
 
+	canEatHV(r,c) {
+		// vertical and horizontal checking
+		let cur_r = convertRowsToIndex(this.coords[1])
+		let cur_c = convertColsToIndex(this.coords[0])
+
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
+			var test_c = cur_c;
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+		}
+
+		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
+			var test_r = cur_r;
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+
+		}
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
+			var test_c = cur_c;
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+
+		}
+		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
+			var test_r = cur_r;
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
+			if( (test_r == r) && (test_c==c)) 	{return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+		}
+		return false;
+	}
+
+	canEatDiagonals(r, c) {
+
+		let cur_r = convertRowsToIndex(this.coords[1])
+		let cur_c = convertColsToIndex(this.coords[0])
+
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
+			var test_c = cur_c + (cur_r-test_r);
+			if(test_c > 7) {break}
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+		}
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
+			var test_c = cur_c - (cur_r-test_r);
+			if (test_c < 0) { break }
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+
+		}
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
+			var test_c = cur_c - (test_r - cur_r);
+			if(test_c < 0) {break}
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
+			if( (test_r == r) && (test_c==c)) {return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+		}
+
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
+			var test_c = cur_c + (test_r - cur_r);
+			if (test_c > 7) { break }
+			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
+			if( (test_r == r) && (test_c==c)) 	{return true}
+			if (virtualBoard[test_r][test_c] !== '' ) {break}
+		}
+		return false;
+	}
+
 }
 
 class Rook extends Piece {
@@ -361,6 +436,11 @@ class Rook extends Piece {
 		}
 
 	}
+
+	canEat(r, c) {
+		return this.canEatHV(r,c);
+	}
+
 
 }
 
@@ -404,55 +484,7 @@ class Bishop extends Piece {
 	}
 
 	canEat(r, c) {
-
-		let cur_r = convertRowsToIndex(this.coords[1])
-		let cur_c = convertColsToIndex(this.coords[0])
-
-		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
-			if (test_r < 0) { break }
-			var test_c = cur_c + (cur_r-test_r);
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
-			if( (test_r == r) && (test_c==c)) {return this}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-		}
-		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
-			if (test_r < 0) { break }
-			var test_c = cur_c - (cur_r-test_r);
-			if (test_c < 0) { break }
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
-			if( (test_r == r) && (test_c==c)) {return this}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-
-		}
-		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
-			var test_c = cur_c + (cur_r-test_r);
-			if (test_c < 0) { break }
-			if (test_r < 0) { break }
-
-			console.log(virtualBoard);
-
-
-			// console.log("test c = " + test_c);
-			// console.log("test r = " + test_r);
-			// console.log("cur c = " + cur_c);
-			// console.log("cur r = " + cur_r);
-			// console.log(document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`));
-
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
-			if( (test_r == r) && (test_c==c)) {return this}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-		}
-
-		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
-			var test_c = cur_c - (cur_r-test_r);
-			if (test_c > 7) { break }
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
-			if( (test_r == r) && (test_c==c)) 	{return this}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-		}
-
-		return false;
-
+		return this.canEatDiagonals(r, c);
 	}
 
 }
@@ -496,6 +528,12 @@ class Queen extends Piece {
 
 		}
 	}
+
+	canEat(r, c) {
+		return this.canEatHV(r,c) || this.canEatDiagonals(r, c);
+
+	}
+
 }
 
 class King extends Piece {
@@ -565,17 +603,8 @@ class King extends Piece {
 
 		if (rowsMoved <= 1 && colsMoved <= 1) {
 
-			let threateningPiece = this.isKingChecked(convertColsToIndex(cellCoord[0]), convertRowsToIndex(cellCoord[1]), virtualBoard);
-			if((threateningPiece && threateningPiece.pieceName[0] == this.pieceName[0]) || !threateningPiece) {
-				this.movePiece();
-			}
+			this.movePiece();
 
-			else {
-
-				console.log("You cannot go there! The threatening piece is: ");
-				console.log(threateningPiece);
-
-			}
 		}
 	}
 }
@@ -653,5 +682,8 @@ class Pawn extends Piece {
 		}
 
 	}
+
+	
+
 
 }

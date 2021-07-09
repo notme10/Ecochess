@@ -16,21 +16,6 @@ body {
 	grid-template-rows: repeat(8, 1fr);
 	border: 2px solid black;
 }
-/* #sidebar {
-	height: 80vmin;
-	width: 10vmin;
-	position: absolute;
-  left: 95vmin;
-	border: 2px solid white;
-}
-
-#bottombar {
-	height: 10vmin;
-	width: 80vmin;
-	position: absolute;
-	top: 92vmin;
-	border: 2px solid white;
-} */
 
 .white {
 	background-color: white;
@@ -44,7 +29,7 @@ body {
 	background-color: blue;
 }
 
-.testing1 {
+/* .testing1 {
 	background-color: orange;
 }
 .testing2 {
@@ -55,7 +40,7 @@ body {
 }
 .testing4 {
 	background-color: pink;
-}
+} */
 
 
 .wp { /* white pawn */
