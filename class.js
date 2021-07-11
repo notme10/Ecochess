@@ -9,323 +9,109 @@ class Piece {
 	}
 
 	movePiece() {
-
-		// console.log("inside move piece");
-
 		this.coords = cellCoord;
 
-		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
-		let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
-
-		let rowNow = rows.indexOf(cellCoord[1]); // we get row of now pos
-		let colNow = columns.indexOf(cellCoord[0]); // we get col of now pos
+		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
+		let colPrevious = columns.indexOf(pieceInfo[1][0]); // get the column of previous position
+		let rowNow = rows.indexOf(cellCoord[1]); // get row of current position
+		let colNow = columns.indexOf(cellCoord[0]); // get column of current position
+		let selectedCell = document.querySelector(".selected") // get in formation about the cell that is selected
 
 		virtualBoard[rowNow][colNow] = virtualBoard[rowPrevious][colPrevious]; // new virtual space = old virt space
 		virtualBoard[rowPrevious][colPrevious] = ''; // old virt space is set back to ''
 
-		let selectedCell = document.querySelector(".selected") // gets the cell that is selected
-
 		if (selectedCell) {
 			selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
 		}
-		// console.log("smelly banana");
 		for(var i = 0; i<8; i++){
 			for(var j = 0; j<8; j++){
-
 				if(virtualBoard[i][j] instanceof King) {
-
-
 					if(this.color == virtualBoard[i][j].color){
-
-						if(virtualBoard[i][j].isKingChecked(i, j)) {
-
+						if(virtualBoard[i][j].isKingChecked(i, j, this.color)) {
 							console.log("King is Checked");
 
-							virtualBoard[rowPrevious][colPrevious] = virtualBoard[rowNow][colNow];
+							virtualBoard[rowPrevious][colPrevious] = virtualBoard[rowNow][colNow]; // cancels the move
 							virtualBoard[rowNow][colNow] = '';
 							return;
-
 						}
 					}
 				}
 			}
 		}
-		// console.log("blah blah blah");
-		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove() // removes piece from old square
 
-
+		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 		var p = document.createElement('div'); // makes a new div called p
 		p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
 		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 
 		pieceInfo = null;
-
 		turn++;
 	}
 
-	eatPiece(){
-
+	eatPiece() {
 		document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
 		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
 
 		this.movePiece();
-
 	}
 
-	blockedHorizontal(){
-
+	blockedHorizontal() {
 		for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
 		i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
-
-			if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) {
-
-				return true;
-
-			}
+			if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) { return true }
 		}
-
 	}
 
-	blockedVertical(){
-
+	blockedVertical() {
 		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
 		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-
-			if(virtualBoard[i][convertColsToIndex(this.coords[0])]) {
-
-				return true;
-
-			}
+			if(virtualBoard[i][convertColsToIndex(this.coords[0])]) { return true }
 		}
-
 	}
 
-	blockedDiagonal(){
-
+	blockedDiagonal() {
 		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
 		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-
-
-			if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1]) ) {
-
-				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {
-
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { // bottom right
-
-						return true;
-
-					}
-
-				} else {
-
-					// console.log(i, convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1)
-
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { // bottom left
-
-						// console.log(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1])
-
-						return true
-
-					}
-
+			if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
+				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+				} else {  // bottom left
+					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
 				}
-
 			} else {
-
-				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0]) ) {  // top right
-
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) {
-
-						return true
-
-					}
-
-				} else {
-
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { // top left
-
-						return true
-
-					}
-
+				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
+				} else { // top left
+					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
 				}
 			}
 		}
 	}
 
 	move() {
-
 		var cur_x = convertColsToIndex(this.coords[0]);
 		var cur_y = convertRowsToIndex(this.coords[1]);
 		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
 		this.movePiece();
-
 	}
 
-	isKingChecked(x, y) { // determines if the king is in check from any piece
+	isKingChecked(x, y, king_color) {
+		// determines if the king is in check from any piece
 		// x and y are king's row and column
 
 		for(var i = 0; i<8; i++) {
 			for(var j = 0; j<8; j++) {
 
 				if(virtualBoard[i][j] !== '') {
-					let vbCanEat = virtualBoard[i][j].canEat(x, y);
-					if(vbCanEat) {
+					let vbCanEat = virtualBoard[i][j].canEat(x, y, king_color);
 
-						return vbCanEat;
-
-					}
+					if(vbCanEat) { return vbCanEat }
 				}
 			}
 		}
 		return null;
-	}
-
-	isKingChecked_oldversion(x, y) { // OLD VERSION
-		var potentialThreat;
-		var cur_x = convertColsToIndex(this.coords[0]) // current x position
-		var cur_y = convertRowsToIndex(this.coords[1]) // current y position
-
-		for(var i = x + 1; i < 8; i++ ) {  // blocked horizontal, to the right
-
-			if ((cur_x == x) && (cur_y == i)) {
-				continue;
-			}
-
-			potentialThreat = virtualBoard[y][i];
-			if(this.potentialThreatChecker(potentialThreat, "r")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = x - 1; i > -1; i-- ) {  // blocked horizontal, to the left
-
-			if (  (cur_x == x) && (cur_y == i) ) { continue; }
-
-			potentialThreat = virtualBoard[y][i];
-			if(this.potentialThreatChecker(potentialThreat, "r")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = y+1; i < 8; i++ ) {  // blocked vertical, down
-
-			if (  (cur_x == x) && (cur_y == i) ) { continue; }
-
-			potentialThreat = virtualBoard[i][x];
-			if(this.potentialThreatChecker(potentialThreat, "r")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = y-1; i > -1; i-- ) {  // blocked vertical, up
-
-			if (  (cur_x == x) && (cur_y == i) ) { continue; } // it is myself
-
-			potentialThreat = virtualBoard[i][x];
-			if(this.potentialThreatChecker(potentialThreat, "r")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		// diagonals
-
-		for(var i = y+1; i < 8 && x + i - y < 8; i++ ) {  // blocked diagonal, down and right
-			if (  (cur_x == (x + i - y)) && (cur_y == i) ) { continue; } // it is myself
-			potentialThreat = virtualBoard[i][x + i - y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = y+1; i < 8 && x - i + y < 8; i++ ) {  // blocked diagonal, down and left
-			if (  (cur_x == (x - i + y)) && (cur_y == i) ) { continue; } // it is myself
-			potentialThreat = virtualBoard[i][x - i + y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = y-1; i > -1 && x - i + y > -1; i-- ) {  // blocked diagonal, to the up and right
-			if (  (cur_x == (x - i + y)) && (cur_y == i) ) { continue; } // it is myself
-			potentialThreat = virtualBoard[i][x - i + y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = y-1; i > -1 && x + i - y > -1; i-- ) {  // blocked diagonal, to the up and left
-			if (  (cur_x == (x + i - y)) && (cur_y == i) ) { continue; } // it is myself
-			potentialThreat = virtualBoard[i][x + i - y];
-
-			if(this.potentialThreatChecker(potentialThreat, "b")) {
-				return 1;
-			}
-			if(this.potentialThreatChecker(potentialThreat, "q")) {
-				return 1;
-			}
-			if(potentialThreat){ break; }
-		}
-
-		for(var i = -2; i < 3; i++) {
-			if(i == -2 || i == 2) { // check two left, two right
-				if(x + i > -1 && x + i < 8) {
-					if(y + 1 < 8 && virtualBoard[y + 1][x + i]) {
-						potentialThreat = virtualBoard[y + 1][x + i];
-						if(this.potentialThreatChecker(potentialThreat, "n")) {
-							return 1;
-						}
-					}
-
-					if(y - 1 > -1 && virtualBoard[y - 1][x + i]) {
-						potentialThreat = virtualBoard[y - 1][x + i];
-						if(this.potentialThreatChecker(potentialThreat, "n")) {
-							return 1;
-						}
-					}
-				}
-			}
-
-			else if(i == -1 || i == 1) { // check one to the left, one to the right
-				if(x + i > -1 && x + i < 8) { // makes sure x coord is inside the board
-					if((y + 2 < 8) && virtualBoard[y + 2][x + i]) { // makes sure y coord is inside the board
-						potentialThreat = virtualBoard[y + 2][x + i];
-						if(this.potentialThreatChecker(potentialThreat, "n")) {
-							return 1;
-						}
-					}
-
-					if(y - 2 > -1 && virtualBoard[y - 2][x + i]) { // makes sure y coord is inside the board
-						potentialThreat = virtualBoard[y - 2][x + i];
-						if(this.potentialThreatChecker(potentialThreat, "n")) {
-							return 1;
-						}
-					}
-				}
-			}
-		}
-		return 0;
 	}
 
 	canEatHV(r,c) {
@@ -335,28 +121,28 @@ class Piece {
 
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
 			var test_c = cur_c;
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
+			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
 			if( (test_r == r) && (test_c==c)) {return true}
 			if (virtualBoard[test_r][test_c] !== '' ) {break}
 		}
 
 		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
 			var test_r = cur_r;
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
+			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
 			if( (test_r == r) && (test_c==c)) {return true}
 			if (virtualBoard[test_r][test_c] !== '' ) {break}
 
 		}
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
 			var test_c = cur_c;
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
+			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
 			if( (test_r == r) && (test_c==c)) {return true}
 			if (virtualBoard[test_r][test_c] !== '' ) {break}
 
 		}
 		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
 			var test_r = cur_r;
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
+			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
 			if( (test_r == r) && (test_c==c)) 	{return true}
 			if (virtualBoard[test_r][test_c] !== '' ) {break}
 		}
@@ -364,31 +150,31 @@ class Piece {
 	}
 
 	canEatDiagonals(r, c) {
-
-		let cur_r = convertRowsToIndex(this.coords[1])
-		let cur_c = convertColsToIndex(this.coords[0])
+		let cur_r = convertRowsToIndex(this.coords[1]);
+		let cur_c = convertColsToIndex(this.coords[0]);
 
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
 			var test_c = cur_c + (cur_r-test_r);
-			if(test_c > 7) {break}
+			if(test_c > 7) { break }
 			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
 			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
+
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
 			var test_c = cur_c - (cur_r-test_r);
 			if (test_c < 0) { break }
 			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
 			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
+
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
 			var test_c = cur_c - (test_r - cur_r);
 			if(test_c < 0) {break}
 			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
 			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
 
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
@@ -396,16 +182,14 @@ class Piece {
 			if (test_c > 7) { break }
 			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
 			if( (test_r == r) && (test_c==c)) 	{return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
 		return false;
 	}
-
 }
 
 class Rook extends Piece {
 	constructor(color, coords) {
-
 		super(color, coords);
 
 		this.pieceName = color + "r";
@@ -413,110 +197,81 @@ class Rook extends Piece {
 	}
 
 	move() {
-
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
-
-			if(this.blockedHorizontal()){ return; }  // if blocked horizontally, do nothing
-			if(this.blockedVertical()){ return; }  // if blocked vertically, do nothing
+			if(this.blockedHorizontal()){ return }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()){ return }  // if blocked vertically, do nothing
 
 			this.movePiece();	// moves the piece
 		}
-
 	}
 
 	eat() {
-
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
-
-			if(this.blockedHorizontal()){ return; }  // if blocked horizontally, do nothing
-			if(this.blockedVertical()){ return; }  // if blocked vertically, do nothing
+			if(this.blockedHorizontal()){ return }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()){ return }  // if blocked vertically, do nothing
 
 			this.eatPiece();
 
 		}
-
 	}
 
-	canEat(r, c) {
-		return this.canEatHV(r,c);
-	}
-
-
+	canEat(r, c) { return this.canEatHV(r,c) }
 }
 
 class Bishop extends Piece {
 	constructor(color, row, column) {
-
 		super(color, row, column);
 
 		this.pieceName = color + "b";
-
 	}
 
 	move() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved) {
-
 			if(this.blockedDiagonal()) { return }
 
 			this.movePiece();
-
 		}
-
 	}
 
 	eat() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved) {
-
 			if(this.blockedDiagonal()) { return }
 
 			this.eatPiece();
-
 		}
-
 	}
 
-	canEat(r, c) {
-		return this.canEatDiagonals(r, c);
-	}
-
+	canEat(r, c) { return this.canEatDiagonals(r, c) }
 }
 
 class Queen extends Piece {
 	constructor(color, row, column) {
-
 		super(color, row, column);
 
 		this.pieceName = color + "q";
-
 	}
 
 	move() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved == colsMoved || this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) { // bishop + rook logic
-
 			if(rowsMoved == colsMoved && this.blockedDiagonal()) { return }
 			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
 
 			this.movePiece()
 		}
-
 	}
 
 
 	eat() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
@@ -525,165 +280,190 @@ class Queen extends Piece {
 			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
 			this.eatPiece();
-
 		}
 	}
 
-	canEat(r, c) {
-		return this.canEatHV(r,c) || this.canEatDiagonals(r, c);
-
-	}
-
+	canEat(r, c) { return this.canEatHV(r,c) || this.canEatDiagonals(r, c) }
 }
 
 class King extends Piece {
 	constructor(color, row, column) {
-
 		super(color, row, column);
 
 		this.pieceName = color + "k";
-
 	}
 
 	eat() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if (rowsMoved <= 1 && colsMoved <= 1) {
-
-			this.eatPiece();
-
-		}
-
+		if (rowsMoved <= 1 && colsMoved <= 1) { this.eatPiece() }
 	}
 
 	potentialThreatChecker(potentialThreat, pieceType) {
+		var oppColor = this.color=="w" ? "b" : "w";
+
 		if(potentialThreat) {
-			var oppColor = this.color=="w" ? "b" : "w";
-			if(potentialThreat.color == oppColor && potentialThreat.pieceName[1] == pieceType) {
-				return 1;
-			}
+			if(potentialThreat.color == oppColor && potentialThreat.pieceName[1] == pieceType) { return 1 }
 			return 0;
 		}
 		else {
 			return 0;
 		}
-
 	}
 
 	canEat(r, c) {
-
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
 		if(cur_r + 1 == r) {
-			if(cur_c == c) {return this}
-			if(cur_c + 1 == c) {return this}
-			if(cur_c - 1 == c) {return this}
+			if(cur_c == c) { return this }
+			if(cur_c + 1 == c) { return this }
+			if(cur_c - 1 == c) { return this }
 		} else if(cur_r==r) {
-			if(cur_c + 1 == c) {return this}
-			if(cur_c - 1 == c) {return this}
+			if(cur_c + 1 == c) { return this }
+			if(cur_c - 1 == c) { return this }
 		} else if(cur_r - 1 == r) {
-			if(cur_c == c) {return this}
-			if(cur_c + 1 == c) {return this}
-			if(cur_c - 1 == c) {return this}
+			if(cur_c == c) { return this }
+			if(cur_c + 1 == c) { return this }
+			if(cur_c - 1 == c) { return this }
 		}
-
 		return false;
-
 	}
 
 	move() {
-
 		var cur_x = convertColsToIndex(this.coords[0]);
 		var cur_y = convertRowsToIndex(this.coords[1]);
 		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
-		if (rowsMoved <= 1 && colsMoved <= 1) {
-
-			this.movePiece();
-
-		}
+		if (rowsMoved <= 1 && colsMoved <= 1) { this.movePiece() }
 	}
 }
 
 class Knight extends Piece {
 	constructor(color, row, column) {
-
 		super(color, row, column);
 
 		this.pieceName = color + "n";
-
 	}
 
 	move() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
-			this.movePiece()
-		}
-
+		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) { this.movePiece() }
 	}
 
 	eat() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
-
-			this.eatPiece();
-
-		}
-
+		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) { this.eatPiece() }
 	}
 
+	canEat(r, c, myColor) {
+		// knight checking
+		let cur_r = convertRowsToIndex(this.coords[1])
+		let cur_c = convertColsToIndex(this.coords[0])
+		var test_c;
+		var test_r;
+
+		// right 2 up 1
+		test_c = cur_c + 2;
+		test_r = cur_r - 1;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r && this.color !== myColor){
+				return true;
+			}
+		}
+
+		// right 1 up 2
+		test_c = cur_c + 1;
+		test_r = cur_r - 2;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// left 1 up 2
+		test_c = cur_c - 1;
+		test_r = cur_r - 2;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// left 2 up 1
+		test_c = cur_c - 2;
+		test_r = cur_r - 1;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// left 2 down 1
+		test_c = cur_c - 2;
+		test_r = cur_r + 1;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// left 1 down 2
+		test_c = cur_c - 1;
+		test_r = cur_r + 2;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// right 1 down 2
+		test_c = cur_c + 1;
+		test_r = cur_r + 2;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+
+		// right 2 down 1
+		test_c = cur_c + 2;
+		test_r = cur_r - 1;
+		if(test_r >= 0 && test_c <= 7) {
+			if(test_c == c && test_r == r){
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 class Pawn extends Piece {
 	constructor(color, row, column) {
-
 		super(color, row, column);
 
 		this.pieceName = color + "p";
-
 	}
 
 	move() {
-
 		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
 		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
 		// if on 2nd row or 7th row, can move 1 or 2
-
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
-		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
-
-			this.movePiece()
-		}
-
+		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) { this.movePiece() }
 	}
 
-
-
 	eat() {
-
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) {
-
-			this.eatPiece();
-
-		}
-
+		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) { this.eatPiece() }
 	}
-
-	
-
-
 }
