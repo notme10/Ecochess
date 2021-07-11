@@ -1,3 +1,14 @@
+/*
+
+IMPORTNANT STUFF TO DO!!!
+
+1.	figure out myColor stuff
+2.	figure out why i cant go diagonally after clicking into a place thats checked
+3. 	king can eat piece, even if that piece is "protected"
+4.  finish checkmate
+
+*/
+
 class Piece {
 	constructor(color) {
 		this.color = color;
@@ -23,10 +34,10 @@ class Piece {
 		if (selectedCell) {
 			selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
 		}
-		for(var i = 0; i<8; i++){
-			for(var j = 0; j<8; j++){
+		for(var i = 0; i<8; i++) {
+			for(var j = 0; j<8; j++) {
 				if(virtualBoard[i][j] instanceof King) {
-					if(this.color == virtualBoard[i][j].color){
+					if(this.color == virtualBoard[i][j].color) {
 						if(virtualBoard[i][j].isKingChecked(i, j, this.color)) {
 							console.log("King is Checked");
 
@@ -46,6 +57,21 @@ class Piece {
 
 		pieceInfo = null;
 		turn++;
+		var thisTurnColor;
+		var thisTurnKing;
+		turn % 2 == 0 ? thisTurnColor = 'w' : thisTurnColor = "b"
+		console.log(thisTurnColor);
+
+		for(var i = 0; i < 8; i++) {
+			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
+			if(thisTurnKing) { break }
+		}
+
+		console.log(thisTurnKing);
+		if(thisTurnKing.isCheckmated()) {
+
+			alert("you lost")
+		}
 	}
 
 	eatPiece() {
@@ -114,75 +140,85 @@ class Piece {
 		return null;
 	}
 
-	canEatHV(r,c) {
+	canEatHV(r, c, myColor) {
 		// vertical and horizontal checking
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
 			var test_c = cur_c;
-			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
+			if(this.color == myColor) {
+				if((test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 
 		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
 			var test_r = cur_r;
-			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-
+			if(this.color == myColor) {
+				if((test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
 			var test_c = cur_c;
-			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
-
+			if(this.color == myColor) {
+				if((test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
 			var test_r = cur_r;
-			// document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
-			if( (test_r == r) && (test_c==c)) 	{return true}
-			if (virtualBoard[test_r][test_c] !== '' ) {break}
+			if(this.color == myColor) {
+				if((test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 		return false;
 	}
 
-	canEatDiagonals(r, c) {
+	canEatDiagonals(r, c, myColor) {
 		let cur_r = convertRowsToIndex(this.coords[1]);
 		let cur_c = convertColsToIndex(this.coords[0]);
 
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
 			var test_c = cur_c + (cur_r-test_r);
-			if(test_c > 7) { break }
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing1"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+
+			if(this.color == myColor) {
+				if(test_c > 7) { break }
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 
 		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
 			var test_c = cur_c - (cur_r-test_r);
-			if (test_c < 0) { break }
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing2"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+
+			if(this.color == myColor) {
+				if (test_c < 0) { break }
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
 			var test_c = cur_c - (test_r - cur_r);
-			if(test_c < 0) {break}
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing3"
-			if( (test_r == r) && (test_c==c)) {return true}
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+
+			if(this.color == myColor) {
+				if(test_c < 0) {break}
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
 			var test_c = cur_c + (test_r - cur_r);
-			if (test_c > 7) { break }
-			document.getElementById(`${convertIndexToCols(test_c)}${convertIndexToRows(test_r)}`).className += " testing4"
-			if( (test_r == r) && (test_c==c)) 	{return true}
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+
+			if(this.color == myColor) {
+				if (test_c > 7) { break }
+				if( (test_r == r) && (test_c==c)) 	{ return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
 		return false;
 	}
@@ -198,8 +234,8 @@ class Rook extends Piece {
 
 	move() {
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
-			if(this.blockedHorizontal()){ return }  // if blocked horizontally, do nothing
-			if(this.blockedVertical()){ return }  // if blocked vertically, do nothing
+			if(this.blockedHorizontal()) { return }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
 			this.movePiece();	// moves the piece
 		}
@@ -207,15 +243,15 @@ class Rook extends Piece {
 
 	eat() {
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
-			if(this.blockedHorizontal()){ return }  // if blocked horizontally, do nothing
-			if(this.blockedVertical()){ return }  // if blocked vertically, do nothing
+			if(this.blockedHorizontal()) { return }  // if blocked horizontally, do nothing
+			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
 			this.eatPiece();
 
 		}
 	}
 
-	canEat(r, c) { return this.canEatHV(r,c) }
+	canEat(r, c) { return this.canEatHV(r, c, this.color) }
 }
 
 class Bishop extends Piece {
@@ -247,7 +283,7 @@ class Bishop extends Piece {
 		}
 	}
 
-	canEat(r, c) { return this.canEatDiagonals(r, c) }
+	canEat(r, c) { return this.canEatDiagonals(r, c, this.color) }
 }
 
 class Queen extends Piece {
@@ -312,18 +348,18 @@ class King extends Piece {
 		}
 	}
 
-	canEat(r, c) {
+	canEat(r, c, myColor) {
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
-		if(cur_r + 1 == r) {
+		if(cur_r + 1 == r && this.color !== myColor) {
 			if(cur_c == c) { return this }
 			if(cur_c + 1 == c) { return this }
 			if(cur_c - 1 == c) { return this }
-		} else if(cur_r==r) {
+		} else if(cur_r==r && this.color !== myColor) {
 			if(cur_c + 1 == c) { return this }
 			if(cur_c - 1 == c) { return this }
-		} else if(cur_r - 1 == r) {
+		} else if(cur_r - 1 == r && this.color !== myColor) {
 			if(cur_c == c) { return this }
 			if(cur_c + 1 == c) { return this }
 			if(cur_c - 1 == c) { return this }
@@ -338,6 +374,33 @@ class King extends Piece {
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved <= 1 && colsMoved <= 1) { this.movePiece() }
+	}
+
+	isCheckmated() {
+
+		var king_x = convertRowsToIndex(this.coords[1]);
+		var king_y = convertColsToIndex(this.coords[0]);
+
+		for(var i = -1; i <= 1; i++) {
+			for(var j = -1; j <= 1; j++) {
+				if(king_x + i > 7 || king_x + i < 0 || king_y + j > 7 || king_y + j < 0) {
+					// skip over me please it is oob
+				}
+				else if(virtualBoard[king_x + i][king_y + j].color == this.color) {
+					// Im getting body blocked
+				}
+				else if(this.isKingChecked(king_x + i, king_y + j, this.color)) {
+					// my personal space is being violated
+				}
+				else {
+					return false;
+					// i am safe false alarm
+				}
+			}
+		}
+		alert("Checkmate you suck lol")
+		return true;
+		// uh oh im screwed
 	}
 }
 
@@ -373,7 +436,7 @@ class Knight extends Piece {
 		test_c = cur_c + 2;
 		test_r = cur_r - 1;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r && this.color !== myColor){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -382,7 +445,7 @@ class Knight extends Piece {
 		test_c = cur_c + 1;
 		test_r = cur_r - 2;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -391,7 +454,7 @@ class Knight extends Piece {
 		test_c = cur_c - 1;
 		test_r = cur_r - 2;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -400,7 +463,7 @@ class Knight extends Piece {
 		test_c = cur_c - 2;
 		test_r = cur_r - 1;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -409,7 +472,7 @@ class Knight extends Piece {
 		test_c = cur_c - 2;
 		test_r = cur_r + 1;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -418,7 +481,7 @@ class Knight extends Piece {
 		test_c = cur_c - 1;
 		test_r = cur_r + 2;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -427,7 +490,7 @@ class Knight extends Piece {
 		test_c = cur_c + 1;
 		test_r = cur_r + 2;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -436,7 +499,7 @@ class Knight extends Piece {
 		test_c = cur_c + 2;
 		test_r = cur_r - 1;
 		if(test_r >= 0 && test_c <= 7) {
-			if(test_c == c && test_r == r){
+			if(test_c == c && test_r == r && this.color !== myColor) {
 				return true;
 			}
 		}
@@ -465,5 +528,29 @@ class Pawn extends Piece {
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) { this.eatPiece() }
+	}
+
+	canEat(r, c, myColor) {
+
+		let cur_r = convertRowsToIndex(this.coords[1]); // coords of pawn
+		let cur_c = convertColsToIndex(this.coords[0]); // coords of pawn
+
+		// 1. Check if pawn is black or white
+		// 2. If pawn is same color as player's king, ignore it
+		// 3. If pawn is opposite color as player, use the black or white status of it to determine if it is going down or up
+		// 4. Set up two different cases for if it is moving down or up
+
+		if(myColor !== this.color) {
+			if(this.color == "b" && cur_r + 1 == r) {
+				// for black pawn
+				if(cur_c + 1 == c) { return this }
+				if(cur_c - 1 == c) { return this }
+			}
+			if(this.color == "w" && cur_r - 1 == r) {
+				// for white pawn
+				if(cur_c + 1 == c) { return this }
+				if(cur_c - 1 == c) { return this }
+			}
+		}
 	}
 }
