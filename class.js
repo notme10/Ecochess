@@ -2,18 +2,18 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-									1. Promotion -- done
+1. Promotion -- done
 2. Castling
-	a) create variable to check if king or rook has moved at all
-	b) check if there's nothing in between king and Rook
-	c) check if king is in check before castling
-	d) if both these conditions are true, the king is allowed to move either two to the right or three to the left
-	e) move rook to the appropriate position
+a) create variable to check if king or rook has moved at all
+b) check if there's nothing in between king and Rook
+c) check if king is in check before castling
+d) if both these conditions are true, the king is allowed to move either two to the right or three to the left
+e) move rook to the appropriate position
 3. En Passant
-	a) pawn moves two spaces forward
-	b) on the next turn, an opposite color pawn is next to the pawn that just moved
-	c) pawn moves diagonally into the column of the first pawn
-										4. Black can't eat bug fix
+a) pawn moves two spaces forward
+b) on the next turn, an opposite color pawn is next to the pawn that just moved
+c) pawn moves diagonally into the column of the first pawn
+4. Black can't eat bug fix
 5. black queen cannot move
 
 
@@ -36,6 +36,7 @@ class Piece {
 		// return true if move is allowed, false if move is not allowed
 		var prv_coords = this.coords;
 		this.coords = cellCoord;
+		console.log(cellCoord);
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
 		let colPrevious = columns.indexOf(pieceInfo[1][0]); // get the column of previous position
@@ -85,214 +86,214 @@ class Piece {
 
 
 
-	pieceInfo = null;
-	turn++;
-	var thisTurnColor;
-	var thisTurnKing;
-	turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
-	// console.log(thisTurnColor);
-
-	for(var i = 0; i < 8; i++) {
-		// console.log(virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k"));
+		pieceInfo = null;
+		turn++;
+		var thisTurnColor;
+		var thisTurnKing;
+		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
 		// console.log(thisTurnColor);
-		thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
-		if(thisTurnKing) { break }
-	}
 
-
-	// if(thisTurnKing.isCheckmated()) {
-	// 	alert("you lost")
-	// }
-	return true;
-}
-
-eatPiece() {
-	//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
-	var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
-	var q = t.className;
-	console.log(t.className);
-	t.remove();
-
-	var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
-	virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
-
-	if(this.movePiece()) {
-	} else {
-		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = tempPiece;
-		var p = document.createElement('div'); // makes a new div called p
-		p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
-		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
-	}
-
-}
-
-blockedHorizontal() {
-	for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
-	i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
-		if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) { return true }
-	}
-}
-
-blockedVertical() {
-	for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-	i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-		if(virtualBoard[i][convertColsToIndex(this.coords[0])]) { return true }
-	}
-}
-
-blockedDiagonal() {
-	var start_row = convertRowsToIndex(this.coords[1]);
-	var start_col = convertColsToIndex(this.coords[0]);
-	var end_row = convertRowsToIndex(cellCoord[1]);
-	var end_col = convertColsToIndex(cellCoord[0]);
-	if( (start_row < end_row) && (start_col < end_col) ) {
-		for( var i=start_row+1, j=start_col+1; i<end_row; i++, j++ ) {
-			if (virtualBoard[i][j]) {return true}
+		for(var i = 0; i < 8; i++) {
+			// console.log(virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k"));
+			// console.log(thisTurnColor);
+			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
+			if(thisTurnKing) { break }
 		}
+
+
+		// if(thisTurnKing.isCheckmated()) {
+		// 	alert("you lost")
+		// }
+		return true;
 	}
-	if( (start_row < end_row) && (start_col > end_col) ) {
-		for( var i=start_row+1, j=start_col-1; i<end_row; i++, j-- ) {
-			if (virtualBoard[i][j]) {return true}
+
+	eatPiece() {
+		//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
+		var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
+		var q = t.className;
+		console.log(t.className);
+		t.remove();
+
+		var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
+		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
+
+		if(this.movePiece()) {
+		} else {
+			virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = tempPiece;
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
+
 	}
-	if( (start_row > end_row) && (start_col < end_col) ) {
-		for( var i=start_row-1, j=start_col+1; i>end_row; i--, j++ ) {
-			if (virtualBoard[i][j]) {return true}
-		}
-	}
-	if( (start_row > end_row) && (start_col > end_col) ) {
-		for( var i=start_row-1, j=start_col-1; i>end_row; i--, j-- ) {
-			if (virtualBoard[i][j]) {return true}
+
+	blockedHorizontal() {
+		for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
+		i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
+			if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) { return true }
 		}
 	}
 
-	// for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-	// i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-	// 	if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
-	// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
-	// 			if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-	// 		} else {  // bottom left
-	// 			var min = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1;
-	// 			var col = convertColsToIndex(this.coords[0]) + i - min;
-	// 			if(virtualBoard[i][col]) { return true }
-	// 		}
-	// 	} else {
-	// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
-	// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
-	// 		} else { // top left
-	// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-	// 		}
-	// 	}
-	// }
-}
+	blockedVertical() {
+		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+			if(virtualBoard[i][convertColsToIndex(this.coords[0])]) { return true }
+		}
+	}
 
-move() {
-	var cur_x = convertColsToIndex(this.coords[0]);
-	var cur_y = convertRowsToIndex(this.coords[1]);
-	let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
-	let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
-
-	this.movePiece();
-}
-
-isKingChecked(x, y, king_color) {
-	// determines if the king is in check from any piece
-	// x and y are king's row and column
-
-	for(var i = 0; i<8; i++) {
-		for(var j = 0; j<8; j++) {
-
-			if(virtualBoard[i][j] !== '') {
-				let vbCanEat = virtualBoard[i][j].canEatKingAt(x, y, king_color);
-
-				if(vbCanEat) { return true }
+	blockedDiagonal() {
+		var start_row = convertRowsToIndex(this.coords[1]);
+		var start_col = convertColsToIndex(this.coords[0]);
+		var end_row = convertRowsToIndex(cellCoord[1]);
+		var end_col = convertColsToIndex(cellCoord[0]);
+		if( (start_row < end_row) && (start_col < end_col) ) {
+			for( var i=start_row+1, j=start_col+1; i<end_row; i++, j++ ) {
+				if (virtualBoard[i][j]) {return true}
 			}
 		}
-	}
-	return false;
-}
-
-canEatHV(r, c, myColor) {
-	// vertical and horizontal checking
-	let cur_r = convertRowsToIndex(this.coords[1])
-	let cur_c = convertColsToIndex(this.coords[0])
-
-	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
-		var test_c = cur_c;
-		if(this.color != myColor) {
-			if((test_r == r) && (test_c == c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		if( (start_row < end_row) && (start_col > end_col) ) {
+			for( var i=start_row+1, j=start_col-1; i<end_row; i++, j-- ) {
+				if (virtualBoard[i][j]) {return true}
+			}
 		}
-	}
-	for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
-		var test_r = cur_r;
-		if(this.color != myColor) {
-			if((test_r == r) && (test_c == c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		if( (start_row > end_row) && (start_col < end_col) ) {
+			for( var i=start_row-1, j=start_col+1; i>end_row; i--, j++ ) {
+				if (virtualBoard[i][j]) {return true}
+			}
 		}
-	}
-	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
-		var test_c = cur_c;
-		if(this.color != myColor) {
-			if((test_r == r) && (test_c == c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		if( (start_row > end_row) && (start_col > end_col) ) {
+			for( var i=start_row-1, j=start_col-1; i>end_row; i--, j-- ) {
+				if (virtualBoard[i][j]) {return true}
+			}
 		}
+
+		// for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+		// i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+		// 	if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
+		// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
+		// 			if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+		// 		} else {  // bottom left
+		// 			var min = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1;
+		// 			var col = convertColsToIndex(this.coords[0]) + i - min;
+		// 			if(virtualBoard[i][col]) { return true }
+		// 		}
+		// 	} else {
+		// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
+		// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
+		// 		} else { // top left
+		// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+		// 		}
+		// 	}
+		// }
 	}
-	for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
-		var test_r = cur_r;
-		if(this.color != myColor) {
-			if((test_r == r) && (test_c == c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+
+	move() {
+		var cur_x = convertColsToIndex(this.coords[0]);
+		var cur_y = convertRowsToIndex(this.coords[1]);
+		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
+		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
+
+		this.movePiece();
+	}
+
+	isKingChecked(x, y, king_color) {
+		// determines if the king is in check from any piece
+		// x and y are king's row and column
+
+		for(var i = 0; i<8; i++) {
+			for(var j = 0; j<8; j++) {
+
+				if(virtualBoard[i][j] !== '') {
+					let vbCanEat = virtualBoard[i][j].canEatKingAt(x, y, king_color);
+
+					if(vbCanEat) { return true }
+				}
+			}
 		}
+		return false;
 	}
-	return false;
-}
 
-canEatDiagonals(r, c, myColor) {
-	let cur_r = convertRowsToIndex(this.coords[1]);
-	let cur_c = convertColsToIndex(this.coords[0]);
+	canEatHV(r, c, myColor) {
+		// vertical and horizontal checking
+		let cur_r = convertRowsToIndex(this.coords[1])
+		let cur_c = convertColsToIndex(this.coords[0])
 
-	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
-		var test_c = cur_c + (cur_r-test_r);
-
-		if(this.color != myColor) {
-			if(test_c > 7) { break }
-			if( (test_r == r) && (test_c==c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
+			var test_c = cur_c;
+			if(this.color != myColor) {
+				if((test_r == r) && (test_c == c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
-	}
-
-	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
-		var test_c = cur_c - (cur_r-test_r);
-
-		if(this.color != myColor) {
-			if (test_c < 0) { break }
-			if( (test_r == r) && (test_c==c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
+			var test_r = cur_r;
+			if(this.color != myColor) {
+				if((test_r == r) && (test_c == c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
-	}
-
-	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
-		var test_c = cur_c - (test_r - cur_r);
-
-		if(this.color != myColor) {
-			if(test_c < 0) {break}
-			if( (test_r == r) && (test_c==c)) { return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
+			var test_c = cur_c;
+			if(this.color != myColor) {
+				if((test_r == r) && (test_c == c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
-	}
-
-	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
-		var test_c = cur_c + (test_r - cur_r);
-
-		if(this.color != myColor) {
-			if (test_c > 7) { break }
-			if( (test_r == r) && (test_c==c)) 	{ return true }
-			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
+			var test_r = cur_r;
+			if(this.color != myColor) {
+				if((test_r == r) && (test_c == c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
 		}
+		return false;
 	}
-	return false;
-}
+
+	canEatDiagonals(r, c, myColor) {
+		let cur_r = convertRowsToIndex(this.coords[1]);
+		let cur_c = convertColsToIndex(this.coords[0]);
+
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
+			var test_c = cur_c + (cur_r-test_r);
+
+			if(this.color != myColor) {
+				if(test_c > 7) { break }
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
+		}
+
+		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
+			var test_c = cur_c - (cur_r-test_r);
+
+			if(this.color != myColor) {
+				if (test_c < 0) { break }
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
+		}
+
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
+			var test_c = cur_c - (test_r - cur_r);
+
+			if(this.color != myColor) {
+				if(test_c < 0) {break}
+				if( (test_r == r) && (test_c==c)) { return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
+		}
+
+		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
+			var test_c = cur_c + (test_r - cur_r);
+
+			if(this.color != myColor) {
+				if (test_c > 7) { break }
+				if( (test_r == r) && (test_c==c)) 	{ return true }
+				if (virtualBoard[test_r][test_c] !== '' ) { break }
+			}
+		}
+		return false;
+	}
 }
 
 class Rook extends Piece {
@@ -321,16 +322,6 @@ class Rook extends Piece {
 
 		}
 	}
-
-	// castle() {
-	// 	if(hasRookMoved == 0, virtualBoard[][]) {
-	//
-	//
-	//
-	// 	}
-
-
-	// }
 
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) }
 }
@@ -461,9 +452,77 @@ class King extends Piece {
 			this.movePiece()
 		}
 
-		// if king is trying to castle:
+		// castling for white king
+
+		if(cur_y == 7 && this.color == 'w') {
+			// white king is at bottom row
+			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
+				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
+					this.movePiece();
+					virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
+					virtualBoard[7][7] = ''; // delete old rook
+
+					document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
+					var p = document.createElement('div'); // makes a new div called p
+					p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+					document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+				}
+			}
+
+			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
+				if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
+					this.movePiece();
+					virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
+					virtualBoard[7][0] = ''; // delete old rook
+
+					document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
+					var p = document.createElement('div'); // makes a new div called p
+					p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+					document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+				}
+			}
+
+		}
+
+		// castling for the black king
+
+		if(cur_y == 0 && this.color == 'b') {
+			// black king is at top row
+			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
+				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
+					this.movePiece();
+					virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
+					virtualBoard[0][7] = ''; // delete old rook
+
+					document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
+					var p = document.createElement('div'); // makes a new div called p
+					p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+					document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+				}
+			}
+
+			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
+				if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
+					this.movePiece();
+					virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
+					virtualBoard[0][0] = ''; // delete old rook
+
+					document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
+					var p = document.createElement('div'); // makes a new div called p
+					p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+					document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+				}
+			}
+
+		}
 
 	}
+
+	// white king and rook must be on the bottom row
+	// both the king and rook have not moved
+	// King wants to move two units to the right or three units to the left
+	// there are no pieces in between rook and king
+	//
 
 	helperFunction(new_x, new_y, old_x, old_y) {
 
