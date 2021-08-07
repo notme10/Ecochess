@@ -10,40 +10,25 @@
 
   <select id="Regions">
 
-    <option value="Select your region: ">Select your region: </option>
-    <option value="Coral Reefs">Coral Reefs</option>
-    <option value="Deep Sea">Deep Sea</option>
-    <option value="Kelp Forest">Kelp Forest</option>
+    <option value=" ">Select your region: </option>
+    <option value="Reef">Reef</option>
+    <option value="Ocean">Ocean</option>
     <option value="Forest">Forest</option>
-    <option value="Jungle">Jungle</option>
     <option value="Tundra">Tundra</option>
     <option value="Desert">Desert</option>
+    <option value="Sky">Sky</option>
 
   </select>
-
   <img id= "Regions" src = "" >
-
   <script type="text/javascript">
 
-var images = {"Coral Reefs": "https://i.natgeofe.com/n/d326d61d-8ef6-4f4c-a03f-ab8fbbb40e6d/coral-reefs-2728211.jpg",
-              "Deep Sea":  "https://images.theconversation.com/files/223729/original/file-20180619-126566-1jxjod2.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop",
-              "Kelp Forest": "https://oceana.org/sites/default/files/25_0.jpg",
-              "Forest": "https://i.guim.co.uk/img/media/d143e03bccd1150ef52b8b6abd7f3e46885ea1b3/0_182_5472_3283/master/5472.jpg?width=1200&quality=85&auto=format&fit=max&s=d5a74a011c3fef1ad9c1c962721d221d",
-              "Jungle": "https://secretcompass.com/wp-content/uploads/2018/01/Jungle-Rot.jpg",
-              "Tundra": "https://media.nationalgeographic.org/assets/photos/201/399/978429cd-0d04-464b-a3c1-473e163ecc5b.jpg",
-              "Desert": "https://cdn.britannica.com/10/152310-050-5A09D74A/Sand-dunes-Sahara-Morocco-Merzouga.jpg"}
+  document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
+  document.querySelector("#Regions").addEventListener("change", e => {
 
-document.querySelector("#Regions").addEventListener("change", e => {
+    console.log("selection is: " + e.target.value);
+    localStorage.setItem('chosenRegion', e.target.value);
 
-
-  document.querySelector("#regions").src = images[e.target.value];
-
-  // var newImage = document.createElement("img");
-
-  // newImage.src = images[e.target.value];
-
-  // document.body.appendChild(newImage);
-}) 
+  })
 
   </script>
 

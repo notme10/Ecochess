@@ -1,3 +1,11 @@
+/*
+			1. add different classes for each environment, black and white
+			2. add color schemes for each
+			3. choose piece pictures
+4. find facts for each region, 3 to 5 on each
+5. get as much as possible with en passant, castling, and promotion
+ */
+
 body {
 	height: 100vh;
 	width: 100vw;
@@ -8,73 +16,147 @@ body {
 	overflow: hidden;
 }
 
+#layout {
+	display: grid;
+	grid-template-columns: 1fr 10fr 5fr;
+	grid-template-rows: 10fr 1fr;
+	grid-template-areas:
+		"s g i"
+		". b i";
+}
+
 #board {
 	height: 80vmin;
 	width: 80vmin;
+	grid-area: g;
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
 	grid-template-rows: repeat(8, 1fr);
 	border: 2px solid black;
 }
 
+#sidebar {
+	grid-area: s;
+	display: flex;
+	font-size: 75px;
+	flex-direction: column-reverse;
+	align-items: center;
+	justify-content: space-around;
+}
+
+#bottombar {
+	grid-area: b;
+	display: flex;
+	font-size: 75px;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+#infoBox {
+	grid-area: i;
+}
+
 .white {
-	background-color: white;
+	background-color: #ffffff;
 }
 
 .black {
-	background-color: skyblue;
+	background-color: #8f8f8f;
+}
+
+.whiteForest {
+	background-color: #ffffff;
+}
+
+.blackForest {
+ background-color: #008f30;
+}
+
+.whiteReef {
+	background-color: #ffffff;
+}
+
+.blackReef {
+ background-color: #ff694f;
+}
+
+.whiteOcean {
+	background-color: #ffffff;
+}
+
+.blackOcean {
+ background-color: #1f3dff;
+}
+
+/* .whiteKelp {
+	background-color: #ffffff;
+}
+
+.blackKelp {
+ background-color: #74ff38;
+} */
+
+/* .whiteJungle {
+	background-color: #ffffff;
+}
+
+.blackJungle {
+ background-color: #003d0d;
+} */
+
+.whiteTundra {
+	background-color: #white;
+}
+
+.blackTundra {
+ background-color: #d5e8e3;
+}
+
+.whiteDesert {
+	background-color: #ffffff;
+}
+
+.blackDesert {
+ background-color: #ffbe63;
+}
+
+.whiteSky {
+	background-color: #ffffff;
+}
+
+.blackSky {
+ background-color: skyblue;
 }
 
 .selected {
 	background-color: blue;
 }
 
-/* .testing1 {
-	background-color: orange;
-}
-.testing2 {
-	background-color: purple;
-}
-.testing3 {
-	background-color: green;
-}
-.testing4 {
-	background-color: pink;
-} */
-
-
-.wp { /* white pawn */
+.wp {
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png');
 	/* background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png'); */
 	background-size: 100%;
-
 }
 
-
-
-
-
-.wr { /* white rook */
+.wr {
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png');
 	background-size: cover;
 	background-repeat:no-repeat;
-
-
-
 }
 
-.wn { /* white knight */
+.wn {
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png');
 	background-size: 100%;
 }
 
-.wb { /* white bishop */
+.wb {
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png');

@@ -2,10 +2,23 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-1.	figure out myColor stuff
-2.	figure out why i cant go diagonally after clicking into a place thats checked
-3. 	king can eat piece, even if that piece is "protected"
-4.  finish checkmate
+									1. Promotion -- done
+2. Castling
+	a) create variable to check if king or rook has moved at all
+	b) check if there's nothing in between king and Rook
+	c) check if king is in check before castling
+	d) if both these conditions are true, the king is allowed to move either two to the right or three to the left
+	e) move rook to the appropriate position
+3. En Passant
+	a) pawn moves two spaces forward
+	b) on the next turn, an opposite color pawn is next to the pawn that just moved
+	c) pawn moves diagonally into the column of the first pawn
+										4. Black can't eat bug fix
+5. black queen cannot move
+
+
+
+6. Gather facts for different regions
 
 */
 
@@ -20,6 +33,8 @@ class Piece {
 	}
 
 	movePiece() {
+		// return true if move is allowed, false if move is not allowed
+		var prv_coords = this.coords;
 		this.coords = cellCoord;
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
@@ -39,11 +54,10 @@ class Piece {
 				if(virtualBoard[i][j] instanceof King) {
 					if(this.color == virtualBoard[i][j].color) {
 						if(virtualBoard[i][j].isKingChecked(i, j, this.color)) {
-							console.log("King is Checked");
-
 							virtualBoard[rowPrevious][colPrevious] = virtualBoard[rowNow][colNow]; // cancels the move
 							virtualBoard[rowNow][colNow] = '';
-							return;
+							this.coords = prv_coords;
+							return false;
 						}
 					}
 				}
@@ -51,185 +65,241 @@ class Piece {
 		}
 
 		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
+		if(pieceInfo[0] == "wp" && pieceInfo[1][1] == "7") {
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = `${"wq"} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+		}
+		if(pieceInfo[0] == "bp" && pieceInfo[1][1] == "2") {
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = `${"bq"} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+		}
+		else {
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+		}
+
+
+
+
+
+	pieceInfo = null;
+	turn++;
+	var thisTurnColor;
+	var thisTurnKing;
+	turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
+	// console.log(thisTurnColor);
+
+	for(var i = 0; i < 8; i++) {
+		// console.log(virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k"));
+		// console.log(thisTurnColor);
+		thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
+		if(thisTurnKing) { break }
+	}
+
+
+	// if(thisTurnKing.isCheckmated()) {
+	// 	alert("you lost")
+	// }
+	return true;
+}
+
+eatPiece() {
+	//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
+	var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
+	var q = t.className;
+	console.log(t.className);
+	t.remove();
+
+	var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
+	virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
+
+	if(this.movePiece()) {
+	} else {
+		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = tempPiece;
 		var p = document.createElement('div'); // makes a new div called p
-		p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+		p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
 		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+	}
 
-		pieceInfo = null;
-		turn++;
-		var thisTurnColor;
-		var thisTurnKing;
-		turn % 2 == 0 ? thisTurnColor = 'w' : thisTurnColor = "b"
-		console.log(thisTurnColor);
+}
 
-		for(var i = 0; i < 8; i++) {
-			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
-			if(thisTurnKing) { break }
+blockedHorizontal() {
+	for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
+	i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
+		if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) { return true }
+	}
+}
+
+blockedVertical() {
+	for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+	i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+		if(virtualBoard[i][convertColsToIndex(this.coords[0])]) { return true }
+	}
+}
+
+blockedDiagonal() {
+	var start_row = convertRowsToIndex(this.coords[1]);
+	var start_col = convertColsToIndex(this.coords[0]);
+	var end_row = convertRowsToIndex(cellCoord[1]);
+	var end_col = convertColsToIndex(cellCoord[0]);
+	if( (start_row < end_row) && (start_col < end_col) ) {
+		for( var i=start_row+1, j=start_col+1; i<end_row; i++, j++ ) {
+			if (virtualBoard[i][j]) {return true}
 		}
-
-		console.log(thisTurnKing);
-		if(thisTurnKing.isCheckmated()) {
-
-			alert("you lost")
+	}
+	if( (start_row < end_row) && (start_col > end_col) ) {
+		for( var i=start_row+1, j=start_col-1; i<end_row; i++, j-- ) {
+			if (virtualBoard[i][j]) {return true}
+		}
+	}
+	if( (start_row > end_row) && (start_col < end_col) ) {
+		for( var i=start_row-1, j=start_col+1; i>end_row; i--, j++ ) {
+			if (virtualBoard[i][j]) {return true}
+		}
+	}
+	if( (start_row > end_row) && (start_col > end_col) ) {
+		for( var i=start_row-1, j=start_col-1; i>end_row; i--, j-- ) {
+			if (virtualBoard[i][j]) {return true}
 		}
 	}
 
-	eatPiece() {
-		document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
-		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
+	// for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
+	// i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
+	// 	if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
+	// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
+	// 			if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+	// 		} else {  // bottom left
+	// 			var min = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1;
+	// 			var col = convertColsToIndex(this.coords[0]) + i - min;
+	// 			if(virtualBoard[i][col]) { return true }
+	// 		}
+	// 	} else {
+	// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
+	// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
+	// 		} else { // top left
+	// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
+	// 		}
+	// 	}
+	// }
+}
 
-		this.movePiece();
-	}
+move() {
+	var cur_x = convertColsToIndex(this.coords[0]);
+	var cur_y = convertRowsToIndex(this.coords[1]);
+	let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
+	let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
-	blockedHorizontal() {
-		for(var i = Math.min(convertColsToIndex(this.coords[0])+1, convertColsToIndex(cellCoord[0])+1);
-		i < Math.max(convertColsToIndex(this.coords[0]), convertColsToIndex(cellCoord[0])); i++ ) {
-			if(virtualBoard[convertRowsToIndex(this.coords[1])][i]) { return true }
-		}
-	}
+	this.movePiece();
+}
 
-	blockedVertical() {
-		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-			if(virtualBoard[i][convertColsToIndex(this.coords[0])]) { return true }
-		}
-	}
+isKingChecked(x, y, king_color) {
+	// determines if the king is in check from any piece
+	// x and y are king's row and column
 
-	blockedDiagonal() {
-		for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-		i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-			if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
-				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-				} else {  // bottom left
-					if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
-				}
-			} else {
-				if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
-				} else { // top left
-					if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-				}
+	for(var i = 0; i<8; i++) {
+		for(var j = 0; j<8; j++) {
+
+			if(virtualBoard[i][j] !== '') {
+				let vbCanEat = virtualBoard[i][j].canEatKingAt(x, y, king_color);
+
+				if(vbCanEat) { return true }
 			}
 		}
 	}
+	return false;
+}
 
-	move() {
-		var cur_x = convertColsToIndex(this.coords[0]);
-		var cur_y = convertRowsToIndex(this.coords[1]);
-		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
+canEatHV(r, c, myColor) {
+	// vertical and horizontal checking
+	let cur_r = convertRowsToIndex(this.coords[1])
+	let cur_c = convertColsToIndex(this.coords[0])
 
-		this.movePiece();
+	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
+		var test_c = cur_c;
+		if(this.color != myColor) {
+			if((test_r == r) && (test_c == c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		}
+	}
+	for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
+		var test_r = cur_r;
+		if(this.color != myColor) {
+			if((test_r == r) && (test_c == c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		}
+	}
+	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
+		var test_c = cur_c;
+		if(this.color != myColor) {
+			if((test_r == r) && (test_c == c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		}
+	}
+	for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
+		var test_r = cur_r;
+		if(this.color != myColor) {
+			if((test_r == r) && (test_c == c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		}
+	}
+	return false;
+}
+
+canEatDiagonals(r, c, myColor) {
+	let cur_r = convertRowsToIndex(this.coords[1]);
+	let cur_c = convertColsToIndex(this.coords[0]);
+
+	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
+		var test_c = cur_c + (cur_r-test_r);
+
+		if(this.color != myColor) {
+			if(test_c > 7) { break }
+			if( (test_r == r) && (test_c==c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
+		}
 	}
 
-	isKingChecked(x, y, king_color) {
-		// determines if the king is in check from any piece
-		// x and y are king's row and column
+	for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
+		var test_c = cur_c - (cur_r-test_r);
 
-		for(var i = 0; i<8; i++) {
-			for(var j = 0; j<8; j++) {
-
-				if(virtualBoard[i][j] !== '') {
-					let vbCanEat = virtualBoard[i][j].canEat(x, y, king_color);
-
-					if(vbCanEat) { return vbCanEat }
-				}
-			}
+		if(this.color != myColor) {
+			if (test_c < 0) { break }
+			if( (test_r == r) && (test_c==c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
-		return null;
 	}
 
-	canEatHV(r, c, myColor) {
-		// vertical and horizontal checking
-		let cur_r = convertRowsToIndex(this.coords[1])
-		let cur_c = convertColsToIndex(this.coords[0])
+	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
+		var test_c = cur_c - (test_r - cur_r);
 
-		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top
-			var test_c = cur_c;
-			if(this.color == myColor) {
-				if((test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
+		if(this.color != myColor) {
+			if(test_c < 0) {break}
+			if( (test_r == r) && (test_c==c)) { return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
-
-		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
-			var test_r = cur_r;
-			if(this.color == myColor) {
-				if((test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
-			var test_c = cur_c;
-			if(this.color == myColor) {
-				if((test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
-			var test_r = cur_r;
-			if(this.color == myColor) {
-				if((test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-		return false;
 	}
 
-	canEatDiagonals(r, c, myColor) {
-		let cur_r = convertRowsToIndex(this.coords[1]);
-		let cur_c = convertColsToIndex(this.coords[0]);
+	for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
+		var test_c = cur_c + (test_r - cur_r);
 
-		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top right
-			var test_c = cur_c + (cur_r-test_r);
-
-			if(this.color == myColor) {
-				if(test_c > 7) { break }
-				if( (test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
+		if(this.color != myColor) {
+			if (test_c > 7) { break }
+			if( (test_r == r) && (test_c==c)) 	{ return true }
+			if (virtualBoard[test_r][test_c] !== '' ) { break }
 		}
-
-		for(var test_r = cur_r - 1; test_r >= 0; test_r--) { // top left
-			var test_c = cur_c - (cur_r-test_r);
-
-			if(this.color == myColor) {
-				if (test_c < 0) { break }
-				if( (test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-
-		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom left
-			var test_c = cur_c - (test_r - cur_r);
-
-			if(this.color == myColor) {
-				if(test_c < 0) {break}
-				if( (test_r == r) && (test_c==c)) { return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-
-		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom right
-			var test_c = cur_c + (test_r - cur_r);
-
-			if(this.color == myColor) {
-				if (test_c > 7) { break }
-				if( (test_r == r) && (test_c==c)) 	{ return true }
-				if (virtualBoard[test_r][test_c] !== '' ) { break }
-			}
-		}
-		return false;
 	}
+	return false;
+}
 }
 
 class Rook extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
-
 		this.pieceName = color + "r";
-
+		var hasRookMoved = 0; // rook has not moved yet in the beginning
 	}
 
 	move() {
@@ -238,6 +308,7 @@ class Rook extends Piece {
 			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
 			this.movePiece();	// moves the piece
+			var hasRookMoved = 1; // rook has now moved
 		}
 	}
 
@@ -251,7 +322,17 @@ class Rook extends Piece {
 		}
 	}
 
-	canEat(r, c) { return this.canEatHV(r, c, this.color) }
+	// castle() {
+	// 	if(hasRookMoved == 0, virtualBoard[][]) {
+	//
+	//
+	//
+	// 	}
+
+
+	// }
+
+	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) }
 }
 
 class Bishop extends Piece {
@@ -283,7 +364,7 @@ class Bishop extends Piece {
 		}
 	}
 
-	canEat(r, c) { return this.canEatDiagonals(r, c, this.color) }
+	canEatKingAt(r, c, myColor) { return this.canEatDiagonals(r, c, myColor) }
 }
 
 class Queen extends Piece {
@@ -319,7 +400,7 @@ class Queen extends Piece {
 		}
 	}
 
-	canEat(r, c) { return this.canEatHV(r,c) || this.canEatDiagonals(r, c) }
+	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) || this.canEatDiagonals(r, c, myColor) }
 }
 
 class King extends Piece {
@@ -330,10 +411,13 @@ class King extends Piece {
 	}
 
 	eat() {
+		// console.log("fjdkljsflks");
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if (rowsMoved <= 1 && colsMoved <= 1) { this.eatPiece() }
+		if (rowsMoved <= 1 && colsMoved <= 1) {
+			this.eatPiece()
+		}
 	}
 
 	potentialThreatChecker(potentialThreat, pieceType) {
@@ -348,7 +432,7 @@ class King extends Piece {
 		}
 	}
 
-	canEat(r, c, myColor) {
+	canEatKingAt(r, c, myColor) {
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
@@ -373,7 +457,23 @@ class King extends Piece {
 		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
-		if (rowsMoved <= 1 && colsMoved <= 1) { this.movePiece() }
+		if (rowsMoved <= 1 && colsMoved <= 1) {
+			this.movePiece()
+		}
+
+		// if king is trying to castle:
+
+	}
+
+	helperFunction(new_x, new_y, old_x, old_y) {
+
+		virtualBoard[new_x][new_y] = virtualBoard[old_x][old_y]; // new virtual space = old virt space
+		virtualBoard[old_x][old_y] = ''; // old virt space is set back to ''
+		var result = this.isKingChecked(new_x, new_y, this.color);
+		virtualBoard[old_x][old_y] = virtualBoard[new_x][new_y]; // cancels the move
+		virtualBoard[new_x][new_y] = '';
+		return result;
+
 	}
 
 	isCheckmated() {
@@ -385,20 +485,26 @@ class King extends Piece {
 			for(var j = -1; j <= 1; j++) {
 				if(king_x + i > 7 || king_x + i < 0 || king_y + j > 7 || king_y + j < 0) {
 					// skip over me please it is oob
+					// console.log(i,j,"oob");
 				}
-				else if(virtualBoard[king_x + i][king_y + j].color == this.color) {
+				else if(i !== 0 && j !== 0 && virtualBoard[king_x + i][king_y + j].color == this.color) {
 					// Im getting body blocked
+					// console.log(i,j,"body blocked");
 				}
-				else if(this.isKingChecked(king_x + i, king_y + j, this.color)) {
+				else if(this.helperFunction(king_x + i, king_y + j, king_x, king_y)) {
 					// my personal space is being violated
+					// console.log(i,j, "attacked");
 				}
 				else {
+					// console.log(i,j, "safe");
 					return false;
+
 					// i am safe false alarm
 				}
 			}
 		}
-		alert("Checkmate you suck lol")
+		alert("Checkmate :))")
+		// change to modal in the future instead of alert
 		return true;
 		// uh oh im screwed
 	}
@@ -425,7 +531,7 @@ class Knight extends Piece {
 		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) { this.eatPiece() }
 	}
 
-	canEat(r, c, myColor) {
+	canEatKingAt(r, c, myColor) {
 		// knight checking
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
@@ -521,24 +627,27 @@ class Pawn extends Piece {
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
 		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) { this.movePiece() }
+
 	}
 
 	eat() {
-		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
-		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
+		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
+		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 1 || this.color == "b" && rowsMoved == 1 && colsMoved == -1) { this.eatPiece() }
+		if(this.color == "w" && rowsMoved == 1 && (colsMoved == 1 || colsMoved == -1)) {
+			this.eatPiece();
+		}
+
+		if(this.color == "b" && rowsMoved == -1 && (colsMoved == 1 || colsMoved == -1)) {
+			this.eatPiece();
+		}
 	}
 
-	canEat(r, c, myColor) {
+
+	canEatKingAt(r, c, myColor) {
 
 		let cur_r = convertRowsToIndex(this.coords[1]); // coords of pawn
 		let cur_c = convertColsToIndex(this.coords[0]); // coords of pawn
-
-		// 1. Check if pawn is black or white
-		// 2. If pawn is same color as player's king, ignore it
-		// 3. If pawn is opposite color as player, use the black or white status of it to determine if it is going down or up
-		// 4. Set up two different cases for if it is moving down or up
 
 		if(myColor !== this.color) {
 			if(this.color == "b" && cur_r + 1 == r) {
