@@ -2,23 +2,11 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-1. Promotion -- done
-2. Castling
-a) create variable to check if king or rook has moved at all
-b) check if there's nothing in between king and Rook
-c) check if king is in check before castling
-d) if both these conditions are true, the king is allowed to move either two to the right or three to the left
-e) move rook to the appropriate position
+			1. Promotion -- done
+			2. Castling
 3. En Passant
-a) pawn moves two spaces forward
-b) on the next turn, an opposite color pawn is next to the pawn that just moved
-c) pawn moves diagonally into the column of the first pawn
-4. Black can't eat bug fix
-5. black queen cannot move
-
-
-
-6. Gather facts for different regions
+			4. Black can't eat bug fix
+			5. black queen cannot move
 
 */
 
@@ -36,7 +24,7 @@ class Piece {
 		// return true if move is allowed, false if move is not allowed
 		var prv_coords = this.coords;
 		this.coords = cellCoord;
-		console.log(cellCoord);
+		// console.log(cellCoord);
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
 		let colPrevious = columns.indexOf(pieceInfo[1][0]); // get the column of previous position
@@ -111,7 +99,7 @@ class Piece {
 		//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
 		var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
 		var q = t.className;
-		console.log(t.className);
+		// console.log(t.className);
 		t.remove();
 
 		var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
@@ -166,25 +154,6 @@ class Piece {
 				if (virtualBoard[i][j]) {return true}
 			}
 		}
-
-		// for(var i = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1);
-		// i < Math.max(convertRowsToIndex(this.coords[1]), convertRowsToIndex(cellCoord[1])); i++ ) {
-		// 	if (convertRowsToIndex(cellCoord[1]) > convertRowsToIndex(this.coords[1])) {
-		// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // bottom right
-		// 			if(virtualBoard[i][convertColsToIndex(this.coords[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-		// 		} else {  // bottom left
-		// 			var min = Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1;
-		// 			var col = convertColsToIndex(this.coords[0]) + i - min;
-		// 			if(virtualBoard[i][col]) { return true }
-		// 		}
-		// 	} else {
-		// 		if (convertColsToIndex(cellCoord[0]) > convertColsToIndex(this.coords[0])) { // top right
-		// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) - i + Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) - 1]) { return true }
-		// 		} else { // top left
-		// 			if(virtualBoard[i][convertColsToIndex(cellCoord[0]) + i - Math.min(convertRowsToIndex(this.coords[1])+1, convertRowsToIndex(cellCoord[1])+1) + 1]) { return true }
-		// 		}
-		// 	}
-		// }
 	}
 
 	move() {
@@ -513,16 +482,9 @@ class King extends Piece {
 					document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
 				}
 			}
-
 		}
-
 	}
 
-	// white king and rook must be on the bottom row
-	// both the king and rook have not moved
-	// King wants to move two units to the right or three units to the left
-	// there are no pieces in between rook and king
-	//
 
 	helperFunction(new_x, new_y, old_x, old_y) {
 
@@ -686,6 +648,20 @@ class Pawn extends Piece {
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
 		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) { this.movePiece() }
+
+		// en passant
+		if (this.color == "w" && this.coords[1] == "5") {
+
+			// console.log(convertRowsToIndex(this.coords[0]) + 2);
+			// console.log(parseInt(this.coords[1]) + 1);
+			// console.log(virtualBoard[convertRowsToIndex(this.coords[0]) + 2][parseInt(this.coords[1]) + 1]);
+
+
+			if(virtualBoard[convertRowsToIndex(this.coords[0]) + 2][parseInt(this.coords[1]) + 1].pieceName == "bp") {
+				console.log("DJKFLSLGJKLKGJDKLSLDSJ");
+			}
+
+		}
 
 	}
 

@@ -112,7 +112,7 @@
 	}
 
 	var virtualBoard;
-	if (0) {
+	if (1) {
 		virtualBoard = [
 			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
 			[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
@@ -122,8 +122,8 @@
 			['','','','','','','',''],
 			[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
 			[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
-		];  // full board
-	}
+		];
+	}  // full board
 
 	if (0) {
 		virtualBoard = [
@@ -136,7 +136,7 @@
 			['','','','','','','',''],
 			['','','','','','','','']
 		];
-	}
+	} // bishop checking
 
 	if (0) {
 		virtualBoard =
@@ -150,7 +150,7 @@
 			['','','','','','','',''],
 			['','','','','','','',new King('w')]
 		];
-	}
+	} // rook checking
 
 	if (0) {
 		virtualBoard =
@@ -166,18 +166,18 @@
 		];
 	}
 
-	if (1) {
+	if (0) {
 		virtualBoard =
 		[
-			[new Rook('b'),'','','',new King('b'),'','',new Rook('b')],
+			['','','','','','','',''],
+			['','','','','','','',new Queen('w')],
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',''],
+			['','','','',new King('w'),'','',''],
 			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			[new Rook('w'),'','','',new King('w'),'','',new Rook('w')]
-		]; // castling test for white
+			['','','','',new King('b'),'','','']
+		];
 	}
 
 
