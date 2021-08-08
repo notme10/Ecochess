@@ -2,11 +2,13 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-			1. Promotion -- done
-			2. Castling
+1. Promotion to Rook, bishop, knight
+2. Castling
+a) king should not be able to castle in or out of check
+b) use if to check if rook or king has moved
 3. En Passant
-			4. Black can't eat bug fix
-			5. black queen cannot move
+a) new variable that checks if the pawn's previous move was two rows
+b) if pawn that moved two rows is to the left or right of your pawn, then you can capture diagonally
 
 */
 
@@ -89,9 +91,9 @@ class Piece {
 		}
 
 
-		// if(thisTurnKing.isCheckmated()) {
-		// 	alert("you lost")
-		// }
+		if(thisTurnKing.isCheckmated()) {
+			alert("You lost :(")
+		}
 		return true;
 	}
 
@@ -268,8 +270,8 @@ class Piece {
 class Rook extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
-		this.pieceName = color + "r";
-		var hasRookMoved = 0; // rook has not moved yet in the beginning
+		this.pieceName = color + "r"
+		this.hasMoved = 0; // rook has not moved yet in the beginning
 	}
 
 	move() {
@@ -278,7 +280,7 @@ class Rook extends Piece {
 			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
 			this.movePiece();	// moves the piece
-			var hasRookMoved = 1; // rook has now moved
+			this.hasMoved = 1;
 		}
 	}
 
@@ -368,6 +370,7 @@ class King extends Piece {
 		super(color, row, column);
 
 		this.pieceName = color + "k";
+		this.hasMoved = false;
 	}
 
 	eat() {
@@ -419,6 +422,7 @@ class King extends Piece {
 
 		if (rowsMoved <= 1 && colsMoved <= 1) {
 			this.movePiece()
+			this.hasMoved = true;
 		}
 
 		// castling for white king
@@ -427,27 +431,31 @@ class King extends Piece {
 			// white king is at bottom row
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
-					this.movePiece();
-					virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
-					virtualBoard[7][7] = ''; // delete old rook
+					if(this.hasMoved == false) {
+						this.movePiece();
+						virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
+						virtualBoard[7][7] = ''; // delete old rook
 
-					document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
-					var p = document.createElement('div'); // makes a new div called p
-					p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-					document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
+						var p = document.createElement('div'); // makes a new div called p
+						p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+						document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+					}
 				}
 			}
 
 			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 				if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
-					this.movePiece();
-					virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
-					virtualBoard[7][0] = ''; // delete old rook
+					if(this.hasMoved == false) {
+						this.movePiece();
+						virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
+						virtualBoard[7][0] = ''; // delete old rook
 
-					document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
-					var p = document.createElement('div'); // makes a new div called p
-					p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-					document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
+						var p = document.createElement('div'); // makes a new div called p
+						p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+						document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+					}
 				}
 			}
 
@@ -459,27 +467,31 @@ class King extends Piece {
 			// black king is at top row
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
-					this.movePiece();
-					virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
-					virtualBoard[0][7] = ''; // delete old rook
+					if(this.hasMoved == false) {
+						this.movePiece();
+						virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
+						virtualBoard[0][7] = ''; // delete old rook
 
-					document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
-					var p = document.createElement('div'); // makes a new div called p
-					p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-					document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
+						var p = document.createElement('div'); // makes a new div called p
+						p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+						document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+					}
 				}
 			}
 
 			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 				if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
-					this.movePiece();
-					virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
-					virtualBoard[0][0] = ''; // delete old rook
+					if(this.hasMoved == false) {
+						this.movePiece();
+						virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
+						virtualBoard[0][0] = ''; // delete old rook
 
-					document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
-					var p = document.createElement('div'); // makes a new div called p
-					p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-					document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
+						var p = document.createElement('div'); // makes a new div called p
+						p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+						document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+					}
 				}
 			}
 		}
@@ -517,14 +529,12 @@ class King extends Piece {
 					// console.log(i,j, "attacked");
 				}
 				else {
-					// console.log(i,j, "safe");
+					console.log(i,j, "safe");
 					return false;
-
 					// i am safe false alarm
 				}
 			}
 		}
-		alert("Checkmate :))")
 		// change to modal in the future instead of alert
 		return true;
 		// uh oh im screwed
@@ -638,6 +648,7 @@ class Pawn extends Piece {
 	constructor(color, row, column) {
 		super(color, row, column);
 
+		this.turnMovedTwo = -1;
 		this.pieceName = color + "p";
 	}
 
@@ -647,21 +658,29 @@ class Pawn extends Piece {
 
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
-		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) { this.movePiece() }
+		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
+			this.movePiece()
+			if(rowsMoved == 2 || rowsMoved == -2) {
+				this.turnMovedTwo = turn;
+			}
+		}
 
 		// en passant
 		if (this.color == "w" && this.coords[1] == "5") {
+			var rightPiece = virtualBoard[convertRowsToIndex(this.coords[0])][parseInt(this.coords[1]) + 1];
+			var leftPiece = virtualBoard[convertRowsToIndex(this.coords[0])][parseInt(this.coords[1]) - 1];
 
-			// console.log(convertRowsToIndex(this.coords[0]) + 2);
-			// console.log(parseInt(this.coords[1]) + 1);
-			// console.log(virtualBoard[convertRowsToIndex(this.coords[0]) + 2][parseInt(this.coords[1]) + 1]);
-
-
-			if(virtualBoard[convertRowsToIndex(this.coords[0]) + 2][parseInt(this.coords[1]) + 1].pieceName == "bp") {
-				console.log("DJKFLSLGJKLKGJDKLSLDSJ");
+			if(rightPiece && rightPiece.pieceName == "bp" && rightPiece.turnMovedTwo == (turn - 1)) {
+				// if this white pawn moves diagonally to the right, eat piece
 			}
-
+			if(leftPiece && leftPiece.pieceName == "bp" && leftPiece.turnMovedTwo == (turn - 1)) {
+				// if this white pawn moves diagonally to the left, eat piece
+			}
 		}
+
+
+		// add en passant for black pawn
+
 
 	}
 
