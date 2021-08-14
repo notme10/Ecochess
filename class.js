@@ -168,8 +168,6 @@ class Piece {
 	}
 
 	isKingChecked(x, y, king_color) {
-		// determines if the king is in check from any piece
-		// x and y are king's row and column
 
 		for(var i = 0; i<8; i++) {
 			for(var j = 0; j<8; j++) {
@@ -529,7 +527,7 @@ class King extends Piece {
 					// console.log(i,j, "attacked");
 				}
 				else {
-					console.log(i,j, "safe");
+					// console.log(i,j, "safe");
 					return false;
 					// i am safe false alarm
 				}
@@ -647,8 +645,7 @@ class Knight extends Piece {
 class Pawn extends Piece {
 	constructor(color, row, column) {
 		super(color, row, column);
-
-		this.turnMovedTwo = -1;
+		this.turnMovedTwo = 0;
 		this.pieceName = color + "p";
 	}
 
@@ -659,7 +656,9 @@ class Pawn extends Piece {
 		// if on 2nd row or 7th row, can move 1 or 2
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
 		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
-			this.movePiece()
+
+			this.movePiece();
+
 			if(rowsMoved == 2 || rowsMoved == -2) {
 				this.turnMovedTwo = turn;
 			}
@@ -667,21 +666,25 @@ class Pawn extends Piece {
 
 		// en passant
 		if (this.color == "w" && this.coords[1] == "5") {
-			var rightPiece = virtualBoard[convertRowsToIndex(this.coords[0])][parseInt(this.coords[1]) + 1];
-			var leftPiece = virtualBoard[convertRowsToIndex(this.coords[0])][parseInt(this.coords[1]) - 1];
 
-			if(rightPiece && rightPiece.pieceName == "bp" && rightPiece.turnMovedTwo == (turn - 1)) {
-				// if this white pawn moves diagonally to the right, eat piece
+			var Y = parseInt(convertRowsToIndex(this.coords[1]));
+			var X = parseInt(convertColsToIndex(this.coords[0]));
+
+			console.log("AAAA");
+
+			if(virtualBoard[Y][X-1].pieceName == "bp" && this.turnMovedTwo == (turn-1)) {
+				console.log("BBBB");
+				this.movePiece();
 			}
-			if(leftPiece && leftPiece.pieceName == "bp" && leftPiece.turnMovedTwo == (turn - 1)) {
-				// if this white pawn moves diagonally to the left, eat piece
+			if(virtualBoard[Y][X+1].pieceName == "bp" && this.turnMovedTwo == (turn-1)) {
+				console.log("BBBB");
+				this.movePiece();
 			}
 		}
 
-
-		// add en passant for black pawn
-
-
+		console.log("The current turn is: turn " + turn);
+		console.log(this.color + " moved two spaces on turn " + this.turnMovedTwo);
+		console.log("");
 	}
 
 	eat() {
