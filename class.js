@@ -4,13 +4,9 @@ IMPORTNANT STUFF TO DO!!!
 
 1. Promotion to Rook, bishop, knight
 2. Castling
-a) king should not be able to castle in or out of check
-b) use if to check if rook or king has moved
 3. En Passant
-a) new variable that checks if the pawn's previous move was two rows
-b) if pawn that moved two rows is to the left or right of your pawn, then you can capture diagonally
 
-
+** NEW BUG!!!
 pawn at f2 goes to f4
 pawn at b7 goes to b5
 pawn at e2 tries to go to e3 but it cant
@@ -671,14 +667,13 @@ class Pawn extends Piece {
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
-
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
 					console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
-					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
+					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
 					document.querySelector(`.${"bp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
 				}
 			}
@@ -695,8 +690,37 @@ class Pawn extends Piece {
 			}
 		}
 
-		console.log("The current turn is: turn " + turn);
-		console.log("");
+		if (this.color == "b" && this.coords[1] == "4") {
+
+			var Y = parseInt(convertRowsToIndex(this.coords[1]));
+			var X = parseInt(convertColsToIndex(this.coords[0]));
+
+			if((X-1) > 0) {
+				if(virtualBoard[Y][X-1].pieceName == "wp") {
+					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
+					this.movePiece();
+					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
+
+					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
+					document.querySelector(`.${"wp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
+				}
+			}
+
+			if((X+1) < 7) {
+				if(virtualBoard[Y][X+1].pieceName == "wp") {
+					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
+					this.movePiece();
+					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
+
+					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
+					document.querySelector(`.${"wp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
+				}
+			}
+		}
+
+
+
+
 	}
 
 	eat() {
