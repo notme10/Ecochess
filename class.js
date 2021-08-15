@@ -10,6 +10,11 @@ b) use if to check if rook or king has moved
 a) new variable that checks if the pawn's previous move was two rows
 b) if pawn that moved two rows is to the left or right of your pawn, then you can capture diagonally
 
+
+pawn at f2 goes to f4
+pawn at b7 goes to b5
+pawn at e2 tries to go to e3 but it cant
+
 */
 
 class Piece {
@@ -71,10 +76,6 @@ class Piece {
 			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
-
-
-
-
 
 		pieceInfo = null;
 		turn++;
@@ -672,18 +673,31 @@ class Pawn extends Piece {
 
 			console.log("AAAA");
 
-			if(virtualBoard[Y][X-1].pieceName == "bp" && this.turnMovedTwo == (turn-1)) {
-				console.log("BBBB");
+			if(virtualBoard[Y][X-1].pieceName == "bp") {
+				console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
 				this.movePiece();
+				virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
+				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 			}
-			if(virtualBoard[Y][X+1].pieceName == "bp" && this.turnMovedTwo == (turn-1)) {
-				console.log("BBBB");
+			if(virtualBoard[Y][X+1].pieceName == "bp") {
+				console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
 				this.movePiece();
+				virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
+
+				console.log(convertIndexToCols(X+1));
+				console.log((Y).toString());
+
+				var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
+
+
+				console.log(capturedPieceInfo);
+
+
+				document.querySelector(`.${"bp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
 			}
 		}
 
 		console.log("The current turn is: turn " + turn);
-		console.log(this.color + " moved two spaces on turn " + this.turnMovedTwo);
 		console.log("");
 	}
 
