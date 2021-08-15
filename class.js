@@ -4,7 +4,6 @@ IMPORTNANT STUFF TO DO!!!
 
 1. Promotion to Rook, bishop, knight
 2. Castling
-3. En Passant
 
 ** NEW BUG!!!
 pawn at f2 goes to f4
@@ -56,21 +55,41 @@ class Piece {
 			}
 		}
 
-		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 		if(pieceInfo[0] == "wp" && pieceInfo[1][1] == "7") {
-			var p = document.createElement('div'); // makes a new div called p
-			p.className = `${"wq"} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+
+			var pawnTurnsInto;
+			var promotionPieceName;
+
+			pawnTurnsInto = window.prompt("What piece do you want to promote to? (enter the one letter form of the piece)");
+			promotionPieceName = ("w" + pawnTurnsInto);
+			console.log("Piece selected was: " + promotionPieceName);
+
+			if(promotionPieceName == "wq" || promotionPieceName == "wr" || promotionPieceName == "wb" || promotionPieceName == "wn") {
+				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
+				var p = document.createElement('div'); // makes a new div called p
+				p.className = `${promotionPieceName} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+				document.getElementById(cellCoord).appendChild(p);
+			} else {
+				alert("Invalid move")
+				return;
+			}
 		}
 		if(pieceInfo[0] == "bp" && pieceInfo[1][1] == "2") {
-			var p = document.createElement('div'); // makes a new div called p
-			p.className = `${"bq"} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
-		}
-		else {
-			var p = document.createElement('div'); // makes a new div called p
-			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+			var pawnTurnsInto;
+			var promotionPieceName;
+
+			pawnTurnsInto = window.prompt("What piece do you want to promote to? (enter the one letter form of the piece)");
+			promotionPieceName = ("b" + pawnTurnsInto);
+			console.log("Piece selected was: " + promotionPieceName);
+
+			if(promotionPieceName == "bq" || promotionPieceName == "br" || promotionPieceName == "bb" || promotionPieceName == "bn") {
+				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
+				var p = document.createElement('div'); // makes a new div called p
+				p.className = `${promotionPieceName} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+				document.getElementById(cellCoord).appendChild(p);
+			} else {
+					return;
+			}
 		}
 
 		pieceInfo = null;
@@ -78,11 +97,8 @@ class Piece {
 		var thisTurnColor;
 		var thisTurnKing;
 		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
-		// console.log(thisTurnColor);
 
 		for(var i = 0; i < 8; i++) {
-			// console.log(virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k"));
-			// console.log(thisTurnColor);
 			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
 			if(thisTurnKing) { break }
 		}
@@ -98,7 +114,6 @@ class Piece {
 		//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
 		var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
 		var q = t.className;
-		// console.log(t.className);
 		t.remove();
 
 		var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
@@ -369,7 +384,6 @@ class King extends Piece {
 	}
 
 	eat() {
-		// console.log("fjdkljsflks");
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
@@ -512,21 +526,13 @@ class King extends Piece {
 		for(var i = -1; i <= 1; i++) {
 			for(var j = -1; j <= 1; j++) {
 				if(king_x + i > 7 || king_x + i < 0 || king_y + j > 7 || king_y + j < 0) {
-					// skip over me please it is oob
-					// console.log(i,j,"oob");
 				}
-				else if(i !== 0 && j !== 0 && virtualBoard[king_x + i][king_y + j].color == this.color) {
-					// Im getting body blocked
-					// console.log(i,j,"body blocked");
+				else if((i !== 0) && (j !== 0) && (virtualBoard[king_x + i][king_y + j].color == this.color)) {
 				}
 				else if(this.helperFunction(king_x + i, king_y + j, king_x, king_y)) {
-					// my personal space is being violated
-					// console.log(i,j, "attacked");
 				}
 				else {
-					// console.log(i,j, "safe");
 					return false;
-					// i am safe false alarm
 				}
 			}
 		}
@@ -654,7 +660,11 @@ class Pawn extends Piece {
 		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
 		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
 
+			// console.log(virtualBoard);
+
 			this.movePiece();
+
+			// console.log(virtualBoard);
 
 			if(rowsMoved == 2 || rowsMoved == -2) {
 				this.turnMovedTwo = turn;
@@ -697,7 +707,6 @@ class Pawn extends Piece {
 
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
-					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -708,7 +717,6 @@ class Pawn extends Piece {
 
 			if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "wp") {
-					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -717,10 +725,6 @@ class Pawn extends Piece {
 				}
 			}
 		}
-
-
-
-
 	}
 
 	eat() {
