@@ -671,29 +671,27 @@ class Pawn extends Piece {
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
-			console.log("AAAA");
 
-			if(virtualBoard[Y][X-1].pieceName == "bp") {
-				console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
-				this.movePiece();
-				virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
-				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
+			if((X-1) > 0) {
+				if(virtualBoard[Y][X-1].pieceName == "bp") {
+					console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
+					this.movePiece();
+					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
+
+					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
+					document.querySelector(`.${"bp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
+				}
 			}
-			if(virtualBoard[Y][X+1].pieceName == "bp") {
-				console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
-				this.movePiece();
-				virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
-				console.log(convertIndexToCols(X+1));
-				console.log((Y).toString());
+			if((X+1) < 7) {
+				if(virtualBoard[Y][X+1].pieceName == "bp") {
+					console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
+					this.movePiece();
+					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
-				var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
-
-
-				console.log(capturedPieceInfo);
-
-
-				document.querySelector(`.${"bp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
+					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
+					document.querySelector(`.${"bp"}.${capturedPieceInfo}`).remove(); // removes piece from old square
+				}
 			}
 		}
 
