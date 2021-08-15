@@ -112,7 +112,10 @@
 	}
 
 	var virtualBoard;
-	if (1) {
+
+	let state = "cancer situation"
+
+	if (state == "main") {
 		virtualBoard = [
 			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
 			[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
@@ -125,7 +128,7 @@
 		];
 	}
 
-	if (0) {
+	if (state == "promotion") {
 		virtualBoard =
 		[
 			[new King('b'),'','','','','','',''],
@@ -137,6 +140,34 @@
 			['','','','','','','',''],
 			['','','','','','','',new King('w')]
 		];
+	}
+
+	if (state == "winning game") {
+		virtualBoard =
+		[
+			["", new Rook('b'), "", new King('b'), "", "", "", ""],
+			[new Pawn('b'), new Pawn('b'), new Pawn('b'), "", "", new Queen('w'), "", ""],
+			["", "", "", "", "", new Pawn('b'), "", ""],
+			[new Queen('b'), "", "", new Bishop('w'), new Knight('w'), "", "", ""],
+			["", "", "", new Pawn('w'), "", new Pawn('b'), "", ""],
+			["", "", new Knight('w'), "", new Pawn('w'), "", "", ""],
+			[new Pawn('w'), "", "", "", "", new Pawn('w'), new Pawn('w'), new Pawn('w')],
+			["", "", new Rook('w'), "", "", new Rook('w'), new King('w'), ""]
+		]
+	}
+
+	if (state == "cancer situation") {
+		virtualBoard =
+		[
+			['','','',new Queen('b'),new King('b'),'','',''],
+			['','','','','','','',new Queen('w')],
+			['','','','','','','',''],
+			['','','','',new Rook('w'),'','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		]
 	}
 
 

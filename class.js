@@ -494,14 +494,13 @@ class King extends Piece {
 
 
 	helperFunction(new_x, new_y, old_x, old_y) {
-
+		var tempPiece = virtualBoard[new_x][new_y]
 		virtualBoard[new_x][new_y] = virtualBoard[old_x][old_y]; // new virtual space = old virt space
 		virtualBoard[old_x][old_y] = ''; // old virt space is set back to ''
 		var result = this.isKingChecked(new_x, new_y, this.color);
 		virtualBoard[old_x][old_y] = virtualBoard[new_x][new_y]; // cancels the move
-		virtualBoard[new_x][new_y] = '';
+		virtualBoard[new_x][new_y] = tempPiece;
 		return result;
-
 	}
 
 	isCheckmated() {
@@ -509,22 +508,26 @@ class King extends Piece {
 		var king_x = convertRowsToIndex(this.coords[1]);
 		var king_y = convertColsToIndex(this.coords[0]);
 
-		for(var i = -1; i <= 1; i++) {
-			for(var j = -1; j <= 1; j++) {
-				if(king_x + i > 7 || king_x + i < 0 || king_y + j > 7 || king_y + j < 0) {
+		if (!this.isKingChecked(king_x, king_y, this.color)) {
+			return false
+		}
+
+		for(var i = king_x - 1; i <= king_x + 1; i++) {
+			for(var j = king_y - 1; j <= king_y + 1; j++) {
+				if(i > 7 || i < 0 || j > 7 || j < 0) {
 					// skip over me please it is oob
-					// console.log(i,j,"oob");
+					console.log(i,j,"oob");
 				}
-				else if(i !== 0 && j !== 0 && virtualBoard[king_x + i][king_y + j].color == this.color) {
+				else if([i, j] !== [king_x, king_y] && virtualBoard[i][j].color == this.color) {
 					// Im getting body blocked
-					// console.log(i,j,"body blocked");
+					console.log(i,j,"body blocked");
 				}
-				else if(this.helperFunction(king_x + i, king_y + j, king_x, king_y)) {
+				else if(this.helperFunction(i, j, king_x, king_y)) {
 					// my personal space is being violated
-					// console.log(i,j, "attacked");
+					console.log(i,j, "attacked");
 				}
 				else {
-					// console.log(i,j, "safe");
+					console.log(i,j, "safe");
 					return false;
 					// i am safe false alarm
 				}
