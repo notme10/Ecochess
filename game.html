@@ -34,7 +34,7 @@
 		<div id='infoBox'>
 
 			<!--
-			text goes here :)
+			text goes here for the info box
 		-->
 
 		</div>
@@ -46,8 +46,6 @@
 	var pieceInfo;
 	var cellCoord;
 	var turn = 0;
-
-	// console.log(document.querySelectorAll(".cell"));
 
 	document.addEventListener('keypress', e => {
 		if (e.key == 'q') {
@@ -106,14 +104,13 @@
 			else { // black
 				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
 			}
-
 			cell.id = columns[col] + rows[row];
 		}
 	}
 
 	var virtualBoard;
 
-	let state = "cancer situation"
+	let state = "promotion"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -132,12 +129,12 @@
 		virtualBoard =
 		[
 			[new King('b'),'','','','','','',''],
-			['','','','','','',new Pawn('w'),''],
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',''],
+			['','',new Pawn('b'),'','','','',''],
 			['','','','','','','',new King('w')]
 		];
 	}
@@ -169,7 +166,6 @@
 			['','','','','','','',new King('w')]
 		]
 	}
-
 
 	for (let i = 0; i < 8; i++) {
 		for (let j = 0; j < 8; j++) {
