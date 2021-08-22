@@ -2,20 +2,13 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-1. Promotion to Rook, bishop, knight
-2. Castling
-
-** NEW BUG!!!
-pawn at f2 goes to f4
-pawn at b7 goes to b5
-pawn at e2 tries to go to e3 but it cant
-
 */
 
 class Piece {
-	constructor(color) {
+	constructor(color, coords) {
 		this.color = color;
-		this.coords;
+		this.coords = coords;
+		this.hasMoved = 0;
 	}
 
 	setCoord(coord) {
@@ -55,41 +48,52 @@ class Piece {
 			}
 		}
 
-		if(pieceInfo[0] == "wp" && pieceInfo[1][1] == "7") {
+		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 
-			var pawnTurnsInto;
-			var promotionPieceName;
+		 // PROMOTION
 
-			pawnTurnsInto = window.prompt("What piece do you want to promote to? (enter the one letter form of the piece)");
-			promotionPieceName = ("w" + pawnTurnsInto);
-			console.log("Piece selected was: " + promotionPieceName);
+		 var promotedPieceRow = (this.color == "w") ? "7" : "2";
+		 // if piece is black, promotedPieceRow is 2
+		 // if piece is white, promotedPieceRow is 7
 
-			if(promotionPieceName == "wq" || promotionPieceName == "wr" || promotionPieceName == "wb" || promotionPieceName == "wn") {
-				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
-				var p = document.createElement('div'); // makes a new div called p
-				p.className = `${promotionPieceName} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-				document.getElementById(cellCoord).appendChild(p);
-			} else {
-				alert("Invalid move")
-				return;
+		if(pieceInfo[0] == this.color + "p" && pieceInfo[1][1] == promotedPieceRow) { // if pawn is at the 7th or 2nd row
+
+			var promotionDone = false;
+
+			// ask user until user provides valid piece name
+			while(promotionDone == false) {
+				var promotionPiece = window.prompt("What piece do you want?")
+
+				switch(promotionPiece) {
+					case "q": // promote to queen
+						virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
+						promotionDone = true;
+						break;
+					case "b": // promote to bishop
+						virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
+						promotionDone = true;
+						break;
+					case "r": // promote to rook
+						virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
+						promotionDone = true;
+						break;
+					case "n": // promote to knight
+						virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
+						promotionDone = true;
+						break;
+				}
 			}
+
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = `${this.color + promotionPiece} ${cellCoord}`; // creates promoted piece
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+			console.log(virtualBoard[rowNow][colNow]);
 		}
-		if(pieceInfo[0] == "bp" && pieceInfo[1][1] == "2") {
-			var pawnTurnsInto;
-			var promotionPieceName;
 
-			pawnTurnsInto = window.prompt("What piece do you want to promote to? (enter the one letter form of the piece)");
-			promotionPieceName = ("b" + pawnTurnsInto);
-			console.log("Piece selected was: " + promotionPieceName);
-
-			if(promotionPieceName == "bq" || promotionPieceName == "br" || promotionPieceName == "bb" || promotionPieceName == "bn") {
-				document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
-				var p = document.createElement('div'); // makes a new div called p
-				p.className = `${promotionPieceName} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-				document.getElementById(cellCoord).appendChild(p);
-			} else {
-					return;
-			}
+		else { 		// normal move
+			var p = document.createElement('div'); // makes a new div called p
+			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
 
 		pieceInfo = null;
@@ -281,7 +285,6 @@ class Rook extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
 		this.pieceName = color + "r"
-		this.hasMoved = 0; // rook has not moved yet in the beginning
 	}
 
 	move() {
@@ -308,9 +311,8 @@ class Rook extends Piece {
 }
 
 class Bishop extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
-
+	constructor(color, coords) {
+		super(color, coords);
 		this.pieceName = color + "b";
 	}
 
@@ -340,9 +342,8 @@ class Bishop extends Piece {
 }
 
 class Queen extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
-
+	constructor(color, coords) {
+		super(color, coords);
 		this.pieceName = color + "q";
 	}
 
@@ -376,11 +377,9 @@ class Queen extends Piece {
 }
 
 class King extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
-
+	constructor(color, coords) {
+		super(color, coords);
 		this.pieceName = color + "k";
-		this.hasMoved = false;
 	}
 
 	eat() {
@@ -553,9 +552,8 @@ class King extends Piece {
 }
 
 class Knight extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
-
+	constructor(color, coords) {
+		super(color, coords);
 		this.pieceName = color + "n";
 	}
 
@@ -656,8 +654,8 @@ class Knight extends Piece {
 }
 
 class Pawn extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 		this.turnMovedTwo = 0;
 		this.pieceName = color + "p";
 	}
