@@ -2,6 +2,8 @@
 
 IMPORTNANT STUFF TO DO!!!
 
+- Pawns can move 2 spaces backwards to promote
+
 */
 
 class Piece {
