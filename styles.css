@@ -54,7 +54,14 @@ body {
 }
 
 #infoBox {
-	grid-area: i;
+    grid-area: i;
+    padding-left: 1vw;
+    background-color: purple;
+    border-radius: 25px;
+    color: white;
+    font-family: 'Maven Pro', sans-serif;
+    font-size: 18px;
+		margin-left: 20px;
 }
 
 .white {
