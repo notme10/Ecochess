@@ -33,14 +33,13 @@
 		</div>
 		<div id='infoBox'>
 
-			<!--
-			text goes here :)
-		-->
+
 
 		</div>
 	</div>
 
 	<script src="class.js"></script>
+	<script src="facts.js"></script>
 	<script>
 
 	var pieceInfo;
@@ -112,13 +111,19 @@
 				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
 			}
 
+			// console.log(`${localStorage.getItem("chosenRegion")}`);
+
+			var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+
+			document.body.style.backgroundImage = "url(" + bgFileName + ")";
+
 			cell.id = columns[col] + rows[row];
 		}
 	}
 
 	var virtualBoard;
 
-	let state = "cancer situation"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [
