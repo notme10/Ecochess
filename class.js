@@ -89,7 +89,7 @@ class Piece {
 			var p = document.createElement('div'); // makes a new div called p
 			p.className = `${this.color + promotionPiece} ${cellCoord}`; // creates promoted piece
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
-			console.log(virtualBoard[rowNow][colNow]);
+			// console.log(virtualBoard[rowNow][colNow]);
 		}
 
 		else { 		// normal move
@@ -203,7 +203,7 @@ class Piece {
 	canEatHV(r, c, myColor) {
 		// vertical and horizontal checking
 
-		console.log(this);
+		// console.log(this);
 
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
@@ -538,26 +538,18 @@ class King extends Piece {
 		for(var i = king_x - 1; i <= king_x + 1; i++) {
 			for(var j = king_y - 1; j <= king_y + 1; j++) {
 				if(i > 7 || i < 0 || j > 7 || j < 0) {
-					// skip over me please it is oob
-					console.log(i,j,"oob");
 				}
 				else if([i, j] !== [king_x, king_y] && virtualBoard[i][j].color == this.color) {
-					// Im getting body blocked
-					console.log(i,j,"body blocked");
 				}
 				else if(this.helperFunction(i, j, king_x, king_y)) {
-					// my personal space is being violated
-					console.log(i,j, "attacked");
 				}
 				else {
-					console.log(i,j, "safe");
 					return false;
 				}
 			}
 		}
 		// change to modal in the future instead of alert
 		return true;
-		// uh oh im screwed
 	}
 }
 
