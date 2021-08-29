@@ -54,11 +54,15 @@ class Piece {
 
 		 // PROMOTION
 
-		 var promotedPieceRow = (this.color == "w") ? "7" : "2";
+		 var prevRow = (this.color == "w") ? "7" : "2";
 		 // if piece is black, promotedPieceRow is 2
 		 // if piece is white, promotedPieceRow is 7
 
-		if(pieceInfo[0] == this.color + "p" && pieceInfo[1][1] == promotedPieceRow) { // if pawn is at the 7th or 2nd row
+		 var curRow = (this.color == "w") ? 0 : 7;
+
+
+
+		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 
 			var promotionDone = false;
 
@@ -668,8 +672,10 @@ class Pawn extends Piece {
 		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
 		// if on 2nd row or 7th row, can move 1 or 2
-		if (this.color == "w" && rowsMoved == 1 && colsMoved == 0 || this.color == "b" && rowsMoved == -1 && colsMoved == 0 ||
-		this.coords[1] == "2" && rowsMoved == 2 && colsMoved == 0 || this.coords[1] == "7" && rowsMoved == -2 && colsMoved == 0 ) {
+		if ((this.color == "w") && (rowsMoved == 1) && (colsMoved == 0) ||
+				(this.color == "b") && (rowsMoved == -1) && (colsMoved == 0) ||
+				(this.color == "w") && (this.coords[1] == "2") && (rowsMoved == 2) && (colsMoved == 0) ||
+				(this.color == "b") && (this.coords[1] == "7") && (rowsMoved == -2) && (colsMoved == 0)) {
 
 			// console.log(virtualBoard);
 
@@ -690,7 +696,7 @@ class Pawn extends Piece {
 
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
-					console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
+					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -701,7 +707,7 @@ class Pawn extends Piece {
 
 			if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "bp") {
-					console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
+					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X+1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
