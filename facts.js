@@ -68,5 +68,6 @@ var infoBox = document.getElementById("infoBox");
 infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
 
 var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
+environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
 
-setInterval(function() {infoBox.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 1000);
+setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);

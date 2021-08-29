@@ -2,7 +2,19 @@
 
 IMPORTNANT STUFF TO DO!!!
 
-- Pawns can move 2 spaces backwards to promote
+- en passant bug: black pawn can eat white pawn with en passant even though white pawn moved
+  next to black pawn more than one turn before :(
+
+- move bug: "wp moved to e4 on turn 1", "bp moved to f5 on turn 2", "wb moved to b5 on turn 3", "bp moved to f4 on turn 4"
+
+- move list: list of what moves were made in the game
+	- same "special cases" for promotion and eating like with castling
+	- castling for black side move list
+	- add original position coordinate to move list using prv_coords
+
+- cancer situation 1: checkmate even when attacking piece can be eaten
+
+- cancer situation 2: checkmate even when attack can be blocked
 
 */
 
@@ -104,6 +116,18 @@ class Piece {
 
 		pieceInfo = null;
 		turn++;
+
+		// log each turn in the console - (piece name) piece moved to (coord) on turn (turn number)
+
+		if(moveList.length < turn) {
+			moveList.push(this.pieceName + " moved to " + this.coords + " on turn " + (turn))
+		}
+
+		var newMove = document.createElement("div");
+		newMove.classList += "move";
+		newMove.innerText = moveList[moveList.length-1];
+		document.querySelector("#movesBox").appendChild(newMove);
+
 		var thisTurnColor;
 		var thisTurnKing;
 		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
@@ -454,6 +478,8 @@ class King extends Piece {
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 					if(this.hasMoved == false) {
+						moveList.push("wk castled king side on turn " + (turn+1));
+						console.log(moveList);
 						this.movePiece();
 						virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
 						virtualBoard[7][7] = ''; // delete old rook
@@ -469,6 +495,8 @@ class King extends Piece {
 			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 				if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
 					if(this.hasMoved == false) {
+						moveList.push("wk castled queen side on turn " + (turn+1));
+						console.log(moveList);
 						this.movePiece();
 						virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
 						virtualBoard[7][0] = ''; // delete old rook

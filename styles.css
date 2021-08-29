@@ -51,15 +51,23 @@ body {
 }
 
 #infoBox {
+		display: grid;
+		grid-template-rows: 50% 50%;
+
+		height: 80vmin;
+		width: 30vmin;
     grid-area: i;
 		padding-top: 3vh;
     border-radius: 25px;
-		width: 300px;
     color: white;
 		text-align: center;
     font-family: 'Maven Pro', sans-serif;
     font-size: 30px;
 		margin-left: 50px;
+}
+
+#movesBox {
+	overflow: auto;
 }
 
 .white {
@@ -75,7 +83,7 @@ body {
 }
 
 .blackForest {
- background-color: #016318;
+ background-color: #058700;
 }
 
 .whiteReef {
@@ -91,7 +99,7 @@ body {
 }
 
 .blackOcean {
- background-color: #0026ff;
+ background-color: #03a9fc;
 }
 
 .whiteTundra {
@@ -99,7 +107,7 @@ body {
 }
 
 .blackTundra {
- background-color: #d5e8e3;
+ background-color: #a8aeb3;
 }
 
 .whiteDesert {
@@ -126,8 +134,10 @@ body {
 	height: 100%;
 	width: 100%;
 	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png');
+	background-repeat: no-repeat;
 	/* background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png'); */
 	background-size: 100%;
+	background-position: bottom;
 }
 
 .wr {

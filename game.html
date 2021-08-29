@@ -32,9 +32,8 @@
 
 		</div>
 		<div id='infoBox'>
-
-
-
+			<div id='environmentFacts'> </div>
+			<div id='movesBox'> </div>
 		</div>
 	</div>
 
@@ -45,6 +44,8 @@
 	var pieceInfo;
 	var cellCoord;
 	var turn = 0;
+
+	var moveList = [];
 
 	// console.log(document.querySelectorAll(".cell"));
 
@@ -123,7 +124,7 @@
 
 	var virtualBoard;
 
-	let state = "promotion"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [
