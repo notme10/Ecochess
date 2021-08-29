@@ -7,9 +7,10 @@ IMPORTNANT STUFF TO DO!!!
 */
 
 class Piece {
-	constructor(color) {
+	constructor(color, coords) {
 		this.color = color;
-		this.coords;
+		this.coords = coords;
+		this.hasMoved = 0;
 	}
 
 	setCoord(coord) {
@@ -201,6 +202,9 @@ class Piece {
 
 	canEatHV(r, c, myColor) {
 		// vertical and horizontal checking
+
+		console.log(this);
+
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
@@ -283,7 +287,7 @@ class Piece {
 }
 
 class Rook extends Piece {
-	constructor(color, coords) {
+		constructor(color, coords) {
 		super(color, coords);
 		this.pieceName = color + "r"
 		this.hasMoved = 0; // rook has not moved yet in the beginning
@@ -313,8 +317,8 @@ class Rook extends Piece {
 }
 
 class Bishop extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 
 		this.pieceName = color + "b";
 	}
@@ -345,8 +349,8 @@ class Bishop extends Piece {
 }
 
 class Queen extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 
 		this.pieceName = color + "q";
 	}
@@ -381,8 +385,8 @@ class Queen extends Piece {
 }
 
 class King extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 
 		this.pieceName = color + "k";
 		this.hasMoved = false;
@@ -558,8 +562,8 @@ class King extends Piece {
 }
 
 class Knight extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 
 		this.pieceName = color + "n";
 	}
@@ -661,8 +665,8 @@ class Knight extends Piece {
 }
 
 class Pawn extends Piece {
-	constructor(color, row, column) {
-		super(color, row, column);
+	constructor(color, coords) {
+		super(color, coords);
 		this.turnMovedTwo = 0;
 		this.pieceName = color + "p";
 	}
