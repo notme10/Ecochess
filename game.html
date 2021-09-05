@@ -74,11 +74,6 @@
 						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
-						// console.log(rowPrevious);
-						// console.log(colPrevious);
-
-						// console.log(virtualBoard[rowPrevious][colPrevious]);
-
 						virtualBoard[rowPrevious][colPrevious].move() // we move the rook
 					}
 				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
@@ -112,8 +107,6 @@
 				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
 			}
 
-			// console.log(`${localStorage.getItem("chosenRegion")}`);
-
 			var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
 
 			document.body.style.backgroundImage = "url(" + bgFileName + ")";
@@ -125,7 +118,6 @@
 	var virtualBoard;
 
 	let state = "main"
-
 	if (state == "main") {
 		virtualBoard = [
 			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
@@ -139,7 +131,7 @@
 		];
 	}
 
-	if (state == "promotion") {
+	if (state == "promotion white") {
 		virtualBoard =
 		[
 			[new King('b'),'','','','','','',''],
@@ -149,6 +141,20 @@
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		];
+	}
+
+	if (state == "promotion black") {
+		virtualBoard =
+		[
+			[new King('b'),'','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','',new Pawn('b'),'','','','',''],
 			['','','','','','','',new King('w')]
 		];
 	}

@@ -56,6 +56,10 @@ body {
 
 		height: 80vmin;
 		width: 30vmin;
+		padding-left: 30px;
+		padding-right: 30px;
+		padding-top: 30px;
+		padding-bottom: 30px;
     grid-area: i;
 		padding-top: 3vh;
     border-radius: 25px;

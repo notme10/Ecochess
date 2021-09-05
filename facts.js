@@ -1,6 +1,25 @@
 // info box
 
 var factsList = {
+
+  Standard: [
+    "The years 2016 and 2020 hold the tied record for the hottest recorded temperatures on earth.",
+    "The oceans have absorbed much of the heat, showing an increase of more than 0.6 degrees Fahrenheit.",
+    "Greenland and Antarctica lose a total of 427 billion tons of ice per year.",
+    "Glaciers are receding across the world, including in the Alps, Himalayas, Andes, Rockies, Alaska, and Africa.",
+    "The global water level rose about eight inches in the last century. Countries like the Maldives and Tuvalu are vulnerable to sea level rise.",
+    "The USA has been recording increasing numbers of intense rainfall events. ",
+    "The acidity of the ocean has increased by about 30 percent.",
+    "Pollution is one of the global killers, comparable with diseases like malaria and HIV.",
+    "Ocean based sources such as cargo ships and cruise liners dump 14 billion pounds of garbage into the ocean.",
+    "Over one million seabirds and 100,000 sea mammals are killed by pollution each year. ",
+    "People living in areas with high levels of air pollutants have a 20 percent higher chance of death from lung cancer than those living in less polluted areas. ",
+    "The Mississippi River carries about 1.5 million metric tons of nitrogen pollution into the Gulf of Mexico, creating a “dead zone” in the Gulf each summer about the size of New Jersey.",
+    "About 40 percent of lakes in America are too polluted for fishing, aquatic life, or swimming.",
+    "Each year, 1.2 trillion gallons of untreated sewage, stormwater, and industrial waste are dumped into US water.",
+    "Recycling and composting prevented 85 million tons of material away from being disposed of in 2010."
+  ],
+
   Tundra: [
     "Arctic tundra is one of the most fragile biomes as it is constantly shrinking as the permafrost melts.",
     "Arctic tundra is permafrost, meaning that the ground is permanently frozen.",
@@ -26,6 +45,8 @@ var factsList = {
     "Algae grows inside of Coral Reefs, giving them oxygen.",
     "The most common colors of coral are bright blue, green and red.",
     "A lot of fish eat Coral Reefs.",
+    "As a result of pollution, the quality of the water drops. This leaves coral to die since they need clean and clear water in order to survive.",
+    "Since coral is not a fast growing plant, it is not feasible for coral reefs to regrow after destruction. As the coral dies, the animals that rely on coral for food also die.",
   ],
   Desert: [
     "The desert biome covers a fifth of the Earth’s land.",

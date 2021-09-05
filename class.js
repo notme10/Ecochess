@@ -1,5 +1,4 @@
 /*
-
 IMPORTNANT STUFF TO DO!!!
 
 - en passant bug: black pawn can eat white pawn with en passant even though white pawn moved
@@ -7,15 +6,9 @@ IMPORTNANT STUFF TO DO!!!
 
 - move bug: "wp moved to e4 on turn 1", "bp moved to f5 on turn 2", "wb moved to b5 on turn 3", "bp moved to f4 on turn 4"
 
-- move list: list of what moves were made in the game
-	- same "special cases" for promotion and eating like with castling
-	- castling for black side move list
-	- add original position coordinate to move list using prv_coords
-
 - checkmate situation 1: checkmate even when attacking piece can be eaten
 
 - checkmate situation 2: checkmate even when attack can be blocked
-
 */
 
 class Piece {
@@ -33,7 +26,6 @@ class Piece {
 		// return true if move is allowed, false if move is not allowed
 		var prv_coords = this.coords;
 		this.coords = cellCoord;
-		// console.log(cellCoord);
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
 		let colPrevious = columns.indexOf(pieceInfo[1][0]); // get the column of previous position
@@ -54,6 +46,7 @@ class Piece {
 						if(virtualBoard[i][j].isKingChecked(i, j, this.color)) {
 							virtualBoard[rowPrevious][colPrevious] = virtualBoard[rowNow][colNow]; // cancels the move
 							virtualBoard[rowNow][colNow] = '';
+
 							this.coords = prv_coords;
 							return false;
 						}
@@ -61,66 +54,63 @@ class Piece {
 				}
 			}
 		}
-
 		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 
 		 // PROMOTION
-
 		 var prevRow = (this.color == "w") ? "7" : "2";
-		 // if piece is black, promotedPieceRow is 2
-		 // if piece is white, promotedPieceRow is 7
-
 		 var curRow = (this.color == "w") ? 0 : 7;
 
-
-
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
-
 			var promotionDone = false;
 
-			// ask user until user provides valid piece name
 			while(promotionDone == false) {
+				// ask user until user provides valid piece name
 				var promotionPiece = window.prompt("What piece do you want?")
 
 				switch(promotionPiece) {
 					case "q": // promote to queen
 						virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
 						promotionDone = true;
+						moveList.push(this.color+ "p promoted to queen on turn " + (turn+1));
 						break;
 					case "b": // promote to bishop
 						virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
 						promotionDone = true;
+						moveList.push(this.color+ "p promoted to bishop on turn " + (turn+1));
 						break;
 					case "r": // promote to rook
 						virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
 						promotionDone = true;
+						moveList.push(this.color+ "p promoted to rook on turn " + (turn+1));
 						break;
 					case "n": // promote to knight
 						virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
 						promotionDone = true;
+						moveList.push(this.color+ "p promoted to knight on turn " + (turn+1));
 						break;
 				}
 			}
 
 			var p = document.createElement('div'); // makes a new div called p
+
 			p.className = `${this.color + promotionPiece} ${cellCoord}`; // creates promoted piece
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
-			// console.log(virtualBoard[rowNow][colNow]);
 		}
 
-		else { 		// normal move
+		else { // normal move
 			var p = document.createElement('div'); // makes a new div called p
+
 			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
 
 		pieceInfo = null;
+		// increase turn counter
 		turn++;
 
-		// log each turn in the console - (piece name) piece moved to (coord) on turn (turn number)
-
 		if(moveList.length < turn) {
-			moveList.push(this.pieceName + " moved to " + this.coords + " on turn " + (turn))
+			console.log(prv_coords);
+			moveList.push(this.pieceName + " moved from " + prv_coords + " to " + this.coords + " on turn " + (turn))
 		}
 
 		var newMove = document.createElement("div");
@@ -130,22 +120,23 @@ class Piece {
 
 		var thisTurnColor;
 		var thisTurnKing;
-		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w"
+		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w";
 
 		for(var i = 0; i < 8; i++) {
 			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
-			if(thisTurnKing) { break }
+			if(thisTurnKing) {
+				break;
+			}
 		}
 
-
 		if(thisTurnKing.isCheckmated()) {
-			alert("You lost :(")
+			alert("Checkmate");
 		}
 		return true;
 	}
 
+	// CAPTURING
 	eatPiece() {
-		//document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`).remove();
 		var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
 		var q = t.className;
 		t.remove();
@@ -160,7 +151,6 @@ class Piece {
 			p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
-
 	}
 
 	blockedHorizontal() {
@@ -184,22 +174,25 @@ class Piece {
 		var end_col = convertColsToIndex(cellCoord[0]);
 		if( (start_row < end_row) && (start_col < end_col) ) {
 			for( var i=start_row+1, j=start_col+1; i<end_row; i++, j++ ) {
-				if (virtualBoard[i][j]) {return true}
+				if (virtualBoard[i][j]) { return true }
 			}
 		}
-		if( (start_row < end_row) && (start_col > end_col) ) {
+
+		if((start_row < end_row) && (start_col > end_col)) {
 			for( var i=start_row+1, j=start_col-1; i<end_row; i++, j-- ) {
-				if (virtualBoard[i][j]) {return true}
+				if (virtualBoard[i][j]) { return true }
 			}
 		}
-		if( (start_row > end_row) && (start_col < end_col) ) {
+
+		if((start_row > end_row) && (start_col < end_col)) {
 			for( var i=start_row-1, j=start_col+1; i>end_row; i--, j++ ) {
-				if (virtualBoard[i][j]) {return true}
+				if (virtualBoard[i][j]) { return true }
 			}
 		}
-		if( (start_row > end_row) && (start_col > end_col) ) {
+
+		if((start_row > end_row) && (start_col > end_col)) {
 			for( var i=start_row-1, j=start_col-1; i>end_row; i--, j-- ) {
-				if (virtualBoard[i][j]) {return true}
+				if (virtualBoard[i][j]) { return true }
 			}
 		}
 	}
@@ -213,8 +206,8 @@ class Piece {
 		this.movePiece();
 	}
 
+	// CHECK
 	isKingChecked(x, y, king_color) {
-
 		for(var i = 0; i<8; i++) {
 			for(var j = 0; j<8; j++) {
 
@@ -230,9 +223,6 @@ class Piece {
 
 	canEatHV(r, c, myColor) {
 		// vertical and horizontal checking
-
-		// console.log(this);
-
 		let cur_r = convertRowsToIndex(this.coords[1])
 		let cur_c = convertColsToIndex(this.coords[0])
 
@@ -243,6 +233,7 @@ class Piece {
 				if (virtualBoard[test_r][test_c] !== '' ) { break }
 			}
 		}
+
 		for(var test_c = cur_c - 1; test_c >= 0; test_c--) { // left
 			var test_r = cur_r;
 			if(this.color != myColor) {
@@ -250,6 +241,7 @@ class Piece {
 				if (virtualBoard[test_r][test_c] !== '' ) { break }
 			}
 		}
+
 		for(var test_r = cur_r + 1; test_r < 8; test_r++) { // bottom
 			var test_c = cur_c;
 			if(this.color != myColor) {
@@ -257,6 +249,7 @@ class Piece {
 				if (virtualBoard[test_r][test_c] !== '' ) { break }
 			}
 		}
+
 		for(var test_c = cur_c + 1; test_c < 8; test_c++) { // right
 			var test_r = cur_r;
 			if(this.color != myColor) {
@@ -267,6 +260,7 @@ class Piece {
 		return false;
 	}
 
+	// diagonal checking
 	canEatDiagonals(r, c, myColor) {
 		let cur_r = convertRowsToIndex(this.coords[1]);
 		let cur_c = convertColsToIndex(this.coords[0]);
@@ -318,7 +312,7 @@ class Rook extends Piece {
 		constructor(color, coords) {
 		super(color, coords);
 		this.pieceName = color + "r"
-		this.hasMoved = 0; // rook has not moved yet in the beginning
+		this.hasMoved = 0;
 	}
 
 	move() {
@@ -326,7 +320,7 @@ class Rook extends Piece {
 			if(this.blockedHorizontal()) { return }  // if blocked horizontally, do nothing
 			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
-			this.movePiece();	// moves the piece
+			this.movePiece();
 			this.hasMoved = 1;
 		}
 	}
@@ -337,10 +331,8 @@ class Rook extends Piece {
 			if(this.blockedVertical()) { return }  // if blocked vertically, do nothing
 
 			this.eatPiece();
-
 		}
 	}
-
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) }
 }
 
@@ -357,7 +349,6 @@ class Bishop extends Piece {
 
 		if (rowsMoved == colsMoved) {
 			if(this.blockedDiagonal()) { return }
-
 			this.movePiece();
 		}
 	}
@@ -368,7 +359,6 @@ class Bishop extends Piece {
 
 		if (rowsMoved == colsMoved) {
 			if(this.blockedDiagonal()) { return }
-
 			this.eatPiece();
 		}
 	}
@@ -405,10 +395,10 @@ class Queen extends Piece {
 			if(rowsMoved == colsMoved && this.blockedDiagonal()) { return }
 			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
+
 			this.eatPiece();
 		}
 	}
-
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) || this.canEatDiagonals(r, c, myColor) }
 }
 
@@ -472,14 +462,11 @@ class King extends Piece {
 		}
 
 		// castling for white king
-
 		if(cur_y == 7 && this.color == 'w') {
-			// white king is at bottom row
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 					if(this.hasMoved == false) {
 						moveList.push("wk castled king side on turn " + (turn+1));
-						console.log(moveList);
 						this.movePiece();
 						virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
 						virtualBoard[7][7] = ''; // delete old rook
@@ -512,12 +499,11 @@ class King extends Piece {
 		}
 
 		// castling for the black king
-
 		if(cur_y == 0 && this.color == 'b') {
-			// black king is at top row
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
 					if(this.hasMoved == false) {
+						moveList.push("bk castled king side on turn " + (turn+1));
 						this.movePiece();
 						virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
 						virtualBoard[0][7] = ''; // delete old rook
@@ -533,6 +519,7 @@ class King extends Piece {
 			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 				if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
 					if(this.hasMoved == false) {
+						moveList.push("bk castled queen side on turn " + (turn+1));
 						this.movePiece();
 						virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
 						virtualBoard[0][0] = ''; // delete old rook
@@ -546,7 +533,6 @@ class King extends Piece {
 			}
 		}
 	}
-
 
 	helperFunction(new_x, new_y, old_x, old_y) {
 		var tempPiece = virtualBoard[new_x][new_y]
@@ -580,7 +566,6 @@ class King extends Piece {
 				}
 			}
 		}
-		// change to modal in the future instead of alert
 		return true;
 	}
 }
@@ -705,18 +690,14 @@ class Pawn extends Piece {
 				(this.color == "w") && (this.coords[1] == "2") && (rowsMoved == 2) && (colsMoved == 0) ||
 				(this.color == "b") && (this.coords[1] == "7") && (rowsMoved == -2) && (colsMoved == 0)) {
 
-			// console.log(virtualBoard);
-
 			this.movePiece();
-
-			// console.log(virtualBoard);
 
 			if(rowsMoved == 2 || rowsMoved == -2) {
 				this.turnMovedTwo = turn;
 			}
 		}
 
-		// en passant
+		// EN PASSANT
 		if (this.color == "w" && this.coords[1] == "5") {
 
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
@@ -724,7 +705,6 @@ class Pawn extends Piece {
 
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
-					// console.log(this.color + " moved two spaces on turn " + virtualBoard[Y][X-1].turnMovedTwo);
 					this.movePiece();
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -788,8 +768,8 @@ class Pawn extends Piece {
 
 	canEatKingAt(r, c, myColor) {
 
-		let cur_r = convertRowsToIndex(this.coords[1]); // coords of pawn
-		let cur_c = convertColsToIndex(this.coords[0]); // coords of pawn
+		let cur_r = convertRowsToIndex(this.coords[1]);
+		let cur_c = convertColsToIndex(this.coords[0]);
 
 		if(myColor !== this.color) {
 			if(this.color == "b" && cur_r + 1 == r) {
