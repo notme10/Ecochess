@@ -12,9 +12,9 @@ IMPORTNANT STUFF TO DO!!!
 	- castling for black side move list
 	- add original position coordinate to move list using prv_coords
 
-- cancer situation 1: checkmate even when attacking piece can be eaten
+- checkmate situation 1: checkmate even when attacking piece can be eaten
 
-- cancer situation 2: checkmate even when attack can be blocked
+- checkmate situation 2: checkmate even when attack can be blocked
 
 */
 

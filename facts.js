@@ -19,28 +19,25 @@ var factsList = {
     "The tundra is incredibly dry, receiving 10 inches of rain per year (similar to a desert).",
   ],
   Reef: [
-    "Coral needs sunlight to grow",
-    "The algae on coral reefs are an animal.",
-    "Coral Reefs can treat cancer",
-    "Coral Reefs clean the water",
+    "Coral needs sunlight to grow, just like plants on land.",
+    "Coral Reefs can treat human diseases like arthritis, cancer, and Alzheimer's.",
+    "Coral Reefs clean the water by eating the dirty particles. ",
     "The three main types of coral reefs are fringing, barrier, and atoll.",
-    "Algae grows inside of Coral Reefs giving them Oxygen",
+    "Algae grows inside of Coral Reefs, giving them oxygen.",
     "The most common colors of coral are bright blue, green and red.",
     "A lot of fish eat Coral Reefs.",
   ],
   Desert: [
     "The desert biome covers a fifth of the Earth’s land.",
-    "The four main types of deserts: hot and dry deserts (arid deserts), semi-arid deserts, coastal deserts, and cold deserts. ",
+    "The four main types of deserts: arid deserts, semi-arid deserts, coastal deserts, and cold deserts. ",
     "The desert receives less then 10 inches of rain each year.",
     "The Sahara Desert is an arid desert.",
-    "The desert can become extremely cold at night despite its hot temperature during the day.",
+    "The desert can become extremely cold at night despite its hot temperature during the day due to their general locations around the equator.",
     "Many animals that live in the desert are nocturnal",
     "Global warming increases the incidents of droughts, which dries up the watering holes.",
     "Higher temperatures can result in wildfires that change the landscapes of the deserts",
   ],
-  Ocean: [
-    "Ocean Facts"
-  ],
+
   Forest: [
     "Forests cover 30 percent of the world's land surface area.",
     "Forests are home for over 80% of the world's animals and plants.",
@@ -58,6 +55,12 @@ var factsList = {
     "The world already lost half of its rainforest area coverage.",
     "Increased consumption of beef contributes to the rise of deforestation."
   ],
+
+
+  Ocean: [
+    "Ocean Facts"
+  ],
+
   Sky: [
     "Sky Facts"
   ]
