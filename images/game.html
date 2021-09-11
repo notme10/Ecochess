@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
-<head> <link rel="stylesheet" href="styles.css"> </head>
+<!-- saved from url=(0056)file:///Users/dohyun/Documents/GitHub/Ecochess/game.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"> <link rel="stylesheet" href="./game_files/styles.css"> </head>
 
-<body>
-	<div id='layout'>
-		<div id='board'></div>
-		<div id='sidebar'>
+<body style="background-image: url(&quot;images/Forest.png&quot;);">
+	<div id="layout">
+		<div id="board"><div class="cell whiteForest" id="a8"><div class="br a8"></div></div><div class="cell blackForest" id="b8"><div class="bn b8"></div></div><div class="cell whiteForest" id="c8"><div class="bb c8"></div></div><div class="cell blackForest" id="d8"><div class="bq d8"></div></div><div class="cell whiteForest" id="e8"><div class="bk e8"></div></div><div class="cell blackForest" id="f8"><div class="bb f8"></div></div><div class="cell whiteForest" id="g8"><div class="bn g8"></div></div><div class="cell blackForest" id="h8"><div class="br h8"></div></div><div class="cell blackForest" id="a7"><div class="bp a7"></div></div><div class="cell whiteForest" id="b7"><div class="bp b7"></div></div><div class="cell blackForest" id="c7"><div class="bp c7"></div></div><div class="cell whiteForest" id="d7"><div class="bp d7"></div></div><div class="cell blackForest" id="e7"><div class="bp e7"></div></div><div class="cell whiteForest" id="f7"><div class="bp f7"></div></div><div class="cell blackForest" id="g7"><div class="bp g7"></div></div><div class="cell whiteForest" id="h7"><div class="bp h7"></div></div><div class="cell whiteForest" id="a6"></div><div class="cell blackForest" id="b6"></div><div class="cell whiteForest" id="c6"></div><div class="cell blackForest" id="d6"></div><div class="cell whiteForest" id="e6"></div><div class="cell blackForest" id="f6"></div><div class="cell whiteForest" id="g6"></div><div class="cell blackForest" id="h6"></div><div class="cell blackForest" id="a5"></div><div class="cell whiteForest" id="b5"></div><div class="cell blackForest" id="c5"></div><div class="cell whiteForest" id="d5"></div><div class="cell blackForest" id="e5"></div><div class="cell whiteForest" id="f5"></div><div class="cell blackForest" id="g5"></div><div class="cell whiteForest" id="h5"></div><div class="cell whiteForest" id="a4"></div><div class="cell blackForest" id="b4"></div><div class="cell whiteForest" id="c4"></div><div class="cell blackForest" id="d4"></div><div class="cell whiteForest" id="e4"></div><div class="cell blackForest" id="f4"></div><div class="cell whiteForest" id="g4"></div><div class="cell blackForest" id="h4"></div><div class="cell blackForest" id="a3"></div><div class="cell whiteForest" id="b3"></div><div class="cell blackForest" id="c3"></div><div class="cell whiteForest" id="d3"></div><div class="cell blackForest" id="e3"></div><div class="cell whiteForest" id="f3"></div><div class="cell blackForest" id="g3"></div><div class="cell whiteForest" id="h3"></div><div class="cell whiteForest" id="a2"><div class="wp a2"></div></div><div class="cell blackForest" id="b2"><div class="wp b2"></div></div><div class="cell whiteForest" id="c2"><div class="wp c2"></div></div><div class="cell blackForest" id="d2"><div class="wp d2"></div></div><div class="cell whiteForest" id="e2"><div class="wp e2"></div></div><div class="cell blackForest" id="f2"><div class="wp f2"></div></div><div class="cell whiteForest" id="g2"><div class="wp g2"></div></div><div class="cell blackForest" id="h2"><div class="wp h2"></div></div><div class="cell blackForest" id="a1"><div class="wr a1"></div></div><div class="cell whiteForest" id="b1"><div class="wn b1"></div></div><div class="cell blackForest" id="c1"><div class="wb c1"></div></div><div class="cell whiteForest" id="d1"><div class="wq d1"></div></div><div class="cell blackForest" id="e1"><div class="wk e1"></div></div><div class="cell whiteForest" id="f1"><div class="wb f1"></div></div><div class="cell blackForest" id="g1"><div class="wn g1"></div></div><div class="cell whiteForest" id="h1"><div class="wr h1"></div></div></div>
+		<div id="sidebar">
 			<div>1</div>
 			<div>2</div>
 			<div>3</div>
@@ -16,7 +16,7 @@
 			<div>8</div>
 		</div>
 
-		<div id='bottombar'>
+		<div id="bottombar">
 			<div>a</div>
 			<div>b</div>
 			<div>c</div>
@@ -27,14 +27,14 @@
 			<div>h</div>
 		</div>
 
-		<div id='infoBox'>
-			<div id='environmentFacts'> </div>
-			<div id='movesBox'> </div>
+		<div id="infoBox" class="blackForest">
+			<div id="environmentFacts">Over 25% of medicines used today are derived from forests.</div>
+			<div id="movesBox"> </div>
 		</div>
 	</div>
 
-	<script src="class.js"> </script>
-	<script src="facts.js"> </script>
+	<script src="./game_files/class.js"> </script>
+	<script src="./game_files/facts.js"> </script>
 	<script>
 
 	var pieces = {};
@@ -69,10 +69,7 @@
 						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
 						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
-						// we move the piece
-						if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
-							virtualBoard[rowPrevious][colPrevious].move();
-						}
+						virtualBoard[rowPrevious][colPrevious].move() // we move the rook
 					}
 				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
 					// clear old selected pieces
@@ -169,7 +166,7 @@
 		]
 	}
 
-	if (state == "false checkmate 1") {
+	if (state == "cancer situation 1") {
 		virtualBoard =
 		[
 			['','','',new Queen('b'),new King('b'),'','',''],
@@ -183,7 +180,7 @@
 		]
 	}
 
-	if (state == "false checkmate 2") {
+	if (state == "cancer situation 2") {
 		virtualBoard =
 		[
 			[new King('b'),new Rook('b'),'','','','','',''],
@@ -194,20 +191,6 @@
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['',new Bishop('w'),'','','','','',new King('w')]
-		]
-	}
-
-	if (state == "pin") {
-		virtualBoard =
-		[
-			['','','','',new King('w'),'','',''],
-			['','','','',new Bishop('w'),'','',''],
-			['','','','','','','',''],
-			['','','','',new Rook('b'),'','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('b')]
 		]
 	}
 
@@ -233,5 +216,6 @@
 	function convertIndexToCols(index) { return columns[index] }
 
 	</script>
-</body>
-</html>
+
+
+</body></html>

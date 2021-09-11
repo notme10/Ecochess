@@ -7,14 +7,10 @@ IMPORTNANT STUFF TO DO!!!
 	- check if a piece is being pinned
 	- check if all available non-pinned pieces can block a check
 
-*/
+- en passant bug: black pawn can eat white pawn with en passant even though white pawn moved
+  next to black pawn more than one turn before :(
 
-/*
-PIECES OBJECT!!!
-
-	- contains info of all "living" pieces
-	- if a piece dies, it gets taken off
-	- object is used to quickly find a piece I want
+- move bug: "wp moved to e4 on turn 1", "bp moved to f5 on turn 2", "wb moved to b5 on turn 3", "bp moved to f4 on turn 4"
 
 */
 
@@ -26,6 +22,32 @@ class Piece {
 		this.pinned = false;
 	}
 
+	isPinned() {
+		// temporarily get rid of piece that is supposedly is pinned
+		// if king is in check, pinned = true
+		// if king is not in check, pinned = false
+		// replace the removed piece where it was before
+
+		var x = convertRowsToIndex(this.coords[1]);
+		var y = convertColsToIndex(this.coords[0]);
+
+		var tempStorage = virtualBoard[x][y];
+		virtualBoard[x][y] = '';
+
+		var kingCoords = pieces[this.color + "k"].coords;
+		console.log(kingCoords);
+
+		// king's x, king's y, king's color
+		if(isKingChecked(convertRowsToIndex(kingCoords[1]), convertColsToIndex(kingCoords[0]), this.color)) {
+			this.pinned = true;
+		} else {
+			this.pinned = false;
+		}
+
+		virtualBoard[x][y] = tempStorage;
+
+	}
+
 	setCoord(coord) {
 		this.coords = coord;
 	}
@@ -34,6 +56,8 @@ class Piece {
 		// return true if move is allowed, false if move is not allowed
 		var prv_coords = this.coords;
 		this.coords = cellCoord;
+
+		console.log("line 30 " + pieceInfo);
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
 
@@ -63,7 +87,6 @@ class Piece {
 				}
 			}
 		}
-
 		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 
 		 // PROMOTION
@@ -114,11 +137,8 @@ class Piece {
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
 
-		var pawns = pieces[this.color + "p"]
-		for(var i = 0; i<pawns.length; i++) {
-			pawns[i].enPassantPossible	= false;
-		}
-
+		pieceInfo = null;
+		// increase turn counter
 		turn++;
 
 		if(moveList.length < turn) {
@@ -129,9 +149,6 @@ class Piece {
 		newMove.classList += "move";
 		newMove.innerText = moveList[moveList.length-1];
 		document.querySelector("#movesBox").appendChild(newMove);
-
-
-
 
 		var thisTurnColor;
 		var thisTurnKing;
@@ -154,16 +171,13 @@ class Piece {
 	eatPiece() {
 
 		var previousPosition = this.coords;
-		var x = convertRowsToIndex(cellCoord[1]);
-		var y = convertColsToIndex(cellCoord[0]);
 
-		var t = document.querySelector(`.${virtualBoard[x][y].pieceName}.${cellCoord}`)
+		var t = document.querySelector(`.${virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])].pieceName}.${cellCoord}`)
 		var q = t.className;
 		t.remove();
-		pieces[virtualBoard[x][y].pieceName] = pieces[virtualBoard[x][y].pieceName].filter(item => item.coords !== cellCoord);
 
-		var tempPiece = virtualBoard[x][y];
-		virtualBoard[x][y] = "";
+		var tempPiece = virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])];
+		virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = "";
 
 		if(this.movePiece()) {
 			moveList.push(this.pieceName + " on " + previousPosition + " captured a piece on turn "+ (turn+1));
@@ -174,7 +188,7 @@ class Piece {
 			document.querySelector("#movesBox").appendChild(newMove);
 
 		} else {
-			virtualBoard[x][y] = tempPiece;
+			virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])] = tempPiece;
 			var p = document.createElement('div'); // makes a new div called p
 			p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
@@ -249,30 +263,6 @@ class Piece {
 			}
 		}
 		return false;
-	}
-
-	isPinned() {
-		// temporarily get rid of piece that is supposedly is pinned
-		// if king is in check, pinned = true
-		// if king is not in check, pinned = false
-		// replace the removed piece where it was before
-
-		var x = convertRowsToIndex(this.coords[1]);
-		var y = convertColsToIndex(this.coords[0]);
-
-		var tempStorage = virtualBoard[x][y];
-		virtualBoard[x][y] = '';
-
-		var kingCoords = pieces[this.color + "k"][0].coords;
-
-		// king's x, king's y, king's color
-		if(this.isKingChecked(convertRowsToIndex(kingCoords[1]), convertColsToIndex(kingCoords[0]), this.color)) {
-			virtualBoard[x][y] = tempStorage;
-			return true;
-		} else {
-			virtualBoard[x][y] = tempStorage;
-			return false;
-		}
 	}
 
 	canEatHV(r, c, myColor) {
@@ -608,14 +598,7 @@ class King extends Piece {
 
 		// check if pieces are pinned
 
-		var kingsPieces = Object.entries(pieces).filter(entry => (entry[0][0] == this.color) && (entry[0] !== this.color + "k")).flat().filter(item => typeof item !== "string").flat();
-
-		// for(var i = 0; i<kingsPieces.length; i++) {
-		// 	kingsPieces[i].isPinned();
-		// 	console.log(kingsPieces);
-		// }
-
-		// need to do something with isPinned()
+		var kingsPieces = Object.entries(pieces).filter(entry => (entry[0][0] == this.color) && (entry[0] !== this.color + "k"));
 
 		for(var i = king_x - 1; i <= king_x + 1; i++) {
 			for(var j = king_y - 1; j <= king_y + 1; j++) {
@@ -740,11 +723,13 @@ class Knight extends Piece {
 class Pawn extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
-		this.enPassantPossible = false;
+		this.turnMovedTwo = 0;
 		this.pieceName = color + "p";
 	}
 
 	move() {
+
+		console.log("line 686 " + pieceInfo);
 
 		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
 		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
@@ -757,53 +742,23 @@ class Pawn extends Piece {
 
 			this.movePiece();
 
-			// CHECK IF EN PASSANT IS POSSIBLE FOR WHITE
-
-			if(this.color == "b" && cellCoord[1] == "5") {
-				if(convertColsToIndex(cellCoord[0]) >= 1) {
-					var leftPiece = virtualBoard[3][convertColsToIndex(cellCoord[0])-1];
-					if(leftPiece !== '' && leftPiece.pieceName == "wp") {
-						leftPiece.enPassantPossible = true;
-					}
-				}
-
-				if(convertColsToIndex(cellCoord[0]) <= 6) {
-					var rightPiece = virtualBoard[3][convertColsToIndex(cellCoord[0])+1];
-					if(rightPiece !== '' && rightPiece.pieceName == "wp") {
-						rightPiece.enPassantPossible = true;
-					}
-				}
+			if(rowsMoved == 2 || rowsMoved == -2) {
+				this.turnMovedTwo = turn;
 			}
-
-			// CHECK IF EN PASSANT IS POSSIBLE FOR BLACK
-
-			if(this.color == "w" && cellCoord[1] == "4") {
-				if(convertColsToIndex(cellCoord[0]) >= 1) {
-					var leftPiece = virtualBoard[4][convertColsToIndex(cellCoord[0])-1];
-					if(leftPiece !== '' && leftPiece.pieceName == "bp") {
-						leftPiece.enPassantPossible = true;
-					}
-				}
-
-				if(convertColsToIndex(cellCoord[0]) <= 6) {
-					var rightPiece = virtualBoard[4][convertColsToIndex(cellCoord[0])+1];
-					if(rightPiece !== '' && rightPiece.pieceName == "bp") {
-						rightPiece.enPassantPossible = true;
-					}
-				}
-			}
-			return;
 		}
 
 		// EN PASSANT - WHITE
 
-		if(this.color == "w" && this.coords[1] == "5" && this.enPassantPossible == true) {
+		console.log("current turn is: " + turn);
+		console.log(this.color + " pawn moved two on: " + this.turnMovedTwo);
+
+		if (this.color == "w" && this.coords[1] == "5") {
 
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
 			if((X-1) > 0) {
-				if(virtualBoard[Y][X-1].pieceName == "bp") {
+				if(virtualBoard[Y][X-1].pieceName == "bp" && (turn == this.turnMovedTwo)) {
 					this.movePiece();
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -813,7 +768,7 @@ class Pawn extends Piece {
 			}
 
 			if((X+1) < 7) {
-				if(virtualBoard[Y][X+1].pieceName == "bp") {
+				if(virtualBoard[Y][X+1].pieceName == "bp" && (turn == this.turnMovedTwo)) {
 					this.movePiece();
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -824,7 +779,7 @@ class Pawn extends Piece {
 		}
 
 		// EN PASSANT - BLACK
-		else if (this.color == "b" && this.coords[1] == "4" && this.enPassantPossible == true) {
+		if (this.color == "b" && this.coords[1] == "4") {
 
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
