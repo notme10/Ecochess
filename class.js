@@ -802,9 +802,16 @@ class Pawn extends Piece {
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
-			if((X-1) > 0) {
+			if(((X-1) > 0) && (convertColsToIndex(cellCoord[0]) == (X-1))) {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
 					this.movePiece();
+					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
+
+					var newMove = document.createElement("div");
+					newMove.classList += "move";
+					newMove.innerText = moveList[moveList.length-1];
+					document.querySelector("#movesBox").appendChild(newMove);
+
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
@@ -812,9 +819,10 @@ class Pawn extends Piece {
 				}
 			}
 
-			if((X+1) < 7) {
+			if(((X+1) < 7) && (convertColsToIndex(cellCoord[0]) == (X+1))) {
 				if(virtualBoard[Y][X+1].pieceName == "bp") {
 					this.movePiece();
+					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
@@ -832,6 +840,7 @@ class Pawn extends Piece {
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
 					this.movePiece();
+					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
@@ -842,6 +851,7 @@ class Pawn extends Piece {
 			if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "wp") {
 					this.movePiece();
+					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
