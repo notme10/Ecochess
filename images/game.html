@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///Users/dohyun/Documents/GitHub/Ecochess/game.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"> <link rel="stylesheet" href="./game_files/styles.css"> </head>
+
+<body style="background-image: url(&quot;images/Forest.png&quot;);">
+	<div id="layout">
+		<div id="board"><div class="cell whiteForest" id="a8"><div class="br a8"></div></div><div class="cell blackForest" id="b8"><div class="bn b8"></div></div><div class="cell whiteForest" id="c8"><div class="bb c8"></div></div><div class="cell blackForest" id="d8"><div class="bq d8"></div></div><div class="cell whiteForest" id="e8"><div class="bk e8"></div></div><div class="cell blackForest" id="f8"><div class="bb f8"></div></div><div class="cell whiteForest" id="g8"><div class="bn g8"></div></div><div class="cell blackForest" id="h8"><div class="br h8"></div></div><div class="cell blackForest" id="a7"><div class="bp a7"></div></div><div class="cell whiteForest" id="b7"><div class="bp b7"></div></div><div class="cell blackForest" id="c7"><div class="bp c7"></div></div><div class="cell whiteForest" id="d7"><div class="bp d7"></div></div><div class="cell blackForest" id="e7"><div class="bp e7"></div></div><div class="cell whiteForest" id="f7"><div class="bp f7"></div></div><div class="cell blackForest" id="g7"><div class="bp g7"></div></div><div class="cell whiteForest" id="h7"><div class="bp h7"></div></div><div class="cell whiteForest" id="a6"></div><div class="cell blackForest" id="b6"></div><div class="cell whiteForest" id="c6"></div><div class="cell blackForest" id="d6"></div><div class="cell whiteForest" id="e6"></div><div class="cell blackForest" id="f6"></div><div class="cell whiteForest" id="g6"></div><div class="cell blackForest" id="h6"></div><div class="cell blackForest" id="a5"></div><div class="cell whiteForest" id="b5"></div><div class="cell blackForest" id="c5"></div><div class="cell whiteForest" id="d5"></div><div class="cell blackForest" id="e5"></div><div class="cell whiteForest" id="f5"></div><div class="cell blackForest" id="g5"></div><div class="cell whiteForest" id="h5"></div><div class="cell whiteForest" id="a4"></div><div class="cell blackForest" id="b4"></div><div class="cell whiteForest" id="c4"></div><div class="cell blackForest" id="d4"></div><div class="cell whiteForest" id="e4"></div><div class="cell blackForest" id="f4"></div><div class="cell whiteForest" id="g4"></div><div class="cell blackForest" id="h4"></div><div class="cell blackForest" id="a3"></div><div class="cell whiteForest" id="b3"></div><div class="cell blackForest" id="c3"></div><div class="cell whiteForest" id="d3"></div><div class="cell blackForest" id="e3"></div><div class="cell whiteForest" id="f3"></div><div class="cell blackForest" id="g3"></div><div class="cell whiteForest" id="h3"></div><div class="cell whiteForest" id="a2"><div class="wp a2"></div></div><div class="cell blackForest" id="b2"><div class="wp b2"></div></div><div class="cell whiteForest" id="c2"><div class="wp c2"></div></div><div class="cell blackForest" id="d2"><div class="wp d2"></div></div><div class="cell whiteForest" id="e2"><div class="wp e2"></div></div><div class="cell blackForest" id="f2"><div class="wp f2"></div></div><div class="cell whiteForest" id="g2"><div class="wp g2"></div></div><div class="cell blackForest" id="h2"><div class="wp h2"></div></div><div class="cell blackForest" id="a1"><div class="wr a1"></div></div><div class="cell whiteForest" id="b1"><div class="wn b1"></div></div><div class="cell blackForest" id="c1"><div class="wb c1"></div></div><div class="cell whiteForest" id="d1"><div class="wq d1"></div></div><div class="cell blackForest" id="e1"><div class="wk e1"></div></div><div class="cell whiteForest" id="f1"><div class="wb f1"></div></div><div class="cell blackForest" id="g1"><div class="wn g1"></div></div><div class="cell whiteForest" id="h1"><div class="wr h1"></div></div></div>
+		<div id="sidebar">
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+		</div>
+
+		<div id="bottombar">
+			<div>a</div>
+			<div>b</div>
+			<div>c</div>
+			<div>d</div>
+			<div>e</div>
+			<div>f</div>
+			<div>g</div>
+			<div>h</div>
+		</div>
+
+		<div id="infoBox" class="blackForest">
+			<div id="environmentFacts">Over 25% of medicines used today are derived from forests.</div>
+			<div id="movesBox"> </div>
+		</div>
+	</div>
+
+	<script src="./game_files/class.js"> </script>
+	<script src="./game_files/facts.js"> </script>
+	<script>
+
+	var pieces = {};
+	var pieceInfo;
+	var cellCoord;
+	var turn = 0;
+	var moveList = [];
+
+	document.addEventListener('keypress', e => {
+		if (e.key == 'q') {
+			let selectedCell = document.querySelector(".selected")
+
+			if (selectedCell) {
+				selectedCell.className = selectedCell.className.replace(' selected', '')
+			}
+			pieceInfo = null;
+		}
+	})
+
+	let board = document.getElementById('board'); // We are getting the board into the JS
+	var width = 8, height = 8;
+	var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
+	var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
+
+	for (row = 0; row < height; row++) {
+		for (col = 0; col < width; col++) {
+			var cell = document.createElement('div');
+			cell.addEventListener('click', e => {
+				cellCoord = e.target.id; // get cellCoord
+				if (cellCoord) { // clicked on a tile w/o piece
+					if (pieceInfo) { // clicked on a piece before
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
+						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+
+						virtualBoard[rowPrevious][colPrevious].move() // we move the rook
+					}
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
+					// clear old selected pieces
+					let selectedCell = document.querySelector(".selected") // gets the cell that is selected
+
+					if (selectedCell) {
+						selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
+					}
+
+					pieceInfo = e.target.className.split(" ");
+					document.getElementById(pieceInfo[1]).className += " selected"
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
+					if (pieceInfo) {
+						cellCoord = e.target.className.split(" ")[1];
+
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]);
+						let colPrevious = columns.indexOf(pieceInfo[1][0]);
+						virtualBoard[rowPrevious][colPrevious].eat()
+					}
+				}
+			});
+
+			board.appendChild(cell);
+			if ((row + col) % 2 == 0) { // white
+				cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
+			}
+
+			else { // black
+				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
+			}
+
+			var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+			document.body.style.backgroundImage = "url(" + bgFileName + ")";
+			cell.id = columns[col] + rows[row];
+		}
+	}
+
+	var virtualBoard;
+
+	let state = "main"
+
+	if (state == "main") {
+		virtualBoard = [
+			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
+			[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
+			[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
+		];
+	}
+
+	if (state == "promotion white") {
+		virtualBoard =
+		[
+			[new King('b'),'','','','','','',''],
+			['','','','','','',new Pawn('w'),''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		];
+	}
+
+	if (state == "promotion black") {
+		virtualBoard =
+		[
+			[new King('b'),'','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','',new Pawn('b'),'','','','',''],
+			['','','','','','','',new King('w')]
+		];
+	}
+
+	if (state == "checkmate white") {
+		virtualBoard =
+		[
+			["", new Rook('b'), "", new King('b'), "", "", "", ""],
+			[new Pawn('b'), new Pawn('b'), new Pawn('b'), "", "", new Queen('w'), "", ""],
+			["", "", "", "", "", new Pawn('b'), "", ""],
+			[new Queen('b'), "", "", new Bishop('w'), new Knight('w'), "", "", ""],
+			["", "", "", new Pawn('w'), "", new Pawn('b'), "", ""],
+			["", "", new Knight('w'), "", new Pawn('w'), "", "", ""],
+			[new Pawn('w'), "", "", "", "", new Pawn('w'), new Pawn('w'), new Pawn('w')],
+			["", "", new Rook('w'), "", "", new Rook('w'), new King('w'), ""]
+		]
+	}
+
+	if (state == "cancer situation 1") {
+		virtualBoard =
+		[
+			['','','',new Queen('b'),new King('b'),'','',''],
+			['','','','','','','',new Queen('w')],
+			['','','','','','','',''],
+			['','','','',new Rook('w'),'','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		]
+	}
+
+	if (state == "cancer situation 2") {
+		virtualBoard =
+		[
+			[new King('b'),new Rook('b'),'','','','','',''],
+			[new Rook('b'),'','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['',new Bishop('w'),'','','','','',new King('w')]
+		]
+	}
+
+	for (let i = 0; i < 8; i++) {
+		for (let j = 0; j < 8; j++) {
+			if (virtualBoard[i][j]) {
+				virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+				if(!(virtualBoard[i][j].pieceName in pieces)) {
+					pieces[virtualBoard[i][j].pieceName] = [];
+				}
+				pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
+
+				p = document.createElement('div'); // creates a piece
+				p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+				document.getElementById(columns[j] + rows[i]).appendChild(p);
+			}
+		}
+	}
+
+	function convertRowsToIndex(row) { return rows.indexOf(row) }
+	function convertColsToIndex(col) { return columns.indexOf(col) }
+	function convertIndexToRows(index) { return rows[index] }
+	function convertIndexToCols(index) { return columns[index] }
+
+	</script>
+
+
+</body></html>

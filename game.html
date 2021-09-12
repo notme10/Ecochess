@@ -1,200 +1,239 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="styles.css">
-	</head>
+<head> <link rel="stylesheet" href="styles.css"> </head>
 
-	<body>
+<body>
+	<div id='layout'>
 		<div id='board'></div>
+		<div id='sidebar'>
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+		</div>
 
-		<div id='sidebar'></div>
+		<div id='bottombar'>
+			<div>a</div>
+			<div>b</div>
+			<div>c</div>
+			<div>d</div>
+			<div>e</div>
+			<div>f</div>
+			<div>g</div>
+			<div>h</div>
+		</div>
 
-		<div id='bottombar'></div>
+		<div id='infoBox'>
+			<div id='environmentFacts'> </div>
+			<div id='movesBox'> </div>
+		</div>
+	</div>
 
-		<script src="class.js"></script>
-		<script>
+	<script src="class.js"> </script>
+	<script src="facts.js"> </script>
+	<script>
 
+	var pieces = {};
+	var pieceInfo;
+	var cellCoord;
+	var turn = 0;
+	var moveList = [];
 
+	document.addEventListener('keypress', e => {
+		if (e.key == 'q') {
+			let selectedCell = document.querySelector(".selected")
 
+			if (selectedCell) {
+				selectedCell.className = selectedCell.className.replace(' selected', '')
+			}
+			pieceInfo = null;
+		}
+	})
 
+	let board = document.getElementById('board'); // We are getting the board into the JS
+	var width = 8, height = 8;
+	var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
+	var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-/*
+	for (row = 0; row < height; row++) {
+		for (col = 0; col < width; col++) {
+			var cell = document.createElement('div');
+			cell.addEventListener('click', e => {
+				cellCoord = e.target.id; // get cellCoord
+				if (cellCoord) { // clicked on a tile w/o piece
+					if (pieceInfo) { // clicked on a piece before
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
+						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
-			2. Checks
-			3. Making sure a King can't move onto a checked square
-
-*/
-
-
-
-
-
-			var pieceInfo;
-			var cellCoord;
-
-			console.log(document.querySelectorAll(".cell"));
-
-
-			var turn = 0;
-
-
-
-			document.addEventListener('keypress', e => {
-				// console.log(e.key)
-				// when press q, it will make the selected go away
-				if (e.key == 'q') {
-					let selectedCell = document.querySelector(".selected")
+						// we move the piece
+						if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
+							virtualBoard[rowPrevious][colPrevious].move();
+						}
+					}
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
+					// clear old selected pieces
+					let selectedCell = document.querySelector(".selected") // gets the cell that is selected
 
 					if (selectedCell) {
-						selectedCell.className = selectedCell.className.replace(' selected', '')
+						selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
 					}
 
-					pieceInfo = null;
+					pieceInfo = e.target.className.split(" ");
+					document.getElementById(pieceInfo[1]).className += " selected"
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
+					if (pieceInfo) {
+						cellCoord = e.target.className.split(" ")[1];
+
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]);
+						let colPrevious = columns.indexOf(pieceInfo[1][0]);
+						virtualBoard[rowPrevious][colPrevious].eat()
+					}
 				}
-			})
+			});
 
-			let board = document.getElementById('board'); // We are getting the board into the JS
-			var width = 8, height = 8;
-
-			var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
-			var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
-
-
-			for (row = 0; row < height; row++){
-				for (col = 0; col < width; col++){
-					var cell = document.createElement('div');
-
-					cell.addEventListener('click', e => {
-						cellCoord = e.target.id; // get cellCoord
-
-						if (cellCoord) { // clicked on a tile w/o piece
-							if (pieceInfo) { // clicked on a piece before
-								let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
-								let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
-								virtualBoard[rowPrevious][colPrevious].move() // we move the rook
-
-								//console.log(virtualBoard)
-
-								// 2. It's making random divs with undefined coordinates
-							}
-						} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
-							// clear old selected pieces
-							let selectedCell = document.querySelector(".selected") // gets the cell that is selected
-
-							if (selectedCell) {
-								selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
-							}
-
-							pieceInfo = e.target.className.split(" ");
-
-							document.getElementById(pieceInfo[1]).className += " selected"
-
-						} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
-
-							// whites turn, going on to Black
-
-							if (pieceInfo) {
-
-								cellCoord = e.target.className.split(" ")[1];
-
-								let rowPrevious = rows.indexOf(pieceInfo[1][1]);
-								let colPrevious = columns.indexOf(pieceInfo[1][0]);
-								virtualBoard[rowPrevious][colPrevious].eat()
-
-							}
-
-						}
-					});
-
-
-					board.appendChild(cell);
-					if ((row + col) % 2 == 0) { // white
-						cell.className = "cell white";
-					}
-
-					else { // black
-						cell.className = "cell black";
-					}
-
-					cell.id = columns[col] + rows[row];
-				}
+			board.appendChild(cell);
+			if ((row + col) % 2 == 0) { // white
+				cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
 			}
 
-			var virtualBoard;
 
-<<<<<<< Updated upstream
-			var tempVB;
-		
+			else { // black
+				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
 
-=======
->>>>>>> Stashed changes
-			if (1) { // full board
-			virtualBoard =
-			[
-				[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
-				[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
-				[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
-			];
 			}
-			if (0) { // bishop testing
-				virtualBoard =
-			[
-				['','','','','','','',''],
-				['','','','','','',new Bishop('b'),''],
-				['','','','','','','',''],
-				['','','','',new King('w'),'','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','','','','','']
-			];
+
+			var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+			document.body.style.backgroundImage = "url(" + bgFileName + ")";
+			cell.id = columns[col] + rows[row];
 		}
+	}
 
-		if (0) { // testing
-			virtualBoard =
-			[
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','',new King('w'),'','',''],
-				['','','','','','','',''],
-				['','','','','','','',''],
-				['','','','',new Rook('b'),'','',''],
-				['','','','','','','','']
-			];
-		}
+	var virtualBoard;
 
+	let state = "main"
 
+	if (state == "main") {
+		virtualBoard = [
+			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
+			[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
+			[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
+		];
+	}
 
-			for (let i = 0; i < 8; i++) {
-				for (let j = 0; j < 8; j++) {
-					if (virtualBoard[i][j]) {
-						virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+	if (state == "promotion white") {
+		virtualBoard =
+		[
+			[new King('b'),'','','','','','',''],
+			['','','','','','',new Pawn('w'),''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		];
+	}
 
-						p = document.createElement('div'); // creates a piece
-						p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
-						document.getElementById(columns[j] + rows[i]).appendChild(p);
-					}
+	if (state == "promotion black") {
+		virtualBoard =
+		[
+			[new King('b'),'','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','',new Pawn('b'),'','','','',''],
+			['','','','','','','',new King('w')]
+		];
+	}
+
+	if (state == "checkmate white") {
+		virtualBoard =
+		[
+			["", new Rook('b'), "", new King('b'), "", "", "", ""],
+			[new Pawn('b'), new Pawn('b'), new Pawn('b'), "", "", new Queen('w'), "", ""],
+			["", "", "", "", "", new Pawn('b'), "", ""],
+			[new Queen('b'), "", "", new Bishop('w'), new Knight('w'), "", "", ""],
+			["", "", "", new Pawn('w'), "", new Pawn('b'), "", ""],
+			["", "", new Knight('w'), "", new Pawn('w'), "", "", ""],
+			[new Pawn('w'), "", "", "", "", new Pawn('w'), new Pawn('w'), new Pawn('w')],
+			["", "", new Rook('w'), "", "", new Rook('w'), new King('w'), ""]
+		]
+	}
+
+	if (state == "false checkmate 1") {
+		virtualBoard =
+		[
+			['','','',new Queen('b'),new King('b'),'','',''],
+			['','','','','','','',new Queen('w')],
+			['','','','','','','',''],
+			['','','','',new Rook('w'),'','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
+		]
+	}
+
+	if (state == "false checkmate 2") {
+		virtualBoard =
+		[
+			[new King('b'),new Rook('b'),'','','','','',''],
+			[new Rook('b'),'','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['',new Bishop('w'),'','','','','',new King('w')]
+		]
+	}
+
+	if (state == "pin") {
+		virtualBoard =
+		[
+			['','','','',new King('w'),'','',''],
+			['','','','',new Bishop('w'),'','',''],
+			['','','','','','','',''],
+			['','','','',new Rook('b'),'','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('b')]
+		]
+	}
+
+	for (let i = 0; i < 8; i++) {
+		for (let j = 0; j < 8; j++) {
+			if (virtualBoard[i][j]) {
+				virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+				if(!(virtualBoard[i][j].pieceName in pieces)) {
+					pieces[virtualBoard[i][j].pieceName] = [];
 				}
+				pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
+
+				p = document.createElement('div'); // creates a piece
+				p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+				document.getElementById(columns[j] + rows[i]).appendChild(p);
 			}
+		}
+	}
 
-			function convertRowsToIndex(row){
+	function convertRowsToIndex(row) { return rows.indexOf(row) }
+	function convertColsToIndex(col) { return columns.indexOf(col) }
+	function convertIndexToRows(index) { return rows[index] }
+	function convertIndexToCols(index) { return columns[index] }
 
-					return rows.indexOf(row);
-
-			}
-
-			function convertColsToIndex(col){
-
-					return columns.indexOf(col);
-
-			}
-
-		</script>
-	</body>
+	</script>
+</body>
 </html>

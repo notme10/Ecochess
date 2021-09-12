@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Location Selector</title>
+</head>
+<body>
+
+  <p>Select a region</p>
+
+  <select id="Regions">
+
+    <option value="Standard">Standard</option>
+    <option value="Reef">Reef</option>
+    <option value="Ocean">Ocean</option>
+    <option value="Forest">Forest</option>
+    <option value="Tundra">Tundra</option>
+    <option value="Desert">Desert</option>
+    <option value="Sky">Sky</option>
+
+  </select>
+  <img id= "Regions" src = "" >
+  <script type="text/javascript">
+
+  document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
+  document.querySelector("#Regions").addEventListener("change", e => {
+
+    console.log("selection is: " + e.target.value);
+    localStorage.setItem('chosenRegion', e.target.value);
+
+  })
+
+  </script>
+
+</body>
+
+</html>
