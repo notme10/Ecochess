@@ -25,7 +25,6 @@ class Piece {
 		this.coords = coords;
 		this.hasMoved = 0;
 		this.pinned = false;
-		this.imgurl;
 	}
 
 	setCoord(coord) {
@@ -158,24 +157,6 @@ class Piece {
 		var previousPosition = this.coords;
 		var x = convertRowsToIndex(cellCoord[1]);
 		var y = convertColsToIndex(cellCoord[0]);
-
-		var pieceToCapture = virtualBoard[x][y];
-		capturedPieces.push(pieceToCapture);
-
-		// console.log(capturedPieces);
-		document.querySelector(".capturedPieces").innerHTML = '';
-		capturedPieces.forEach(item => {
-			var capturedPiece = document.createElement("div");
-			var pieceImg = document.createElement("img");
-			pieceImg.src = item.imgurl;
-			capturedPiece.appendChild(pieceImg);
-			capturedPiece.style.width = "50px";
-			capturedPiece.style.height = "50px";
-			pieceImg.style.width = "100%";
-			pieceImg.style.height = "100%";
-			document.querySelector(".capturedPieces").appendChild(capturedPiece);
-		});
-
 
 		var t = document.querySelector(`.${virtualBoard[x][y].pieceName}.${cellCoord}`)
 		var q = t.className;
@@ -387,11 +368,6 @@ class Rook extends Piece {
 		super(color, coords);
 		this.pieceName = color + "r"
 		this.hasMoved = 0;
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/br.png";
-		}
 	}
 
 	move() {
@@ -420,11 +396,6 @@ class Bishop extends Piece {
 		super(color, coords);
 
 		this.pieceName = color + "b";
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bb.png";
-		}
 	}
 
 	move() {
@@ -455,11 +426,6 @@ class Queen extends Piece {
 		super(color, coords);
 
 		this.pieceName = color + "q";
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bq.png";
-		}
 	}
 
 	move() {
@@ -497,11 +463,6 @@ class King extends Piece {
 
 		this.pieceName = color + "k";
 		this.hasMoved = false;
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wk.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png";
-		}
 	}
 
 	eat() {
@@ -637,11 +598,6 @@ class King extends Piece {
 		return result;
 	}
 
-	isCheckmated(currentBoard) {
-
-	}
-
-
 	isCheckmated() {
 
 		var king_x = convertRowsToIndex(this.coords[1]);
@@ -682,12 +638,8 @@ class King extends Piece {
 class Knight extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
+
 		this.pieceName = color + "n";
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bn.png";
-		}
 	}
 
 	move() {
@@ -791,11 +743,6 @@ class Pawn extends Piece {
 		super(color, coords);
 		this.enPassantPossible = false;
 		this.pieceName = color + "p";
-		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png";
-		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png";
-		}
 	}
 
 	move() {

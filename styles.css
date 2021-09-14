@@ -16,11 +16,10 @@ body {
 #layout {
 	display: grid;
 	grid-template-columns: 1fr 10fr 5fr;
-	grid-template-rows: 10fr 1fr 1fr;
+	grid-template-rows: 10fr 1fr;
 	grid-template-areas:
 		"s g i"
-		". b i"
-		"c c c";
+		". b i";
 }
 
 #board {
@@ -73,14 +72,6 @@ body {
 
 #movesBox {
 	overflow: auto;
-}
-
-.capturedPieces {
-	grid-area: c;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
 }
 
 .white {

@@ -31,9 +31,6 @@
 			<div id='environmentFacts'> </div>
 			<div id='movesBox'> </div>
 		</div>
-
-		<div class='capturedPieces'></div>
-
 	</div>
 
 	<script src="class.js"> </script>
@@ -45,7 +42,6 @@
 	var cellCoord;
 	var turn = 0;
 	var moveList = [];
-	var capturedPieces = [];
 
 	document.addEventListener('keypress', e => {
 		if (e.key == 'q') {
