@@ -16,6 +16,8 @@ PIECES OBJECT!!!
 	- if a piece dies, it gets taken off
 	- object is used to quickly find a piece I want
 
+	- testing github merge 
+
 */
 
 class Piece {
