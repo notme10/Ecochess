@@ -608,7 +608,6 @@ class Queen extends Piece {
 		}
 	}
 
-
 	eat() {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
@@ -621,11 +620,127 @@ class Queen extends Piece {
 			this.eatPiece();
 		}
 	}
+
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) || this.canEatDiagonals(r, c, myColor) }
 
 	canAvoidCheckmate() {
+		var queen_row = convertRowsToIndex(this.coords[1]);
+		var queen_col = convertColsToIndex(this.coords[0]);
+
+		// right
+		for(var i = queen_row + 1; i<8; i++) {
+			if(virtualBoard[queen_row][i] !== '' && virtualBoard[queen_row][i] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(queen_row, i, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[queen_row][i] !== '' && virtualBoard[queen_row][i] !== this.color) {
+				break;
+			}
+		}
+
+		// left
+		for(var i = queen_col - 1; i>=0; i--) {
+			if(virtualBoard[queen_row][i] !== '' && virtualBoard[queen_row][i] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(queen_row, i, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[queen_row][i] !== '' && virtualBoard[queen_row][i] !== this.color) {
+				break;
+			}
+		}
+
+		// up
+		for(var i = queen_row - 1; i>=0; i--) {
+			if(virtualBoard[i][queen_col] !== '' && virtualBoard[i][queen_col] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, queen_col, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][queen_col] !== '' && virtualBoard[i][queen_col] !== this.color) {
+				break;
+			}
+		}
+
+		// down
+		for(var i = queen_row + 1; i<8; i++) {
+			if(virtualBoard[i][queen_col] !== '' && virtualBoard[i][queen_col] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, queen_col, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][queen_col] !== '' && virtualBoard[i][queen_col] !== this.color) {
+				break;
+			}
+		}
+
+		// bottom right
+		for(var i = queen_row + 1, j = queen_col + 1; i<8 && j<8; i++, j++) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// bottom left
+		for(var i = queen_row + 1, j = queen_col - 1; i<8 && j>=0; i++, j--) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// top right
+		for(var i = queen_row - 1, j = queen_col + 1; i>=0 && j<8; i--, j++) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// top left
+		for(var i = queen_row - 1, j = queen_col - 1; i>=0 && j>=0; i--, j--) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, queen_row, queen_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
 		return false;
 	}
+
 }
 
 class King extends Piece {
