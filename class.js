@@ -340,7 +340,6 @@ class Piece {
 		return false;
 	}
 
-	// diagonal checking
 	canEatDiagonals(r, c, myColor) {
 		let cur_r = convertRowsToIndex(this.coords[1]);
 		let cur_c = convertColsToIndex(this.coords[0]);
@@ -390,7 +389,7 @@ class Piece {
 }
 
 class Rook extends Piece {
-		constructor(color, coords) {
+	constructor(color, coords) {
 		super(color, coords);
 		this.pieceName = color + "r"
 		this.hasMoved = 0;
@@ -419,6 +418,7 @@ class Rook extends Piece {
 			this.eatPiece();
 		}
 	}
+
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) }
 
 	canAvoidCheckmate() {
@@ -431,7 +431,7 @@ class Rook extends Piece {
 				// if test position is occupied by a piece of the same color, break
 				break;
 			}
-			if(canAvoidCheckmate(rook_row, i, rook_row, rook_col) == true) {
+			if(this.willKingDie(rook_row, i, rook_row, rook_col) == true) {
 				return true;
 			}
 			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] !== this.color) {
@@ -445,7 +445,7 @@ class Rook extends Piece {
 				// if test position is occupied by a piece of the same color, break
 				break;
 			}
-			if(canAvoidCheckmate(rook_row, i, rook_row, rook_col) == true) {
+			if(this.willKingDie(rook_row, i, rook_row, rook_col) == true) {
 				return true;
 			}
 			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] !== this.color) {
@@ -459,7 +459,7 @@ class Rook extends Piece {
 				// if test position is occupied by a piece of the same color, break
 				break;
 			}
-			if(canAvoidCheckmate(i, rook_col, rook_row, rook_col) == true) {
+			if(this.willKingDie(i, rook_col, rook_row, rook_col) == true) {
 				return true;
 			}
 			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] !== this.color) {
@@ -473,7 +473,7 @@ class Rook extends Piece {
 				// if test position is occupied by a piece of the same color, break
 				break;
 			}
-			if(canAvoidCheckmate(i, rook_col, rook_row, rook_col) == true) {
+			if(this.willKingDie(i, rook_col, rook_row, rook_col) == true) {
 				return true;
 			}
 			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] !== this.color) {
@@ -483,7 +483,6 @@ class Rook extends Piece {
 
 		return false;
 	}
-
 }
 
 class Bishop extends Piece {
@@ -521,6 +520,65 @@ class Bishop extends Piece {
 	canEatKingAt(r, c, myColor) { return this.canEatDiagonals(r, c, myColor) }
 
 	canAvoidCheckmate() {
+		var bishop_r = convertRowsToIndex(this.coords[1]);
+		var bishop_c = convertColsToIndex(this.coords[0]);
+
+		// bottom right
+		for(var i = bishop_r + 1, j = bishop_c + 1; i<8 && j<8; i++, j++) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, bishop_r, bishop_c) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// bottom left
+		for(var i = bishop_r + 1, j = bishop_c - 1; i<8 && j>=0; i++, j--) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, bishop_r, bishop_c) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// top right
+		for(var i = bishop_r - 1, j = bishop_c + 1; i>=0 && j<8; i--, j++) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, bishop_r, bishop_c) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
+		// top left
+		for(var i = bishop_r - 1, j = bishop_c - 1; i>=0 && j>=0; i--, j--) {
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(this.willKingDie(i, j, bishop_r, bishop_c) == true) {
+				return true;
+			}
+			if(virtualBoard[i][j] !== '' && virtualBoard[i][j] !== this.color) {
+				break;
+			}
+		}
+
 		return false;
 	}
 }
@@ -753,6 +811,7 @@ class King extends Piece {
 
 		for(var i = 0; i<8; i++) {
 			for (var j = 0; j<8; j++) {
+				console.log(virtualBoard[i][j]);
 				if(virtualBoard[i][j] !== '' && virtualBoard[i][j].color == this.color) {
 					if(virtualBoard[i][j].canAvoidCheckmate() == true) {
 						return false;
