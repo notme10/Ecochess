@@ -9,15 +9,6 @@ IMPORTNANT STUFF TO DO!!!
 
 */
 
-/*
-PIECES OBJECT!!!
-
-	- contains info of all "living" pieces
-	- if a piece dies, it gets taken off
-	- object is used to quickly find a piece I want
-
-*/
-
 class Piece {
 	constructor(color, coords) {
 		this.color = color;
@@ -269,6 +260,21 @@ class Piece {
 		return false;
 	}
 
+	willKingDie(new_x, new_y, old_x, old_y) {
+		// temporarily move king from old x and y to new x and y
+		// tests if king is out of check at that new x and y
+		// if king is checked, return true, if king is not checked, return false
+		// revert king to old x and y
+
+		var tempPiece = virtualBoard[new_x][new_y]
+		virtualBoard[new_x][new_y] = virtualBoard[old_x][old_y]; // new virtual space = old virt space
+		virtualBoard[old_x][old_y] = ''; // old virt space is set back to ''
+		var result = this.isKingChecked(new_x, new_y, this.color);
+		virtualBoard[old_x][old_y] = virtualBoard[new_x][new_y]; // cancels the move
+		virtualBoard[new_x][new_y] = tempPiece;
+		return result;
+	}
+
 	isPinned() {
 		// temporarily get rid of piece that is supposedly is pinned
 		// if king is in check, pinned = true
@@ -378,6 +384,7 @@ class Piece {
 		}
 		return false;
 	}
+
 }
 
 class Rook extends Piece {
@@ -625,21 +632,6 @@ class King extends Piece {
 		}
 	}
 
-	helperFunction(new_x, new_y, old_x, old_y) {
-		var tempPiece = virtualBoard[new_x][new_y]
-		virtualBoard[new_x][new_y] = virtualBoard[old_x][old_y]; // new virtual space = old virt space
-		virtualBoard[old_x][old_y] = ''; // old virt space is set back to ''
-		var result = this.isKingChecked(new_x, new_y, this.color);
-		virtualBoard[old_x][old_y] = virtualBoard[new_x][new_y]; // cancels the move
-		virtualBoard[new_x][new_y] = tempPiece;
-		return result;
-	}
-
-	isCheckmated(currentBoard) {
-
-	}
-
-
 	isCheckmated() {
 
 		var king_x = convertRowsToIndex(this.coords[1]);
@@ -666,7 +658,7 @@ class King extends Piece {
 				}
 				else if([i, j] !== [king_x, king_y] && virtualBoard[i][j].color == this.color) {
 				}
-				else if(this.helperFunction(i, j, king_x, king_y)) {
+				else if(this.willKingDie(i, j, king_x, king_y)) {
 				}
 				else {
 					return false;
