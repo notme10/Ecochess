@@ -117,7 +117,7 @@
 
 	var virtualBoard;
 
-	let state = "main"
+	let state = "rook checkmate testing 1"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -213,6 +213,20 @@
 			['','','','','','','',''],
 			['','','','','','','',''],
 			['','','','','','','',new King('b')]
+		]
+	}
+
+	if (state == "rook checkmate testing 1") {
+		virtualBoard =
+		[
+			['','','',new Bishop('b'),new King('b'),new Pawn('b'),'',''],
+			['','',new Rook('b'),'',new Pawn('b'),'','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','',new Bishop('w'),'','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',''],
+			['','','','','','','',new King('w')]
 		]
 	}
 

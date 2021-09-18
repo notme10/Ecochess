@@ -107,9 +107,11 @@ class Piece {
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
 
-		var pawns = pieces[this.color + "p"]
-		for(var i = 0; i<pawns.length; i++) {
-			pawns[i].enPassantPossible	= false;
+		var pawns = pieces[this.color + "p"];
+		if(pawns != undefined) {
+			for(var i = 0; i<pawns.length; i++) {
+				pawns[i].enPassantPossible	= false;
+			}
 		}
 
 		turn++;
@@ -418,6 +420,70 @@ class Rook extends Piece {
 		}
 	}
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) }
+
+	canAvoidCheckmate() {
+		var rook_row = convertRowsToIndex(this.coords[1]);
+		var rook_col = convertColsToIndex(this.coords[0]);
+
+		// right
+		for(var i = rook_col + 1; i<8; i++) {
+			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(canAvoidCheckmate(rook_row, i, rook_row, rook_col) == true) {
+				return true;
+			}
+			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] !== this.color) {
+				break;
+			}
+		}
+
+		// left
+		for(var i = rook_col - 1; i>=0; i--) {
+			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(canAvoidCheckmate(rook_row, i, rook_row, rook_col) == true) {
+				return true;
+			}
+			if(virtualBoard[rook_row][i] !== '' && virtualBoard[rook_row][i] !== this.color) {
+				break;
+			}
+		}
+
+		// up
+		for(var i = rook_row - 1; i>=0; i--) {
+			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(canAvoidCheckmate(i, rook_col, rook_row, rook_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] !== this.color) {
+				break;
+			}
+		}
+
+		// down
+		for(var i = rook_row + 1; i<8; i++) {
+			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] == this.color) {
+				// if test position is occupied by a piece of the same color, break
+				break;
+			}
+			if(canAvoidCheckmate(i, rook_col, rook_row, rook_col) == true) {
+				return true;
+			}
+			if(virtualBoard[i][rook_col] !== '' && virtualBoard[i][rook_col] !== this.color) {
+				break;
+			}
+		}
+
+		return false;
+	}
+
 }
 
 class Bishop extends Piece {
@@ -453,6 +519,10 @@ class Bishop extends Piece {
 	}
 
 	canEatKingAt(r, c, myColor) { return this.canEatDiagonals(r, c, myColor) }
+
+	canAvoidCheckmate() {
+		return false;
+	}
 }
 
 class Queen extends Piece {
@@ -494,6 +564,10 @@ class Queen extends Piece {
 		}
 	}
 	canEatKingAt(r, c, myColor) { return this.canEatHV(r, c, myColor) || this.canEatDiagonals(r, c, myColor) }
+
+	canAvoidCheckmate() {
+		return false;
+	}
 }
 
 class King extends Piece {
@@ -632,6 +706,31 @@ class King extends Piece {
 		}
 	}
 
+	canAvoidCheckmate() {
+		// checks eight squares around King and moves king to each one temporarily
+		// checks if king is out of check at that spot
+		// returns true if king can get out of check
+		// return false if king is in checkmate
+
+		var king_x = convertRowsToIndex(this.coords[1]);
+		var king_y = convertColsToIndex(this.coords[0]);
+
+		for(var i = king_x - 1; i <= king_x + 1; i++) {
+			for(var j = king_y - 1; j <= king_y + 1; j++) {
+				if(i > 7 || i < 0 || j > 7 || j < 0) {
+				}
+				else if([i, j] !== [king_x, king_y] && virtualBoard[i][j].color == this.color) {
+				}
+				else if(this.willKingDie(i, j, king_x, king_y)) {
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	isCheckmated() {
 
 		var king_x = convertRowsToIndex(this.coords[1]);
@@ -652,19 +751,16 @@ class King extends Piece {
 
 		// need to do something with isPinned()
 
-		for(var i = king_x - 1; i <= king_x + 1; i++) {
-			for(var j = king_y - 1; j <= king_y + 1; j++) {
-				if(i > 7 || i < 0 || j > 7 || j < 0) {
-				}
-				else if([i, j] !== [king_x, king_y] && virtualBoard[i][j].color == this.color) {
-				}
-				else if(this.willKingDie(i, j, king_x, king_y)) {
-				}
-				else {
-					return false;
+		for(var i = 0; i<8; i++) {
+			for (var j = 0; j<8; j++) {
+				if(virtualBoard[i][j] !== '' && virtualBoard[i][j].color == this.color) {
+					if(virtualBoard[i][j].canAvoidCheckmate() == true) {
+						return false;
+					}
 				}
 			}
 		}
+
 		return true;
 	}
 }
@@ -772,6 +868,9 @@ class Knight extends Piece {
 				return true;
 			}
 		}
+		return false;
+	}
+	canAvoidCheckmate() {
 		return false;
 	}
 }
@@ -918,7 +1017,6 @@ class Pawn extends Piece {
 		}
 	}
 
-
 	canEatKingAt(r, c, myColor) {
 
 		let cur_r = convertRowsToIndex(this.coords[1]);
@@ -936,5 +1034,42 @@ class Pawn extends Piece {
 				if(cur_c - 1 == c) { return this }
 			}
 		}
+	}
+
+	canAvoidCheckmate() {
+		var pawn_row = convertRowsToIndex(this.coords[1]);
+		var pawn_cols = convertColsToIndex(this.coords[0]);
+
+		if(this.color == "w") {
+			// white
+			if((pawn_row < 7) && (virtualBoard[pawn_row + 1][pawn_cols] == '' || virtualBoard[pawn_row + 1][pawn_cols].color !== this.color)) {
+				// if pawn_row + 1 does not go over 8 and if the piece in front of pawn is not empty or is a different color
+
+				if(this.willKingDie(pawn_row+1, pawn_cols, pawn_row, pawn_cols) == false) {
+					return true;
+				}
+			}
+			if((pawn_row == 1) && (virtualBoard[pawn_row + 2][pawn_cols] == '' || virtualBoard[pawn_row + 2][pawn_cols].color !== this.color)) {
+				// if pawn_row + 1 does not go over 8 and if the piece in front of pawn is not empty or is a different color
+				if(this.willKingDie(pawn_row+2, pawn_cols, pawn_row, pawn_cols) == false) {
+					return true;
+				}
+			}
+		} else {
+			// black
+			if((pawn_row > 0) && (virtualBoard[pawn_row - 1][pawn_cols] == '' || virtualBoard[pawn_row - 1][pawn_cols].color !== this.color)) {
+				// if pawn_row + 1 does not go over 8 and if the piece in front of pawn is not empty or is a different color
+				if(this.willKingDie(pawn_row-1, pawn_cols, pawn_row, pawn_cols) == false) {
+					return true;
+				}
+			}
+			if((pawn_row == 6) && (virtualBoard[pawn_row - 2][pawn_cols] == '' || virtualBoard[pawn_row - 2][pawn_cols].color !== this.color)) {
+				// if pawn_row + 1 does not go over 8 and if the piece in front of pawn is not empty or is a different color
+				if(this.willKingDie(pawn_row-2, pawn_cols, pawn_row, pawn_cols) == false) {
+				return true;
+				}
+			}
+		}
+		return false;
 	}
 }
