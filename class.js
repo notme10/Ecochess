@@ -1,11 +1,17 @@
 /*
 IMPORTNANT STUFF TO DO!!!
+	IN CLASS STUFF!
+		multiplayer
+		settings page
+		flip board around (in settings page?)
 
-- checkmate situation 1: checkmate even when attacking piece can be eaten
-
-- checkmate situation 2: checkmate even when attack can be blocked
-	- check if a piece is being pinned
-	- check if all available non-pinned pieces can block a check
+	OUTSIDE OF CLASS STUFF!
+		castle out of check fix
+		replace pieces with animals
+		checkmate popup order
+		add in ocean and sky facts + facts/solutions
+		testing!
+		cancel interval for facts when environment changes
 
 */
 

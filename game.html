@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<!-- jfkdlsjlfkdsj -->
 <html>
 <head> <link rel="stylesheet" href="styles.css"> </head>
 
 <body>
+
+	<button id='settings'>
+		<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+	</button>
+
+	<div id = 'settingsModal'>
+		<div class = 'modalContent'>
+
+			<div id = 'close'>
+				<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+			</div>
+
+			<p>Select a region</p>
+
+			<select id="Regions">
+
+				<option value="Standard">Standard</option>
+				<option value="Reef">Reef</option>
+				<option value="Ocean">Ocean</option>
+				<option value="Forest">Forest</option>
+				<option value="Tundra">Tundra</option>
+				<option value="Desert">Desert</option>
+				<option value="Sky">Sky</option>
+
+			</select>
+		</div>
+	</div>
+
 	<div id='layout'>
 		<div id='board'></div>
 		<div id='sidebar'>
@@ -252,6 +279,46 @@
 	function convertColsToIndex(col) { return columns.indexOf(col) }
 	function convertIndexToRows(index) { return rows[index] }
 	function convertIndexToCols(index) { return columns[index] }
+
+	var modal = document.getElementById("settingsModal");
+
+	document.getElementById("settings").addEventListener("click",e => {
+		modal.style.display = "block";
+		document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
+	})
+	document.getElementById("close").addEventListener("click", e => {
+		modal.style.display = "none";
+	})
+	document.getElementsByTagName("body")[0].addEventListener("click", e => {
+		if(e.target == modal) {
+			modal.style.display = "none";
+		}
+	})
+	document.getElementById("Regions").addEventListener("change", e => {
+
+		console.log("selection is: " + e.target.value);
+		localStorage.setItem('chosenRegion', e.target.value);
+
+		var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));
+		cells.forEach(c => {
+			if(c.className.includes("white")) {
+				c.className = `cell white${localStorage.getItem("chosenRegion")}`;
+			} else {
+				c.className = `cell black${localStorage.getItem("chosenRegion")}`;
+			}
+		})
+		var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+		document.body.style.backgroundImage = "url(" + bgFileName + ")";
+
+		var infoBox = document.getElementById("infoBox");
+		var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
+
+		infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
+		environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
+
+		setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
+
+	})
 
 	</script>
 </body>
