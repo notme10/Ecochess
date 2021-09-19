@@ -95,7 +95,9 @@
 
 						let rowPrevious = rows.indexOf(pieceInfo[1][1]);
 						let colPrevious = columns.indexOf(pieceInfo[1][0]);
-						virtualBoard[rowPrevious][colPrevious].eat();
+						if(virtualBoard[rowPrevious][colPrevious] != '') {
+							virtualBoard[rowPrevious][colPrevious].eat();
+						}
 					}
 				}
 			});
@@ -117,7 +119,7 @@
 
 	var virtualBoard;
 
-	let state = "rook checkmate testing 1"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [

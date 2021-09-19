@@ -163,8 +163,8 @@ class Piece {
 			var pieceImg = document.createElement("img");
 			pieceImg.src = item.imgurl;
 			capturedPiece.appendChild(pieceImg);
-			capturedPiece.style.width = "50px";
-			capturedPiece.style.height = "50px";
+			capturedPiece.style.width = "100px";
+			capturedPiece.style.height = "100px";
 			pieceImg.style.width = "100%";
 			pieceImg.style.height = "100%";
 			document.querySelector(".capturedPieces").appendChild(capturedPiece);
@@ -817,7 +817,6 @@ class Knight extends Piece {
 			}
 		);
 
-		console.log(resultList);
 		for(var i = 0; i<8; i++) {
 			if(resultList[i] == true) {
 				return true;
@@ -872,7 +871,6 @@ class Bishop extends Piece {
 				break;
 			}
 			if(this.willKingDie(i, j, bishop_r, bishop_c) == false) {
-				console.log("Bishop canAvoidCheckmate br i="+i + " j="+j);
 				return true;
 			}
 			if(virtualBoard[i][j] != '' && virtualBoard[i][j].color != this.color) {
@@ -887,7 +885,6 @@ class Bishop extends Piece {
 				break;
 			}
 			if(this.willKingDie(i, j, bishop_r, bishop_c) == false) {
-				console.log("Bishop canAvoidCheckmate bl i="+i + " j="+j);
 				return true;
 			}
 			if(virtualBoard[i][j] != '' && virtualBoard[i][j].color != this.color) {
@@ -902,7 +899,6 @@ class Bishop extends Piece {
 				break;
 			}
 			if(this.willKingDie(i, j, bishop_r, bishop_c) == false) {
-				console.log("Bishop canAvoidCheckmate tr i="+i + " j="+j);
 				return true;
 			}
 			if(virtualBoard[i][j] != '' && virtualBoard[i][j].color != this.color) {
@@ -917,7 +913,6 @@ class Bishop extends Piece {
 				break;
 			}
 			if(this.willKingDie(i, j, bishop_r, bishop_c) == false) {
-				console.log("Bishop canAvoidCheckmate tl i="+i + " j="+j);
 				return true;
 			}
 			if(virtualBoard[i][j] != '' && virtualBoard[i][j].color != this.color) {
@@ -1265,7 +1260,6 @@ class King extends Piece {
 			for (var j = 0; j<8; j++) {
 				if(virtualBoard[i][j] !== '' && virtualBoard[i][j].color == this.color) {
 					if(virtualBoard[i][j].canAvoidCheckmate() == true) {
-						console.log("canAvoidCheckmage by "+ virtualBoard[i][j].pieceName + " i="+i +" j="+j);
 						return false;
 					}
 				}
