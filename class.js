@@ -9,10 +9,8 @@ IMPORTNANT STUFF TO DO!!!
 		castle out of check fix
 		replace pieces with animals
 		checkmate popup order
-		add in ocean and sky facts + facts/solutions
 		testing!
 		cancel interval for facts when environment changes
-
 */
 
 class Piece {
@@ -169,8 +167,8 @@ class Piece {
 			var pieceImg = document.createElement("img");
 			pieceImg.src = item.imgurl;
 			capturedPiece.appendChild(pieceImg);
-			capturedPiece.style.width = "100px";
-			capturedPiece.style.height = "100px";
+			capturedPiece.style.width = "75px";
+			capturedPiece.style.height = "75px";
 			pieceImg.style.width = "100%";
 			pieceImg.style.height = "100%";
 			document.querySelector(".capturedPieces").appendChild(capturedPiece);
@@ -1160,6 +1158,10 @@ class King extends Piece {
 				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 					if(this.hasMoved == false) {
 						moveList.push("wk castled king side on turn " + (turn+1));
+						var newMove = document.createElement("div");
+						newMove.classList += "move";
+						newMove.innerText = moveList[moveList.length-1];
+						document.querySelector("#movesBox").appendChild(newMove);
 						this.movePiece(false);
 						virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
 						virtualBoard[7][7] = ''; // delete old rook
@@ -1176,6 +1178,10 @@ class King extends Piece {
 				if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
 					if(this.hasMoved == false) {
 						moveList.push("wk castled queen side on turn " + (turn+1));
+						var newMove = document.createElement("div");
+						newMove.classList += "move";
+						newMove.innerText = moveList[moveList.length-1];
+						document.querySelector("#movesBox").appendChild(newMove);
 						this.movePiece(false);
 						virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
 						virtualBoard[7][0] = ''; // delete old rook

@@ -32,7 +32,20 @@ var factsList = {
   ],
 
   Ocean: [
-    "Ocean Facts"
+    "More than 70% of the earth’s surface is part of the ocean.",
+    "The majority of life present on earth is aquatic.",
+    "The ocean has absorbed more than 90% of the warming created from the result of global warming. ",
+    "The rise of temperatures in oceans leads to coral bleaching and the loss of breeding grounds for other marine animals.",
+    "Plastic is the most common pollutant found in oceans and is also the most deadly as it is not easily broken down and animals mistake it as food.",
+    "There is a garbage patch in the pacific ocean now two times larger than Texas. Less than five percent of the Earth’s oceans have been explored by humans.",
+    "Water at the bottom of the ocean can be incredibly hot. ",
+    "To this day, sewage water is being released into the ocean.",
+    "As a result of global warming, the sea levels rise, causing problems for humans and animals alike. ",
+    "The world's largest mountain chain is located in the ocean.",
+    "The Challenger Deep is the lowest known point in the ocean, and is deeper than Mount Everest is tall. ",
+    "There are more historic artifacts under the sea than in museums.",
+    "Contrary to popular belief, the ocean actually creates more oxygen than trees.",
+    "Around 50 percent of the US exists underwater.",
   ],
 
   Forest: [
@@ -83,7 +96,12 @@ var factsList = {
   ],
 
   Sky: [
-    "Sky Facts"
+    "Air is mostly gas. Air is all around us, but we can't see it.",
+    "Air contains water, in the form of tiny droplets. ",
+    "Although plants produce air, they also need it to grow.",
+    "Air pollution is a mixture of solid particles and gases in the air.",
+    "Breathing in bad air pollution can cause risks of heart disease and strokes.",
+    "Air pollution is the fourth largest threat to human health.",
   ]
 }
 
