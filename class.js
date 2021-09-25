@@ -1144,60 +1144,61 @@ class King extends Piece {
 	move() {
 		var cur_x = convertColsToIndex(this.coords[0]);
 		var cur_y = convertRowsToIndex(this.coords[1]);
+		var isThreatened = this.isKingChecked(cur_y, cur_x, this.color);
 		let rowsMoved = Math.abs(cur_y - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
 		if (rowsMoved <= 1 && colsMoved <= 1) {
-			this.movePiece(false)
+			this.movePiece(false);
 			this.hasMoved = true;
 		}
 
-		// castling for white king
-		if(cur_y == 7 && this.color == 'w') {
-			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
-				if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
-					if(this.hasMoved == false) {
-						moveList.push("wk castled king side on turn " + (turn+1));
-						var newMove = document.createElement("div");
-						newMove.classList += "move";
-						newMove.innerText = moveList[moveList.length-1];
-						document.querySelector("#movesBox").appendChild(newMove);
-						this.movePiece(false);
-						virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
-						virtualBoard[7][7] = ''; // delete old rook
+		if(isThreatened == false) {
+			// castling for white king
+			if(cur_y == 7 && this.color == 'w') {
+				if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
+					if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
+						if(this.hasMoved == false) {
+							moveList.push("wk castled king side on turn " + (turn+1));
+							var newMove = document.createElement("div");
+							newMove.classList += "move";
+							newMove.innerText = moveList[moveList.length-1];
+							document.querySelector("#movesBox").appendChild(newMove);
+							this.movePiece(false);
+							virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
+							virtualBoard[7][7] = ''; // delete old rook
 
-						document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
-						var p = document.createElement('div'); // makes a new div called p
-						p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-						document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
+							var p = document.createElement('div'); // makes a new div called p
+							p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+							document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						}
+					}
+				}
+
+				if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
+					if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
+						if(this.hasMoved == false) {
+							moveList.push("wk castled queen side on turn " + (turn+1));
+							var newMove = document.createElement("div");
+							newMove.classList += "move";
+							newMove.innerText = moveList[moveList.length-1];
+							document.querySelector("#movesBox").appendChild(newMove);
+							this.movePiece(false);
+							virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
+							virtualBoard[7][0] = ''; // delete old rook
+
+							document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
+							var p = document.createElement('div'); // makes a new div called p
+							p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+							document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						}
 					}
 				}
 			}
 
-			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
-				if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
-					if(this.hasMoved == false) {
-						moveList.push("wk castled queen side on turn " + (turn+1));
-						var newMove = document.createElement("div");
-						newMove.classList += "move";
-						newMove.innerText = moveList[moveList.length-1];
-						document.querySelector("#movesBox").appendChild(newMove);
-						this.movePiece(false);
-						virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
-						virtualBoard[7][0] = ''; // delete old rook
-
-						document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
-						var p = document.createElement('div'); // makes a new div called p
-						p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-						document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
-					}
-				}
-			}
-
-		}
-
-		// castling for the black king
-		if(cur_y == 0 && this.color == 'b') {
+			// castling for the black king
+			if(cur_y == 0 && this.color == 'b') {
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
 					if(this.hasMoved == false) {
@@ -1229,6 +1230,7 @@ class King extends Piece {
 					}
 				}
 			}
+		}
 		}
 	}
 
