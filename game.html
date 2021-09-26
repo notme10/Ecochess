@@ -19,13 +19,15 @@
 
 			<select id="Regions">
 
-				<option value="Standard">Standard</option>
-				<option value="Reef">Reef</option>
-				<option value="Ocean">Ocean</option>
-				<option value="Forest">Forest</option>
-				<option value="Tundra">Tundra</option>
-				<option value="Desert">Desert</option>
-				<option value="Sky">Sky</option>
+				<optgroup>
+					<option value="Standard">Standard</option>
+					<option value="Reef">Reef</option>
+					<option value="Ocean">Ocean</option>
+					<option value="Forest">Forest</option>
+					<option value="Tundra">Tundra</option>
+					<option value="Desert">Desert</option>
+					<option value="Sky">Sky</option>
+				</optgroup>
 
 			</select>
 		</div>
@@ -74,6 +76,7 @@
 	var turn = 0;
 	var moveList = [];
 	var capturedPieces = [];
+	var loser = "";
 
 	document.addEventListener('keypress', e => {
 		if (e.key == 'q') {
@@ -146,7 +149,7 @@
 
 	var virtualBoard;
 
-	let state = "checked castle"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -346,7 +349,8 @@
 		infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
 		environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
 
-		setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
+		clearInterval(factsInterval);
+		factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
 
 	})
 

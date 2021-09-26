@@ -1,17 +1,18 @@
 /*
 IMPORTNANT STUFF TO DO!!!
-	IN CLASS STUFF!
-		multiplayer
-		settings page
-		flip board around (in settings page?)
-		ROOK CAN TELEPORT THROUGH KING AFTER CASTLING!!
-		black king cannot move from a8 to a7 after white king castles queen side
+IN CLASS STUFF!
+multiplayer
+settings page
+flip board around (in settings page?)
 
-	OUTSIDE OF CLASS STUFF!
-		replace pieces with animals
-		checkmate popup order
-		testing!
-		cancel interval for facts when environment changes
+OUTSIDE OF CLASS STUFF!!!
+replace pieces with animals
+checkmate popup order
+testing!
+game thinks rook is still in the corner, even after castling
+
+NEWLY FOUND BUGS!!!
+
 */
 
 class Piece {
@@ -64,9 +65,9 @@ class Piece {
 
 		document.querySelector(`.${pieceInfo[0]}.${pieceInfo[1]}`).remove(); // removes piece from old square
 
-		 // PROMOTION
-		 var prevRow = (this.color == "w") ? "7" : "2";
-		 var curRow = (this.color == "w") ? 0 : 7;
+		// PROMOTION
+		var prevRow = (this.color == "w") ? "7" : "2";
+		var curRow = (this.color == "w") ? 0 : 7;
 
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 			var promotionDone = false;
@@ -77,25 +78,25 @@ class Piece {
 
 				switch(promotionPiece) {
 					case "q": // promote to queen
-						virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
-						promotionDone = true;
-						moveList.push(this.color+ "p promoted to queen on turn " + (turn+1));
-						break;
+					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push(this.color+ "p promoted to queen on turn " + (turn+1));
+					break;
 					case "b": // promote to bishop
-						virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
-						promotionDone = true;
-						moveList.push(this.color+ "p promoted to bishop on turn " + (turn+1));
-						break;
+					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push(this.color+ "p promoted to bishop on turn " + (turn+1));
+					break;
 					case "r": // promote to rook
-						virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
-						promotionDone = true;
-						moveList.push(this.color+ "p promoted to rook on turn " + (turn+1));
-						break;
+					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push(this.color+ "p promoted to rook on turn " + (turn+1));
+					break;
 					case "n": // promote to knight
-						virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
-						promotionDone = true;
-						moveList.push(this.color+ "p promoted to knight on turn " + (turn+1));
-						break;
+					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push(this.color+ "p promoted to knight on turn " + (turn+1));
+					break;
 				}
 			}
 
@@ -140,14 +141,15 @@ class Piece {
 		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w";
 
 		for(var i = 0; i < 8; i++) {
-			thisTurnKing = virtualBoard[i].find(p => p !== "" && p.pieceName == thisTurnColor + "k");
+			thisTurnKing = pieces[`${thisTurnColor}k`][0];
 			if(thisTurnKing) {
 				break;
 			}
 		}
 
 		if(thisTurnKing.isCheckmated()) {
-			alert("Checkmate");
+			// alert("Checkmate");
+			loser = thisTurnColor;
 		}
 		return true;
 	}
@@ -245,6 +247,14 @@ class Piece {
 		let colsMoved = Math.abs(cur_x - convertColsToIndex(cellCoord[0]));
 
 		this.movePiece(false);
+	}
+
+	checkWinner() {
+		if(loser == "w") {
+			alert("BLACK WINS!");
+		} else if(loser == "b") {
+			alert("WHITE WINS!");
+		}
 	}
 
 	// CHECK
@@ -414,9 +424,9 @@ class Pawn extends Piece {
 
 		// PAWN DOUBLE MOVE
 		if ((this.color == "w") && (rowsMoved == 1) && (colsMoved == 0) ||
-				(this.color == "b") && (rowsMoved == -1) && (colsMoved == 0) ||
-				(this.color == "w") && (this.coords[1] == "2") && (rowsMoved == 2) && (colsMoved == 0) ||
-				(this.color == "b") && (this.coords[1] == "7") && (rowsMoved == -2) && (colsMoved == 0)) {
+		(this.color == "b") && (rowsMoved == -1) && (colsMoved == 0) ||
+		(this.color == "w") && (this.coords[1] == "2") && (rowsMoved == 2) && (colsMoved == 0) ||
+		(this.color == "b") && (this.coords[1] == "7") && (rowsMoved == -2) && (colsMoved == 0)) {
 
 			this.movePiece(false);
 
@@ -522,6 +532,7 @@ class Pawn extends Piece {
 				}
 			}
 		}
+		this.checkWinner();
 	}
 
 	eat() {
@@ -586,7 +597,7 @@ class Pawn extends Piece {
 			if((pawn_row == 6) && (virtualBoard[pawn_row - 2][pawn_cols] == '' || virtualBoard[pawn_row - 2][pawn_cols].color !== this.color)) {
 				// if pawn_row + 1 does not go over 8 and if the piece in front of pawn is not empty or is a different color
 				if(this.willKingDie(pawn_row-2, pawn_cols, pawn_row, pawn_cols) == false) {
-				return true;
+					return true;
 				}
 			}
 		}
@@ -613,6 +624,7 @@ class Rook extends Piece {
 
 			this.movePiece(false);
 			this.hasMoved = 1;
+			this.checkWinner();
 		}
 	}
 
@@ -706,7 +718,10 @@ class Knight extends Piece {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
 
-		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) { this.movePiece(false) }
+		if ((rowsMoved == 2 && colsMoved == 1) || (rowsMoved == 1 && colsMoved == 2)) {
+			this.movePiece(false);
+			this.checkWinner();
+		}
 	}
 
 	eat() {
@@ -806,29 +821,29 @@ class Knight extends Piece {
 
 		// FIXME: replace map with reduce
 		var resultList = possible_knight_moves.map(move => {
-				var test_row = knight_row + move[0];
-				var test_col = knight_col + move[1];
-				if((test_row >= 0) && (test_row < 8) && (test_col >= 0) && (test_col < 8) ) {
-					if(virtualBoard[test_row][test_col] != '' && virtualBoard[test_row][test_col].color == this.color) {
-						return false;
-					}
-					// if test position is occupied by a piece of the same color, break
-					if(this.willKingDie(test_row, test_col, knight_row, knight_col) == false) {
-						return true;
-					}
-
+			var test_row = knight_row + move[0];
+			var test_col = knight_col + move[1];
+			if((test_row >= 0) && (test_row < 8) && (test_col >= 0) && (test_col < 8) ) {
+				if(virtualBoard[test_row][test_col] != '' && virtualBoard[test_row][test_col].color == this.color) {
+					return false;
 				}
-				return false;
-			}
-		);
+				// if test position is occupied by a piece of the same color, break
+				if(this.willKingDie(test_row, test_col, knight_row, knight_col) == false) {
+					return true;
+				}
 
-		for(var i = 0; i<8; i++) {
-			if(resultList[i] == true) {
-				return true;
 			}
+			return false;
 		}
-		return false;
+	);
+
+	for(var i = 0; i<8; i++) {
+		if(resultList[i] == true) {
+			return true;
+		}
 	}
+	return false;
+}
 }
 
 class Bishop extends Piece {
@@ -850,7 +865,9 @@ class Bishop extends Piece {
 		if (rowsMoved == colsMoved) {
 			if(this.blockedDiagonal()) { return }
 			this.movePiece(false);
+			this.checkWinner();
 		}
+
 	}
 
 	eat() {
@@ -950,7 +967,8 @@ class Queen extends Piece {
 			if(this.coords[1] == cellCoord[1] && this.blockedHorizontal()) { return }
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
 
-			this.movePiece(false)
+			this.movePiece(false);
+			this.checkWinner();
 		}
 	}
 
@@ -1204,43 +1222,44 @@ class King extends Piece {
 
 			// castling for the black king
 			if(cur_y == 0 && this.color == 'b') {
-			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
-				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
-					if(this.hasMoved == false) {
-						if(this.isKingChecked("0", "6", "b") == false) {
-							moveList.push("bk castled king side on turn " + (turn+1));
-							this.movePiece(false);
-							virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
-							virtualBoard[0][7] = ''; // delete old rook
+				if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
+					if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
+						if(this.hasMoved == false) {
+							if(this.isKingChecked("0", "6", "b") == false) {
+								moveList.push("bk castled king side on turn " + (turn+1));
+								this.movePiece(false);
+								virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
+								virtualBoard[0][7] = ''; // delete old rook
 
-							document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
-							var p = document.createElement('div'); // makes a new div called p
-							p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-							document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+								document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
+								var p = document.createElement('div'); // makes a new div called p
+								p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+								document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							}
 						}
 					}
 				}
-			}
 
-			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
-				if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
-					if(this.hasMoved == false) {
-						if(this.isKingChecked("0", "1", "b") == false) {
-							moveList.push("bk castled queen side on turn " + (turn+1));
-							this.movePiece(false);
-							virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
-							virtualBoard[0][0] = ''; // delete old rook
+				if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
+					if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
+						if(this.hasMoved == false) {
+							if(this.isKingChecked("0", "1", "b") == false) {
+								moveList.push("bk castled queen side on turn " + (turn+1));
+								this.movePiece(false);
+								virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
+								virtualBoard[0][0] = ''; // delete old rook
 
-							document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
-							var p = document.createElement('div'); // makes a new div called p
-							p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-							document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+								document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
+								var p = document.createElement('div'); // makes a new div called p
+								p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+								document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							}
 						}
 					}
 				}
 			}
 		}
-		}
+		this.checkWinner();
 	}
 
 	canAvoidCheckmate() {

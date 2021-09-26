@@ -111,4 +111,4 @@ var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
 infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
 environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
 
-setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
+var factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
