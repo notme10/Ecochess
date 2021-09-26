@@ -4,9 +4,10 @@ IMPORTNANT STUFF TO DO!!!
 		multiplayer
 		settings page
 		flip board around (in settings page?)
+		ROOK CAN TELEPORT THROUGH KING AFTER CASTLING!!
+		black king cannot move from a8 to a7 after white king castles queen side
 
 	OUTSIDE OF CLASS STUFF!
-		castle out of check fix
 		replace pieces with animals
 		checkmate popup order
 		testing!
@@ -1159,19 +1160,21 @@ class King extends Piece {
 				if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 					if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 						if(this.hasMoved == false) {
-							moveList.push("wk castled king side on turn " + (turn+1));
-							var newMove = document.createElement("div");
-							newMove.classList += "move";
-							newMove.innerText = moveList[moveList.length-1];
-							document.querySelector("#movesBox").appendChild(newMove);
-							this.movePiece(false);
-							virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
-							virtualBoard[7][7] = ''; // delete old rook
+							if(this.isKingChecked("7", "6", "w") == false) {
+								moveList.push("wk castled king side on turn " + (turn+1));
+								var newMove = document.createElement("div");
+								newMove.classList += "move";
+								newMove.innerText = moveList[moveList.length-1];
+								document.querySelector("#movesBox").appendChild(newMove);
+								this.movePiece(false);
+								virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
+								virtualBoard[7][7] = ''; // delete old rook
 
-							document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
-							var p = document.createElement('div'); // makes a new div called p
-							p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-							document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+								document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
+								var p = document.createElement('div'); // makes a new div called p
+								p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+								document.getElementById("f1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							}
 						}
 					}
 				}
@@ -1179,19 +1182,21 @@ class King extends Piece {
 				if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 					if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
 						if(this.hasMoved == false) {
-							moveList.push("wk castled queen side on turn " + (turn+1));
-							var newMove = document.createElement("div");
-							newMove.classList += "move";
-							newMove.innerText = moveList[moveList.length-1];
-							document.querySelector("#movesBox").appendChild(newMove);
-							this.movePiece(false);
-							virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
-							virtualBoard[7][0] = ''; // delete old rook
+							if(this.isKingChecked("7", "1", "w") == false) {
+								moveList.push("wk castled queen side on turn " + (turn+1));
+								var newMove = document.createElement("div");
+								newMove.classList += "move";
+								newMove.innerText = moveList[moveList.length-1];
+								document.querySelector("#movesBox").appendChild(newMove);
+								this.movePiece(false);
+								virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
+								virtualBoard[7][0] = ''; // delete old rook
 
-							document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
-							var p = document.createElement('div'); // makes a new div called p
-							p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-							document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+								document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
+								var p = document.createElement('div'); // makes a new div called p
+								p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+								document.getElementById("c1").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							}
 						}
 					}
 				}
@@ -1202,15 +1207,17 @@ class King extends Piece {
 			if(convertColsToIndex(cellCoord[0]) == 6 && rowsMoved == 0) {
 				if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
 					if(this.hasMoved == false) {
-						moveList.push("bk castled king side on turn " + (turn+1));
-						this.movePiece(false);
-						virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
-						virtualBoard[0][7] = ''; // delete old rook
+						if(this.isKingChecked("0", "6", "b") == false) {
+							moveList.push("bk castled king side on turn " + (turn+1));
+							this.movePiece(false);
+							virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
+							virtualBoard[0][7] = ''; // delete old rook
 
-						document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
-						var p = document.createElement('div'); // makes a new div called p
-						p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-						document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
+							var p = document.createElement('div'); // makes a new div called p
+							p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+							document.getElementById("f8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						}
 					}
 				}
 			}
@@ -1218,15 +1225,17 @@ class King extends Piece {
 			if(convertColsToIndex(cellCoord[0]) == 1 && rowsMoved == 0) {
 				if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
 					if(this.hasMoved == false) {
-						moveList.push("bk castled queen side on turn " + (turn+1));
-						this.movePiece(false);
-						virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
-						virtualBoard[0][0] = ''; // delete old rook
+						if(this.isKingChecked("0", "1", "b") == false) {
+							moveList.push("bk castled queen side on turn " + (turn+1));
+							this.movePiece(false);
+							virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
+							virtualBoard[0][0] = ''; // delete old rook
 
-						document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
-						var p = document.createElement('div'); // makes a new div called p
-						p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
-						document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+							document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
+							var p = document.createElement('div'); // makes a new div called p
+							p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+							document.getElementById("c8").appendChild(p); // puts the piece we created in js into the cell that we clicked on
+						}
 					}
 				}
 			}
