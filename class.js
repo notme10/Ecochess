@@ -160,23 +160,7 @@ class Piece {
 		var previousPosition = this.coords;
 		var x = convertRowsToIndex(cellCoord[1]);
 		var y = convertColsToIndex(cellCoord[0]);
-
 		var pieceToCapture = virtualBoard[x][y];
-		capturedPieces.push(pieceToCapture);
-
-		document.querySelector(".capturedPieces").innerHTML = '';
-		capturedPieces.forEach(item => {
-			var capturedPiece = document.createElement("div");
-			var pieceImg = document.createElement("img");
-			pieceImg.src = item.imgurl;
-			capturedPiece.appendChild(pieceImg);
-			capturedPiece.style.width = "75px";
-			capturedPiece.style.height = "75px";
-			pieceImg.style.width = "100%";
-			pieceImg.style.height = "100%";
-			document.querySelector(".capturedPieces").appendChild(capturedPiece);
-		});
-
 
 		var t = document.querySelector(`.${virtualBoard[x][y].pieceName}.${cellCoord}`)
 		var q = t.className;
@@ -193,6 +177,20 @@ class Piece {
 			var p = document.createElement('div'); // makes a new div called p
 			p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+		} else {
+			capturedPieces.push(pieceToCapture);
+			document.querySelector(".capturedPieces").innerHTML = '';
+			capturedPieces.forEach(item => {
+				var capturedPiece = document.createElement("div");
+				var pieceImg = document.createElement("img");
+				pieceImg.src = item.imgurl;
+				capturedPiece.appendChild(pieceImg);
+				capturedPiece.style.width = "75px";
+				capturedPiece.style.height = "75px";
+				pieceImg.style.width = "100%";
+				pieceImg.style.height = "100%";
+				document.querySelector(".capturedPieces").appendChild(capturedPiece);
+			});
 		}
 	}
 
@@ -249,18 +247,16 @@ class Piece {
 		this.movePiece(false);
 	}
 
-	timer() {
+	winnerAlert() {
 		if(loser == "w") {
-			// console.log("Black ");
 			alert("Black wins!");
 		} else if(loser == "b") {
-			// console.log("White ");
 			alert("White wins!");
 		}
 	}
 
 	checkWinner() {
-		setTimeout(this.timer, 10);
+		setTimeout(this.winnerAlert, 10);
 	}
 
 	// CHECK
