@@ -1,15 +1,18 @@
 /*
 IMPORTNANT STUFF TO DO!!!
-IN CLASS STUFF!
-multiplayer
-settings page
-flip board around (in settings page?)
+	IN CLASS STUFF!
+		multiplayer
+		settings page
+		flip board around (in settings page?)
 
-OUTSIDE OF CLASS STUFF!!!
-replace pieces with animals
-testing!
+	OUTSIDE OF CLASS STUFF!!!
+		replace pieces with animals
+		testing!
+		* when capturing a piece, write what piece was captured, and on what square *
+		* display moveList after promotion *
+		** when a pawn promotes, write down which square it moved to **
 
-NEWLY FOUND BUGS!!!
+	NEWLY FOUND BUGS!!!
 
 */
 
@@ -122,7 +125,10 @@ class Piece {
 
 		if(moveList.length < turn) {
 			if(captureMove == true) {
-				moveList.push(this.pieceName + " on " + prv_coords + " captured a piece on turn "+ (turn));
+				// var capturedPiece = virtualBoard[].pieceName;
+				// var capturedPiecePos = virtualBoard[];
+
+				moveList.push(this.pieceName + " on " + prv_coords + " captured a piece on " + this.coords + " on turn "+ (turn));
 			} else {
 				moveList.push(this.pieceName + " moved from " + prv_coords + " to " + this.coords + " on turn " + (turn))
 			}
