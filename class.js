@@ -7,9 +7,7 @@ flip board around (in settings page?)
 
 OUTSIDE OF CLASS STUFF!!!
 replace pieces with animals
-checkmate popup order
 testing!
-game thinks rook is still in the corner, even after castling
 
 NEWLY FOUND BUGS!!!
 
@@ -1191,6 +1189,7 @@ class King extends Piece {
 								virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
 								virtualBoard[7][7] = ''; // delete old rook
 
+								virtualBoard[7][5].coords = "f1";
 								document.querySelector(`.${"wr"}.${"h1"}`).remove(); // removes piece from old square
 								var p = document.createElement('div'); // makes a new div called p
 								p.className = `${"wr"} ${"f1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
@@ -1213,6 +1212,7 @@ class King extends Piece {
 								virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
 								virtualBoard[7][0] = ''; // delete old rook
 
+								virtualBoard[7][2].coords = "c1";
 								document.querySelector(`.${"wr"}.${"a1"}`).remove(); // removes piece from old square
 								var p = document.createElement('div'); // makes a new div called p
 								p.className = `${"wr"} ${"c1"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
@@ -1234,6 +1234,7 @@ class King extends Piece {
 								virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
 								virtualBoard[0][7] = ''; // delete old rook
 
+								virtualBoard[0][5].coords = "f8";
 								document.querySelector(`.${"br"}.${"h8"}`).remove(); // removes piece from old square
 								var p = document.createElement('div'); // makes a new div called p
 								p.className = `${"br"} ${"f8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
@@ -1252,6 +1253,7 @@ class King extends Piece {
 								virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
 								virtualBoard[0][0] = ''; // delete old rook
 
+								virtualBoard[0][2].coords = "c8";
 								document.querySelector(`.${"br"}.${"a8"}`).remove(); // removes piece from old square
 								var p = document.createElement('div'); // makes a new div called p
 								p.className = `${"br"} ${"c8"}`; // puts the first part of pieceInfo and the cellCoord into the p's className
