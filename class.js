@@ -148,7 +148,7 @@ class Piece {
 		}
 
 		if(thisTurnKing.isCheckmated()) {
-			// alert("Checkmate");
+			console.log("FJKDJG");
 			loser = thisTurnColor;
 		}
 		return true;
@@ -249,12 +249,18 @@ class Piece {
 		this.movePiece(false);
 	}
 
-	checkWinner() {
+	timer() {
 		if(loser == "w") {
-			alert("BLACK WINS!");
+			// console.log("Black ");
+			alert("Black wins!");
 		} else if(loser == "b") {
-			alert("WHITE WINS!");
+			// console.log("White ");
+			alert("White wins!");
 		}
+	}
+
+	checkWinner() {
+		setTimeout(this.timer, 10);
 	}
 
 	// CHECK
@@ -982,6 +988,7 @@ class Queen extends Piece {
 			if(this.coords[0] == cellCoord[0] && this.blockedVertical()) { return }
 
 			this.eatPiece();
+			this.checkWinner();
 		}
 	}
 
