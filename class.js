@@ -15,7 +15,6 @@ PIECES OBJECT!!!
 	- contains info of all "living" pieces
 	- if a piece dies, it gets taken off
 	- object is used to quickly find a piece I want
-
 */
 
 class Piece {
