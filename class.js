@@ -9,8 +9,6 @@ IMPORTNANT STUFF TO DO!!!
 		replace pieces with animals
 		testing!
 		* when capturing a piece, write what piece was captured, and on what square *
-		* display moveList after promotion *
-		** when a pawn promotes, write down which square it moved to **
 
 	NEWLY FOUND BUGS!!!
 
@@ -69,6 +67,7 @@ class Piece {
 		// PROMOTION
 		var prevRow = (this.color == "w") ? "7" : "2";
 		var curRow = (this.color == "w") ? 0 : 7;
+		var prevCoords = this.coords[0] + prevRow;
 
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 			var promotionDone = false;
@@ -81,24 +80,27 @@ class Piece {
 					case "q": // promote to queen
 					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p promoted to queen on turn " + (turn+1));
+					moveList.push(this.color+ "p on " + prevCoords + " promoted to queen on turn " + (turn+1));
 					break;
 					case "b": // promote to bishop
 					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p promoted to bishop on turn " + (turn+1));
+					moveList.push(this.color+ "p on " + prevCoords + " promoted to bishop on turn " + (turn+1));
 					break;
 					case "r": // promote to rook
 					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p promoted to rook on turn " + (turn+1));
+					moveList.push(this.color+ "p on " + prevCoords + " promoted to rook on turn " + (turn+1));
 					break;
 					case "n": // promote to knight
 					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p promoted to knight on turn " + (turn+1));
+					moveList.push(this.color+ "p on " + prevCoords + " promoted to knight on turn " + (turn+1));
 					break;
 				}
+
+				pushMoveMessage();
+
 			}
 
 			var p = document.createElement('div'); // makes a new div called p
@@ -124,20 +126,8 @@ class Piece {
 		turn++;
 
 		if(moveList.length < turn) {
-			if(captureMove == true) {
-				// var capturedPiece = virtualBoard[].pieceName;
-				// var capturedPiecePos = virtualBoard[];
-
-				moveList.push(this.pieceName + " on " + prv_coords + " captured a piece on " + this.coords + " on turn "+ (turn));
-			} else {
-				moveList.push(this.pieceName + " moved from " + prv_coords + " to " + this.coords + " on turn " + (turn))
-			}
-
-
-			var newMove = document.createElement("div");
-			newMove.classList += "move";
-			newMove.innerText = moveList[moveList.length-1];
-			document.querySelector("#movesBox").appendChild(newMove);
+			moveList.push({pieceName: this.pieceName, oldPos: prv_coords, newPos: this.coords, captured: captureMove, threatened: checkedOrCheckmated()});
+			pushMoveMessage();
 		}
 
 		var thisTurnColor;
@@ -152,7 +142,6 @@ class Piece {
 		}
 
 		if(thisTurnKing.isCheckmated()) {
-			console.log("FJKDJG");
 			loser = thisTurnColor;
 		}
 		return true;
@@ -486,10 +475,7 @@ class Pawn extends Piece {
 					this.movePiece(false);
 					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 
-					var newMove = document.createElement("div");
-					newMove.classList += "move";
-					newMove.innerText = moveList[moveList.length-1];
-					document.querySelector("#movesBox").appendChild(newMove);
+					pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -1187,10 +1173,9 @@ class King extends Piece {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "6", "w") == false) {
 								moveList.push("wk castled king side on turn " + (turn+1));
-								var newMove = document.createElement("div");
-								newMove.classList += "move";
-								newMove.innerText = moveList[moveList.length-1];
-								document.querySelector("#movesBox").appendChild(newMove);
+
+								pushMoveMessage();
+
 								this.movePiece(false);
 								virtualBoard[7][5] = virtualBoard[7][7]; // move rook to new location
 								virtualBoard[7][7] = ''; // delete old rook
@@ -1210,10 +1195,7 @@ class King extends Piece {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "1", "w") == false) {
 								moveList.push("wk castled queen side on turn " + (turn+1));
-								var newMove = document.createElement("div");
-								newMove.classList += "move";
-								newMove.innerText = moveList[moveList.length-1];
-								document.querySelector("#movesBox").appendChild(newMove);
+								pushMoveMessage();
 								this.movePiece(false);
 								virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
 								virtualBoard[7][0] = ''; // delete old rook

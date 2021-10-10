@@ -95,12 +95,21 @@ body {
 	font-size: 20px;
 }
 
+.move {
+	display: grid;
+	grid-template-columns: 10% 45% 45%;
+}
+
 #settings {
 	position: absolute;
 	left: 20px;
 	top: 20px;
 	background-color: transparent;
 	border: none;
+}
+
+#Regions {
+	font-size: 25px;
 }
 
 .modalContent {
@@ -111,10 +120,6 @@ body {
 	width: 70%;
 	font-size: 30px;
     font-family: 'Verdana', sans-serif;
-}
-
-#Regions {
-	font-size: 25px;
 }
 
 .capturedPieces {

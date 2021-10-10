@@ -149,7 +149,7 @@
 
 	var virtualBoard;
 
-	let state = "castle"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -324,6 +324,24 @@
 	function convertColsToIndex(col) { return columns.indexOf(col) }
 	function convertIndexToRows(index) { return rows[index] }
 	function convertIndexToCols(index) { return columns[index] }
+
+	function pushMoveMessage() {
+		var newMove = document.createElement("div");
+		var turn = document.createElement("div");
+		var whiteMove = document.createElement("div");
+		var blackMove = document.createElement("div");
+
+		newMove.classList += "move";
+		turn.innerText = Math.ceil(moveList.length/2);
+		whiteMove.
+		newMove.innerText = moveList[moveList.length-1];
+		document.querySelector("#movesBox").appendChild(newMove);
+	}
+
+	function checkedOrCheckmated() {
+		var kingCoords = pieces[this.color + "k"][0].coords;
+		return isKingChecked(kingCoords[0], kingCoords[1], virtualBoard[kingCoords[0], kingCoords[1]].color) || isCheckmated();
+	}
 
 	var modal = document.getElementById("settingsModal");
 
