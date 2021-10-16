@@ -27,6 +27,19 @@ class Piece {
 		this.coords = coord;
 	}
 
+	checkedOrCheckmated() {
+		// console.log(pieces[]);
+		var kingCoords = pieces[this.color + "k"][0].coords;
+		if(this.color == "w") {
+			var opponentColor = "b";
+		} else {
+			var opponentColor = "w";
+		}
+		return this.isKingChecked(kingCoords[0], kingCoords[1], opponentColor);
+
+		// return this.isKingChecked(kingCoords[0], kingCoords[1], virtualBoard[kingCoords[0], kingCoords[1]].color) || this.isCheckmated();
+	}
+
 	movePiece(captureMove) {
 		// captureMove is only true only when the move function is called to eat a piece
 		// return true if move is allowed, false if move is not allowed
@@ -126,7 +139,12 @@ class Piece {
 		turn++;
 
 		if(moveList.length < turn) {
-			moveList.push({pieceName: this.pieceName, oldPos: prv_coords, newPos: this.coords, captured: captureMove, threatened: checkedOrCheckmated()});
+			moveList.push({pieceName: this.pieceName,
+				 		   oldPos: prv_coords,
+						   newPos: this.coords,
+						   color: this.color,
+						   captured: captureMove,
+						   threatened: this.checkedOrCheckmated()});
 			pushMoveMessage();
 		}
 

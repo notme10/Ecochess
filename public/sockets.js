@@ -1,4 +1,4 @@
 socket.on("playerConnect", (data) => {
-    console.log(data.name);
-    console.log(data.sides);
+    // console.log(data.name);
+    // console.log(data.sides);
 });

@@ -321,21 +321,35 @@
 	function convertIndexToCols(index) { return columns[index] }
 
 	function pushMoveMessage() {
-		var newMove = document.createElement("div");
-		var turn = document.createElement("div");
-		var whiteMove = document.createElement("div");
-		var blackMove = document.createElement("div");
+		var lastMove = moveList[moveList.length-1];
 
-		newMove.classList += "move";
-		turn.innerText = Math.ceil(moveList.length/2);
-		whiteMove.
-		newMove.innerText = moveList[moveList.length-1];
-		document.querySelector("#movesBox").appendChild(newMove);
-	}
+		if(lastMove.color == "w") {
+			var newMove = document.createElement("div");
+			var turn = document.createElement("div");
+			var whiteMove = document.createElement("div");
 
-	function checkedOrCheckmated() {
-		var kingCoords = pieces[this.color + "k"][0].coords;
-		return isKingChecked(kingCoords[0], kingCoords[1], virtualBoard[kingCoords[0], kingCoords[1]].color) || isCheckmated();
+			newMove.classList += "move";
+			turn.classList += "move";
+			whiteMove.classList += "move";
+
+			turn.innerText = Math.ceil(moveList.length/2);
+
+			whiteMove.innerText = lastMove.pieceName + "." + lastMove.oldPos + "." + lastMove.newPos;
+
+			newMove.appendChild(turn);
+			newMove.appendChild(whiteMove);
+			document.querySelector("#movesBox").appendChild(newMove);
+
+		} else {
+			var blackMove = document.createElement("div");
+			blackMove.classList += "move";
+			blackMove.innerText = lastMove.pieceName + "." + lastMove.oldPos + "." + lastMove.newPos;
+
+			var moveBox = document.querySelector("#movesBox");
+			console.log(moveBox);
+			var newMove = moveBox.lastElementChild;
+			newMove.appendChild(blackMove);
+		}
 	}
 
 	var modal = document.getElementById("settingsModal");
