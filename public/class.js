@@ -6,11 +6,11 @@ IMPORTNANT STUFF TO DO!!!
 		flip board around (in settings page?)
 
 	OUTSIDE OF CLASS STUFF!!!
-		replace pieces with animals
 		testing!
-		* when capturing a piece, write what piece was captured, and on what square *
 
 	NEWLY FOUND BUGS!!!
+		threatened does not work in movesList
+		add promoted and castling for movesList
 
 */
 
