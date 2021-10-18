@@ -193,7 +193,7 @@ body {
 .wp {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png');
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Fish_icon_%28The_Noun_Project_27052%29.svg/1200px-Fish_icon_%28The_Noun_Project_27052%29.svg.png');
 	/* background-image: url("images/ocean_pieces/cean/fish.png"); */
 	background-repeat: no-repeat;
 	background-size: 100%;
@@ -211,15 +211,15 @@ body {
 .wn {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png');
+	background-image: url('https://www.iseahorse.org/assets/img/logos/iSeahorse_300x300.png');
 	background-size: 100%;
 }
 
 .wb {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png');
-	background-size: 100%;
+	background-image: url('https://snipstock.com/assets/cdn/png/f923e1584109d8354dcf693f0a2200d1.png');
+	background-size: 120%;
 }
 
 .wq {
