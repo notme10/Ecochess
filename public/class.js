@@ -11,6 +11,9 @@ IMPORTNANT STUFF TO DO!!!
 	NEWLY FOUND BUGS!!!
 		threatened does not work in movesList
 		add promoted and castling for movesList
+		moves that are made from info that the server sends should not send info back to the server :)
+		fix sides
+		whenever a new client joins the server, set the board state to the current board state
 
 */
 
@@ -148,11 +151,7 @@ class Piece {
 			pushMoveMessage();
 		}
 
-		socket.emit("makeMove", {
-			piece: this.pieceName,
-			oldPos: prv_coords,
-			newPos: this.coords
-		});
+		socket.emit("makeMove", moveList[moveList.length - 1]);
 
 		var thisTurnColor;
 		var thisTurnKing;
@@ -437,7 +436,6 @@ class Pawn extends Piece {
 	}
 
 	move() {
-
 		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
 		let colsMoved = convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]);
 
