@@ -1,5 +1,10 @@
 /*
 IMPORTNANT STUFF TO DO!!!
+	For the 10/24 class
+		Fix sides
+		Rooms
+		Moves that are made from info that the server sends should not senf into back to the server
+
 	IN CLASS STUFF!
 		multiplayer
 		settings page
@@ -13,6 +18,7 @@ IMPORTNANT STUFF TO DO!!!
 		add promoted and castling for movesList
 		moves that are made from info that the server sends should not send info back to the server :)
 		fix sides
+		rooms
 		whenever a new client joins the server, set the board state to the current board state
 
 */
