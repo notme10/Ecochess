@@ -1,9 +1,5 @@
 /*
 IMPORTNANT STUFF TO DO!!!
-	For the 10/24 class
-		Fix sides
-		Rooms
-		Moves that are made from info that the server sends should not senf into back to the server
 
 	IN CLASS STUFF!
 		multiplayer
@@ -157,7 +153,7 @@ class Piece {
 			pushMoveMessage();
 		}
 
-		socket.emit("makeMove", moveList[moveList.length - 1]);
+		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room});
 
 		var thisTurnColor;
 		var thisTurnKing;

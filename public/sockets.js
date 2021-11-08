@@ -4,8 +4,17 @@ socket.on("playerConnect", (data) => {
 });
 
 socket.on("sendMove", (data) => {
-    console.log(data);
-    cellCoord = data.newPos;
-    pieceInfo = [data.pieceName, data.oldPos];
-    virtualBoard[convertRowsToIndex(data.oldPos[1])][convertColsToIndex(data.oldPos[0])].move();
+  if (data.room == room) {
+    console.log(data.moves);
+    cellCoord = data.moves.newPos;
+    pieceInfo = [data.moves.pieceName, data.moves.oldPos];
+    if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
+      virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
+    }
+  }
+
 });
+
+socket.on("sidesInfo", (data) => {
+  console.log(data);
+})

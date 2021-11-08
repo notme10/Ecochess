@@ -36,26 +36,33 @@ var port =  process.env.PORT
 
 function addSockets() {
 
-	var players = {}; // server-side variables for the entire server
+
 	var sides = {"w": null, "b": null};
+	var rooms = {};
 
 	io.on('connection', (socket) => { // server listens for a connection from a client
 
 		var name; // server-side variables for specific connections
-
+		var roomId;
+		socket.on('setRoom', (data) => {
+			roomId = data.room;
+			if (!rooms[roomId]) {
+				rooms[roomId] = {"w": null, "b": null};
+			}
+		})
 		socket.on('playerName', (data) => {
 			name = data.name;
-			players[name] = true;
 
-			if(sides["w"] == null) {
-				sides["w"] = name;
-			} else if(sides["b"] == null) {
-				sides["b"] = name;
+			if(rooms[roomId]["w"] == null) {
+				rooms[roomId]["w"] = name;
+			} else if(rooms[roomId]["b"] == null) {
+				rooms[roomId]["b"] = name;
 			}
 
+			io.emit('sidesInfo', rooms[roomId])
 			io.emit('playerConnect', {
 				name: name,
-				sides: sides
+				sides: rooms[roomId]
 			}); // emits a message
 		})
 
@@ -67,7 +74,13 @@ function addSockets() {
 
 			// Do something
 			io.emit('playerDisconnect', name);
-
+			if (rooms[roomId]["w"] == name) {
+				rooms[roomId]["w"] = null;
+			}
+			if (rooms[roomId]["b"] == name) {
+				rooms[roomId]["b"] = null;
+			}
+			io.emit('sidesInfo', rooms[roomId])
 		});
 
 	});
