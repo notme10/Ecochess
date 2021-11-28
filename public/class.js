@@ -2,8 +2,6 @@
 IMPORTNANT STUFF TO DO!!!
 
 	IN CLASS STUFF!
-		multiplayer
-		settings page
 		flip board around (in settings page?)
 
 	OUTSIDE OF CLASS STUFF!!!
@@ -12,10 +10,9 @@ IMPORTNANT STUFF TO DO!!!
 	NEWLY FOUND BUGS!!!
 		threatened does not work in movesList
 		add promoted and castling for movesList
-		moves that are made from info that the server sends should not send info back to the server :)
-		fix sides
-		rooms
-		whenever a new client joins the server, set the board state to the current board state
+		castling is bugged
+		moves list only displays moves after spectator joins 
+
 
 */
 
@@ -436,6 +433,15 @@ class Pawn extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png";
 		}
 	}
+	setEverything(color, coords, hasMoved, pinned, imgurl, enPassantPossible, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.enPassantPossible = enPassantPossible;
+		this.pieceName = pieceName;
+	}
 
 	move() {
 		let rowsMoved = convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]);
@@ -632,7 +638,14 @@ class Rook extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/br.png";
 		}
 	}
-
+	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.pieceName = pieceName;
+	}
 	move() {
 		if (this.coords[0] == cellCoord[0] || this.coords[1] == cellCoord[1]) {  // checks if it is in the same row or column
 			if(this.blockedHorizontal()) { return }  // if blocked horizontally, do nothing
@@ -729,7 +742,14 @@ class Knight extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bn.png";
 		}
 	}
-
+	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.pieceName = pieceName;
+	}
 	move() {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
@@ -873,7 +893,14 @@ class Bishop extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bb.png";
 		}
 	}
-
+	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.pieceName = pieceName;
+	}
 	move() {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
@@ -973,7 +1000,14 @@ class Queen extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bq.png";
 		}
 	}
-
+	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.pieceName = pieceName;
+	}
 	move() {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
@@ -1136,7 +1170,14 @@ class King extends Piece {
 			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png";
 		}
 	}
-
+	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
+		this.color = color;
+		this.coords = coords;
+		this.hasMoved = hasMoved;
+		this.pinned = pinned;
+		this.imgurl = imgurl;
+		this.pieceName = pieceName;
+	}
 	eat() {
 		let rowsMoved = Math.abs(convertRowsToIndex(this.coords[1]) - convertRowsToIndex(cellCoord[1]));
 		let colsMoved = Math.abs(convertColsToIndex(this.coords[0]) - convertColsToIndex(cellCoord[0]));
