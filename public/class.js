@@ -153,7 +153,7 @@ class Piece {
 			pushMoveMessage();
 		}
 
-		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room});
+		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room, pieces: pieces, turn: turn});
 
 		var thisTurnColor;
 		var thisTurnKing;

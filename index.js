@@ -36,8 +36,6 @@ var port =  process.env.PORT
 
 function addSockets() {
 
-
-	var sides = {"w": null, "b": null};
 	var rooms = {};
 
 	io.on('connection', (socket) => { // server listens for a connection from a client
@@ -47,7 +45,7 @@ function addSockets() {
 		socket.on('setRoom', (data) => {
 			roomId = data.room;
 			if (!rooms[roomId]) {
-				rooms[roomId] = {"w": null, "b": null};
+				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0};
 			}
 		})
 		socket.on('playerName', (data) => {
@@ -62,11 +60,13 @@ function addSockets() {
 			io.emit('sidesInfo', rooms[roomId])
 			io.emit('playerConnect', {
 				name: name,
-				sides: rooms[roomId]
+				info: rooms[roomId]
 			}); // emits a message
 		})
 
 		socket.on('makeMove', (data) => {
+			rooms[roomId]["pieces"] = data.pieces;
+			rooms[roomId]["turn"] = data.turn;
 			io.emit("sendMove", (data));
 		});
 

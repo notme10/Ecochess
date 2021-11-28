@@ -104,7 +104,8 @@
 							virtualBoard[rowPrevious][colPrevious].move();
 						}
 					}
-				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b"){ // clicked on a piece
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w"
+				  		|| turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
 					// clear old selected pieces
 					let selectedCell = document.querySelector(".selected") // gets the cell that is selected
 
