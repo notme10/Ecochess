@@ -45,7 +45,7 @@ function addSockets() {
 		socket.on('setRoom', (data) => {
 			roomId = data.room;
 			if (!rooms[roomId]) {
-				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0};
+				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0, "moveList": []};
 			}
 		})
 		socket.on('playerName', (data) => {
@@ -67,6 +67,11 @@ function addSockets() {
 		socket.on('makeMove', (data) => {
 			rooms[roomId]["pieces"] = data.pieces;
 			rooms[roomId]["turn"] = data.turn;
+			var movesListArray = rooms[roomId]["moveList"];
+			var lastPiece = movesListArray[movesListArray.length - 1];
+			if(!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
+				rooms[roomId]["moveList"].push(data.moves);
+			}
 			io.emit("sendMove", (data));
 		});
 

@@ -6,14 +6,20 @@ IMPORTNANT STUFF TO DO!!!
 
 	OUTSIDE OF CLASS STUFF!!!
 		testing!
+		promoted moveslist
+		write the X when captured, = when promoted, etc
 
 	NEWLY FOUND BUGS!!!
 		threatened does not work in movesList
-		add promoted and castling for movesList
+		reset rooms if nobody is in it
+		change the sprites on captured bar to animals and trash
+		only display captured pieces of opponent on bottom bar
+
+	FINISHED!!!
+		castling for movesList
 		castling is bugged
-		moves list only displays moves after spectator joins 
-
-
+		capturing for multiplayer
+		moves list only displays moves after spectator joins
 */
 
 class Piece {
@@ -95,22 +101,58 @@ class Piece {
 					case "q": // promote to queen
 					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p on " + prevCoords + " promoted to queen on turn " + (turn+1));
+					// moveList.push(this.color+ "p on " + prevCoords + " promoted to queen on turn " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName + " = q",
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: captureMove,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
 					break;
 					case "b": // promote to bishop
 					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p on " + prevCoords + " promoted to bishop on turn " + (turn+1));
+					// moveList.push(this.color+ "p on " + prevCoords + " promoted to bishop on turn " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName + " = b",
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: captureMove,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
 					break;
 					case "r": // promote to rook
 					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p on " + prevCoords + " promoted to rook on turn " + (turn+1));
+					// moveList.push(this.color+ "p on " + prevCoords + " promoted to rook on turn " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName + " = r",
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: captureMove,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
 					break;
 					case "n": // promote to knight
 					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
 					promotionDone = true;
-					moveList.push(this.color+ "p on " + prevCoords + " promoted to knight on turn " + (turn+1));
+					// moveList.push(this.color+ "p on " + prevCoords + " promoted to knight on turn " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName + " = n",
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: captureMove,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
 					break;
 				}
 
@@ -1237,7 +1279,15 @@ class King extends Piece {
 					if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "6", "w") == false) {
-								moveList.push("wk castled king side on turn " + (turn+1));
+								// moveList.push("wk castled king side on turn " + (turn+1));
+
+								moveList.push({pieceName: "0",
+									 		   oldPos: "0",
+											   newPos: '',
+											   color: this.color,
+											   captured: false,
+											   threatened: false
+										   });
 
 								pushMoveMessage();
 
@@ -1259,7 +1309,17 @@ class King extends Piece {
 					if(virtualBoard[7][1] == '' && virtualBoard[7][2] == '' && virtualBoard[7][3] == '' && virtualBoard[7][0].pieceName == "wr") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "1", "w") == false) {
-								moveList.push("wk castled queen side on turn " + (turn+1));
+								// moveList.push("wk castled queen side on turn " + (turn+1));
+
+								moveList.push({pieceName: "0",
+											   oldPos: "0",
+											   newPos: "0",
+											   color: this.color,
+											   captured: false,
+											   threatened: false
+										   });
+
+
 								pushMoveMessage();
 								this.movePiece(false);
 								virtualBoard[7][2] = virtualBoard[7][0]; // move rook to new location
@@ -1282,7 +1342,16 @@ class King extends Piece {
 					if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "6", "b") == false) {
-								moveList.push("bk castled king side on turn " + (turn+1));
+								// moveList.push("bk castled king side on turn " + (turn+1));
+
+								moveList.push({pieceName: "0",
+									 		   oldPos: "0",
+											   newPos: '',
+											   color: this.color,
+											   captured: false,
+											   threatened: false
+										   });
+
 								this.movePiece(false);
 								virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
 								virtualBoard[0][7] = ''; // delete old rook
@@ -1301,7 +1370,17 @@ class King extends Piece {
 					if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "1", "b") == false) {
-								moveList.push("bk castled queen side on turn " + (turn+1));
+								// moveList.push("bk castled queen side on turn " + (turn+1));
+
+								moveList.push({pieceName: "0",
+									 		   oldPos: "0",
+											   newPos: "0",
+											   color: this.color,
+											   captured: false,
+											   threatened: false
+										   });
+
+
 								this.movePiece(false);
 								virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
 								virtualBoard[0][0] = ''; // delete old rook
