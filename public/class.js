@@ -3,17 +3,17 @@ IMPORTNANT STUFF TO DO!!!
 
 	IN CLASS STUFF!
 		flip board around (in settings page?)
+		enemy pieces show up as trash
 
 	OUTSIDE OF CLASS STUFF!!!
 		testing!
 		promoted moveslist
-		write the X when captured, = when promoted, etc
-
-	NEWLY FOUND BUGS!!!
-		threatened does not work in movesList
-		reset rooms if nobody is in it
+		write the X when captured, = when promoted, + when check, # when checkmate, etc
 		change the sprites on captured bar to animals and trash
 		only display captured pieces of opponent on bottom bar
+
+	NEWLY FOUND BUGS!!!
+		reset rooms if nobody is in it
 
 	FINISHED!!!
 		castling for movesList
