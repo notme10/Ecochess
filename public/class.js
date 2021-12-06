@@ -2,8 +2,8 @@
 IMPORTNANT STUFF TO DO!!!
 
 	IN CLASS STUFF!
-		flip board around (in settings page?)
-		enemy pieces show up as trash
+		* enemy pieces show up as trash
+		* add a button to flip board
 
 	OUTSIDE OF CLASS STUFF!!!
 		testing!
