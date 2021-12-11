@@ -1,4 +1,6 @@
 socket.on("playerConnect", (data) => {
+    console.log(data.name);
+    console.log(data.sides);
     if(data.info.pieces && turn == 0) {
         pieces = data.info.pieces;
         virtualBoard = [
@@ -43,9 +45,6 @@ socket.on("playerConnect", (data) => {
                 }
             }
         }
-
-        // document.getElementById("board").innerHTML = "";
-        console.log(side);
 
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
