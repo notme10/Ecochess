@@ -71,6 +71,11 @@ socket.on("sendMove", (data) => {
         // console.log(data.moves);
         cellCoord = data.moves.newPos;
         pieceInfo = [data.moves.pieceName, data.moves.oldPos];
+
+        // if(virtualBoard[convertRowsToIndex(cellCoord[0])][convertColsToIndex(cellCoord[1])]) {
+        //
+        // }
+
         if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
             console.log(data);
             console.log(cellCoord);
@@ -78,8 +83,10 @@ socket.on("sendMove", (data) => {
 
             if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
                 virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
+                console.log("EAT!");
             } else {
                 virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
+                console.log("MOVE!");
             }
         }
     }

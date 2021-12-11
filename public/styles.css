@@ -193,8 +193,7 @@ body {
 .wp {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://media.discordapp.net/attachments/754834621543219325/919341218490634290/Ecohero_Fish.png?width=531&height=676');
-	/* background-image: url("images/ocean_pieces/cean/fish.png"); */
+	background-image: url('images/ocean_images/ocean_pawn.png');
 	background-repeat: no-repeat;
 	background-size: 100%;
 	background-position: bottom;
@@ -203,7 +202,7 @@ body {
 .wr {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://www.pikpng.com/pngl/b/332-3326148_marlin-swordfish-fish-sailfish-png-image-swordfish-jumping.png');
+	background-image: url('images/ocean_images/ocean_rook.png');
 	background-size: cover;
 	background-repeat:no-repeat;
 }
@@ -211,69 +210,69 @@ body {
 .wn {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://www.pinclipart.com/picdir/big/20-202292_sea-horse-images-sea-horse-png-clipart.png');
+	background-image: url('images/ocean_images/ocean_knight.png');
 	background-size: 100%;
 }
 
 .wb {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://snipstock.com/assets/cdn/png/f923e1584109d8354dcf693f0a2200d1.png');
+	background-image: url('images/ocean_images/ocean_bishop.png');
 	background-size: 120%;
 }
 
 .wq {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://webstockreview.net/images/clipart-whale-killer-whale-5.png');
+	background-image: url('images/ocean_images/ocean_queen.png');
 	background-size: 100%;
 }
 
 .wk {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://cdn.discordapp.com/attachments/754834621543219325/919341218863931552/Ecohero_Shark.png');
+	background-image: url('images/ocean_images/ocean_king.png');
 	background-size: 100%;
 }
 
 .bp {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://cdn3d.iconscout.com/3d/premium/thumb/trash-bags-3485475-2918588.png');
+	background-image: url('images/trash_images/trash_pawn.png');
 	background-size: 100%;
 }
 
 .br {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://pngimg.com/uploads/water_bottle/water_bottle_PNG98968.png');
+	background-image: url('images/trash_images/trash_rook.png');
 	background-size: 100%;
 }
 
 .bn {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://media-s3-us-east-1.ceros.com/healthline/images/2021/04/07/528f9d6fbdfec6f9ca358550ffc10f6c/togo.png');
+	background-image: url('images/trash_images/trash_knight.png');
 	background-size: 110%;
 }
 
 .bb {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://cdn-icons-png.flaticon.com/512/3353/3353863.png');
+	background-image: url('images/trash_images/trash_bishop.png');
 	background-size: 100%;
 }
 
 .bq {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://resource.grapplet.com/marketplace/11218/1620750142717/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%BA%94.svg.preview.580x870.png');
+	background-image: url('images/trash_images/trash_queen.png');
 	background-size: 100%;
 }
 
 .bk {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://image.flaticon.com/icons/png/512/44/44936.png');
+	background-image: url('images/trash_images/trash_king.png');
 	background-size: 100%;
 }

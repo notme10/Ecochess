@@ -7,8 +7,7 @@ IMPORTNANT STUFF TO DO!!!
 
 	OUTSIDE OF CLASS STUFF!!!
 		testing!
-		promoted moveslist
-		write the X when captured, = when promoted, + when check, # when checkmate, etc
+		write the + when check, and # when checkmated
 		change the sprites on captured bar to animals and trash
 		only display captured pieces of opponent on bottom bar
 
@@ -16,6 +15,7 @@ IMPORTNANT STUFF TO DO!!!
 		reset rooms if nobody is in it
 
 	FINISHED!!!
+		promoted moveslist
 		castling for movesList
 		castling is bugged
 		capturing for multiplayer
@@ -103,9 +103,9 @@ class Piece {
 					promotionDone = true;
 					// moveList.push(this.color+ "p on " + prevCoords + " promoted to queen on turn " + (turn+1));
 
-					moveList.push({pieceName: this.pieceName + " = q",
+					moveList.push({pieceName: this.pieceName,
 						 		   oldPos: prv_coords,
-								   newPos: this.coords,
+								   newPos: this.coords + "=q",
 								   color: this.color,
 								   captured: captureMove,
 								   threatened: this.checkedOrCheckmated()
@@ -117,9 +117,9 @@ class Piece {
 					promotionDone = true;
 					// moveList.push(this.color+ "p on " + prevCoords + " promoted to bishop on turn " + (turn+1));
 
-					moveList.push({pieceName: this.pieceName + " = b",
+					moveList.push({pieceName: this.pieceName,
 						 		   oldPos: prv_coords,
-								   newPos: this.coords,
+								   newPos: this.coords + "=b",
 								   color: this.color,
 								   captured: captureMove,
 								   threatened: this.checkedOrCheckmated()
@@ -131,9 +131,9 @@ class Piece {
 					promotionDone = true;
 					// moveList.push(this.color+ "p on " + prevCoords + " promoted to rook on turn " + (turn+1));
 
-					moveList.push({pieceName: this.pieceName + " = r",
+					moveList.push({pieceName: this.pieceName,
 						 		   oldPos: prv_coords,
-								   newPos: this.coords,
+								   newPos: this.coords + "=r",
 								   color: this.color,
 								   captured: captureMove,
 								   threatened: this.checkedOrCheckmated()
@@ -145,9 +145,9 @@ class Piece {
 					promotionDone = true;
 					// moveList.push(this.color+ "p on " + prevCoords + " promoted to knight on turn " + (turn+1));
 
-					moveList.push({pieceName: this.pieceName + " = n",
+					moveList.push({pieceName: this.pieceName,
 						 		   oldPos: prv_coords,
-								   newPos: this.coords,
+								   newPos: this.coords + "=n",
 								   color: this.color,
 								   captured: captureMove,
 								   threatened: this.checkedOrCheckmated()
@@ -182,10 +182,12 @@ class Piece {
 
 		turn++;
 
+		var newPosTxt = this.coords;
+		if(captureMove == true) { newPosTxt += ".x" }
 		if(moveList.length < turn) {
 			moveList.push({pieceName: this.pieceName,
 				 		   oldPos: prv_coords,
-						   newPos: this.coords,
+						   newPos: newPosTxt,
 						   color: this.color,
 						   captured: captureMove,
 						   threatened: this.checkedOrCheckmated()});
@@ -219,6 +221,9 @@ class Piece {
 		var y = convertColsToIndex(cellCoord[0]);
 		var pieceToCapture = virtualBoard[x][y];
 
+		console.log(x);
+		console.log(y);
+
 		var t = document.querySelector(`.${virtualBoard[x][y].pieceName}.${cellCoord}`)
 		var q = t.className;
 		t.remove();
@@ -227,7 +232,7 @@ class Piece {
 		var tempPiece = virtualBoard[x][y];
 		virtualBoard[x][y] = "";
 
-		if(!this.movePiece(true)) {
+		if(!this.movePiece(true, true)) {
 			// if movePiece cancels, run this code
 
 			virtualBoard[x][y] = tempPiece;
@@ -470,9 +475,9 @@ class Pawn extends Piece {
 		this.enPassantPossible = false;
 		this.pieceName = color + "p";
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png";
+			this.imgurl = "images/ocean_images/ocean_pawn.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png";
+			this.imgurl = "images/trash_images/trash_pawn.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, enPassantPossible, pieceName) {
@@ -545,8 +550,16 @@ class Pawn extends Piece {
 			if(((X-1) > 0) && (convertColsToIndex(cellCoord[0]) == (X-1))) {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
 					this.movePiece(false);
-					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 
+					moveList.push({pieceName: this.pieceName,
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: true,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
+					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
@@ -559,7 +572,18 @@ class Pawn extends Piece {
 			if(((X+1) < 7) && (convertColsToIndex(cellCoord[0]) == (X+1))) {
 				if(virtualBoard[Y][X+1].pieceName == "bp") {
 					this.movePiece(false);
-					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName,
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: true,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
+							   pushMoveMessage();
+
+					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
@@ -577,7 +601,18 @@ class Pawn extends Piece {
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
 					this.movePiece(false);
-					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
+					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName,
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: true,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
+							   pushMoveMessage();
+
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
@@ -588,7 +623,18 @@ class Pawn extends Piece {
 			if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "wp") {
 					this.movePiece(false);
-					moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
+
+					moveList.push({pieceName: this.pieceName,
+						 		   oldPos: prv_coords,
+								   newPos: this.coords,
+								   color: this.color,
+								   captured: true,
+								   threatened: this.checkedOrCheckmated()
+							   });
+
+							   pushMoveMessage();
+
+					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
@@ -675,9 +721,9 @@ class Rook extends Piece {
 		this.pieceName = color + "r"
 		this.hasMoved = 0;
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png";
+			this.imgurl = "images/ocean_images/ocean_rook.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/br.png";
+			this.imgurl = "images/trash_images/trash_rook.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
@@ -779,9 +825,9 @@ class Knight extends Piece {
 		super(color, coords);
 		this.pieceName = color + "n";
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png";
+			this.imgurl = "images/ocean_images/ocean_knight.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bn.png";
+			this.imgurl = "images/trash_images/trash_knight.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
@@ -930,9 +976,9 @@ class Bishop extends Piece {
 
 		this.pieceName = color + "b";
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png";
+			this.imgurl = "images/ocean_images/ocean_knight.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bb.png";
+			this.imgurl = "images/trash_images/trash_knight.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
@@ -1037,9 +1083,9 @@ class Queen extends Piece {
 
 		this.pieceName = color + "q";
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png";
+			this.imgurl = "images/ocean_images/ocean_queen.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bq.png";
+			this.imgurl = "images/trash_images/trash_queen.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
@@ -1207,9 +1253,9 @@ class King extends Piece {
 		this.pieceName = color + "k";
 		this.hasMoved = false;
 		if(color == "w") {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wk.png";
+			this.imgurl = "images/ocean_images/ocean_king.png";
 		} else {
-			this.imgurl = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png";
+			this.imgurl = "images/trash_images/trash_king.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
