@@ -89,29 +89,33 @@
 	var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 	var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-	for (row = 0; row < height; row++) {
-		for (col = 0; col < width; col++) {
-			var cell = document.createElement('div');
-			cell.addEventListener('click', e => {
-				cellCoord = e.target.id; // get cellCoord
-				if (cellCoord) { // clicked on a tile w/o piece
-					if (pieceInfo) { // clicked on a piece before
-						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
-						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+	function generateBoard(s) {
 
-						// we move the piece
-						if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
-							virtualBoard[rowPrevious][colPrevious].move();
+		var topLeft = (s == "w");
+
+		for (row = topLeft ? 0 : (height - 1); topLeft ? (row < height) : (row >= 0); row = topLeft ? (row + 1) : (row - 1)) {
+			for (col = topLeft ? 0 : (width - 1); topLeft ? (col < width) : (col >= 0); col = topLeft ? (col + 1) : (col - 1)) {
+				var cell = document.createElement('div');
+				cell.addEventListener('click', e => {
+					cellCoord = e.target.id; // get cellCoord
+					if (cellCoord) { // clicked on a tile without piece
+						if (pieceInfo) { // clicked on a piece before
+							let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
+							let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+
+							// we move the piece
+							if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
+								virtualBoard[rowPrevious][colPrevious].move();
+							}
 						}
-					}
-				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w"
-				  		|| turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
-					// clear old selected pieces
-					let selectedCell = document.querySelector(".selected") // gets the cell that is selected
+					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w"
+					  		|| turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
+						// clear old selected pieces
+						let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
 
-					if (selectedCell) {
-						selectedCell.className = selectedCell.className.replace(' selected', '') // get rid of selected tag
-					}
+						if (selectedCell) {
+							selectedCell.className = selectedCell.className.replace(' selected', ''); // get rid of selected tag
+						}
 
 					pieceInfo = e.target.className.split(" ");
 					document.getElementById(pieceInfo[1]).className += " selected"
@@ -188,76 +192,6 @@
 		];
 	}
 
-	if (state == "checkmate white") {
-		virtualBoard =
-		[
-			["", new Rook('b'), "", new King('b'), "", "", "", ""],
-			[new Pawn('b'), new Pawn('b'), new Pawn('b'), "", "", new Queen('w'), "", ""],
-			["", "", "", "", "", new Pawn('b'), "", ""],
-			[new Queen('b'), "", "", new Bishop('w'), new Knight('w'), "", "", ""],
-			["", "", "", new Pawn('w'), "", new Pawn('b'), "", ""],
-			["", "", new Knight('w'), "", new Pawn('w'), "", "", ""],
-			[new Pawn('w'), "", "", "", "", new Pawn('w'), new Pawn('w'), new Pawn('w')],
-			["", "", new Rook('w'), "", "", new Rook('w'), new King('w'), ""]
-		]
-	}
-
-	if (state == "false checkmate 1") {
-		virtualBoard =
-		[
-			['','','',new Queen('b'),new King('b'),'','',''],
-			['','','','','','','',new Queen('w')],
-			['','','','','','','',''],
-			['','','','',new Rook('w'),'','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('w')]
-		]
-	}
-
-	if (state == "false checkmate 2") {
-		virtualBoard =
-		[
-			[new King('b'),new Rook('b'),'','','','','',''],
-			[new Rook('b'),'','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['',new Bishop('w'),'','','','','',new King('w')]
-		]
-	}
-
-	if (state == "pin") {
-		virtualBoard =
-		[
-			['','','','',new King('w'),'','',''],
-			['','','','',new Bishop('w'),'','',''],
-			['','','','','','','',''],
-			['','','','',new Rook('b'),'','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('b')]
-		]
-	}
-
-	if (state == "rook checkmate testing 1") {
-		virtualBoard =
-		[
-			['',new Knight('b'),'',new Bishop('b'),new King('b'),new Pawn('b'),'',''],
-			['','','','',new Pawn('b'),new Pawn('b'),'',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','',new Bishop('w'),'','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('w')]
-		]
-	}
-
 	if (state == "castle") {
 		virtualBoard = [
 			[new King('b'),'','','','','','',''],
@@ -283,7 +217,6 @@
 			['','','','','','','',new King('w')]
 		];
 	}
-	// empty board - copy and paste as needed
 
 	if (state == "AAAAAAAA") {
 		virtualBoard = [
