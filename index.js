@@ -79,11 +79,16 @@ function addSockets() {
 
 			// Do something
 			io.emit('playerDisconnect', name);
-			if (rooms[roomId]["w"] == name) {
-				rooms[roomId]["w"] = null;
+			if (rooms[roomId] == null || rooms[roomId]["w"] == null && rooms[roomId]["b"] == null) {
+					rooms[roomId] = null;
 			}
-			if (rooms[roomId]["b"] == name) {
-				rooms[roomId]["b"] = null;
+			else {
+				if (rooms[roomId]["w"] == name) {
+					rooms[roomId]["w"] = null;
+				}
+				if (rooms[roomId]["b"] == name) {
+					rooms[roomId]["b"] = null;
+				}
 			}
 			io.emit('sidesInfo', rooms[roomId])
 		});

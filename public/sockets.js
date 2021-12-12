@@ -1,7 +1,59 @@
+function convertPieces(pieces) {
+  var result = {};
+  for(pieceType in pieces) {
+    result[pieceType] = [];
+      for(i in pieces[pieceType]) {
+          piece = pieces[pieceType][i]
+          var pieceTypeArray = result[pieceType]
+          row = convertRowsToIndex(piece.coords[1]);
+          col = convertColsToIndex(piece.coords[0]);
+
+          if(pieceType[1] == "p") {
+            var createdPiece = new Pawn(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.enPassantPossible, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+              // virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.enPassantPossible, piece.pieceName);
+          }
+          else if(pieceType[1] == "r") {
+            var createdPiece = new Rook(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+          }
+          else if(pieceType[1] == "n") {
+            var createdPiece = new Knight(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+          }
+          else if(pieceType[1] == "b") {
+            var createdPiece = new Bishop(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+          }
+          else if(pieceType[1] == "q") {
+            var createdPiece = new Queen(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+          }
+          else if(pieceType[1] == "k") {
+            var createdPiece = new King(pieceType[0]);
+            createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+            pieceTypeArray.push(createdPiece);
+            virtualBoard[row][col] = createdPiece;
+          }
+      }
+  }
+  pieces = result;
+}
 socket.on("playerConnect", (data) => {
     console.log(data.name);
     console.log(data.sides);
     if(data.info.pieces && turn == 0) {
+      //convert objects in pieces from server into classes
         pieces = data.info.pieces;
         virtualBoard = [
             ['','','','','','','',''],
@@ -13,38 +65,55 @@ socket.on("playerConnect", (data) => {
             ['','','','','','','',''],
             ['','','','','','','','']
         ];
+        var result = {};
         for(pieceType in pieces) {
+          result[pieceType] = [];
             for(i in pieces[pieceType]) {
                 piece = pieces[pieceType][i]
+                var pieceTypeArray = result[pieceType]
                 row = convertRowsToIndex(piece.coords[1]);
                 col = convertColsToIndex(piece.coords[0]);
 
                 if(pieceType[1] == "p") {
-                    virtualBoard[row][col] = new Pawn(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.enPassantPossible, piece.pieceName);
+                  var createdPiece = new Pawn(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.enPassantPossible, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
+                    // virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.enPassantPossible, piece.pieceName);
                 }
                 else if(pieceType[1] == "r") {
-                    virtualBoard[row][col] = new Rook(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  var createdPiece = new Rook(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
                 }
                 else if(pieceType[1] == "n") {
-                    virtualBoard[row][col] = new Knight(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  var createdPiece = new Knight(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
                 }
                 else if(pieceType[1] == "b") {
-                    virtualBoard[row][col] = new Bishop(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  var createdPiece = new Bishop(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
                 }
                 else if(pieceType[1] == "q") {
-                    virtualBoard[row][col] = new Queen(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  var createdPiece = new Queen(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
                 }
                 else if(pieceType[1] == "k") {
-                    virtualBoard[row][col] = new King(pieceType[0]);
-                    virtualBoard[row][col].setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  var createdPiece = new King(pieceType[0]);
+                  createdPiece.setEverything(piece.color, piece.coords, piece.hasMoved, piece.pinned, piece.imgurl, piece.pieceName);
+                  pieceTypeArray.push(createdPiece);
+                  virtualBoard[row][col] = createdPiece;
                 }
             }
         }
+        pieces = result;
 
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -68,7 +137,7 @@ socket.on("playerConnect", (data) => {
 socket.on("sendMove", (data) => {
     if (data.room == room) {
         // console.log(data.moves);
-        cellCoord = data.moves.newPos;
+        cellCoord = data.moves.newPos.substring(0, 2);
         pieceInfo = [data.moves.pieceName, data.moves.oldPos];
 
         // if(virtualBoard[convertRowsToIndex(cellCoord[0])][convertColsToIndex(cellCoord[1])]) {
