@@ -108,8 +108,7 @@
 								virtualBoard[rowPrevious][colPrevious].move();
 							}
 						}
-					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w"
-					  		|| turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
+					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
 						// clear old selected pieces
 						let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
 
@@ -117,35 +116,38 @@
 							selectedCell.className = selectedCell.className.replace(' selected', ''); // get rid of selected tag
 						}
 
-					pieceInfo = e.target.className.split(" ");
-					document.getElementById(pieceInfo[1]).className += " selected"
-				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
-					if (pieceInfo) {
-						cellCoord = e.target.className.split(" ")[1];
+						pieceInfo = e.target.className.split(" ");
+						document.getElementById(pieceInfo[1]).className += " selected"
+					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
+						if (pieceInfo) {
+							cellCoord = e.target.className.split(" ")[1];
 
-						let rowPrevious = rows.indexOf(pieceInfo[1][1]);
-						let colPrevious = columns.indexOf(pieceInfo[1][0]);
-						if(virtualBoard[rowPrevious][colPrevious] != '') {
-							virtualBoard[rowPrevious][colPrevious].eat();
+							let rowPrevious = rows.indexOf(pieceInfo[1][1]);
+							let colPrevious = columns.indexOf(pieceInfo[1][0]);
+							if(virtualBoard[rowPrevious][colPrevious] != '') {
+								virtualBoard[rowPrevious][colPrevious].eat();
+							}
 						}
 					}
+				});
+
+				board.appendChild(cell);
+				if ((row + col) % 2 == 0) { // white
+					cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
 				}
-			});
 
-			board.appendChild(cell);
-			if ((row + col) % 2 == 0) { // white
-				cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
+				else { // black
+					cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
+				}
+
+				var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+				document.body.style.backgroundImage = "url(" + bgFileName + ")";
+				cell.id = columns[col] + rows[row];
 			}
-
-			else { // black
-				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
-			}
-
-			var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
-			document.body.style.backgroundImage = "url(" + bgFileName + ")";
-			cell.id = columns[col] + rows[row];
 		}
 	}
+
+	generateBoard("b");
 
 	var virtualBoard;
 

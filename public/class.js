@@ -15,6 +15,7 @@ IMPORTNANT STUFF TO DO!!!
 		reset rooms if nobody is in it
 		change the sprites on captured bar to animals and trash
 		only display captured pieces of opponent on bottom bar
+		new players will have a bugged board because they don't have a chosen region -- implement something so that if the chosen region is null, it automatically gets set to something
 
 	FINISHED!!!
 		promoted moveslist
