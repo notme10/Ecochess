@@ -151,9 +151,24 @@
 				cell.id = columns[col] + rows[row];
 			}
 		}
-	}
 
-	generateBoard("w");
+		for (let i = 0; i < 8; i++) {
+			for (let j = 0; j < 8; j++) {
+				if (virtualBoard[i][j]) {
+					virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+					if(!(virtualBoard[i][j].pieceName in pieces)) {
+						pieces[virtualBoard[i][j].pieceName] = [];
+					}
+					pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
+
+					p = document.createElement('div'); // creates a piece
+					p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+					document.getElementById(columns[j] + rows[i]).appendChild(p);
+				}
+			}
+		}
+
+	}
 
 	var virtualBoard;
 
@@ -239,23 +254,7 @@
 		];
 	}
 
-
-
-	for (let i = 0; i < 8; i++) {
-		for (let j = 0; j < 8; j++) {
-			if (virtualBoard[i][j]) {
-				virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
-				if(!(virtualBoard[i][j].pieceName in pieces)) {
-					pieces[virtualBoard[i][j].pieceName] = [];
-				}
-				pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
-
-				p = document.createElement('div'); // creates a piece
-				p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
-				document.getElementById(columns[j] + rows[i]).appendChild(p);
-			}
-		}
-	}
+	generateBoard("w");
 
 	function convertRowsToIndex(row) { return rows.indexOf(row) }
 	function convertColsToIndex(col) { return columns.indexOf(col) }
