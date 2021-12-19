@@ -140,7 +140,8 @@
 					cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
 				}
 
-				var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+				// var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+				var bgFileName = `images/${localStorage.getItem("chosenRegion")}.png`
 				document.body.style.backgroundImage = "url(" + bgFileName + ")";
 				cell.id = columns[col] + rows[row];
 			}
