@@ -288,45 +288,45 @@
 		}
 	}
 
-	var modal = document.getElementById("settingsModal");
-
-	document.getElementById("settings").addEventListener("click",e => {
-		modal.style.display = "block";
-		document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
-	})
-	document.getElementById("close").addEventListener("click", e => {
-		modal.style.display = "none";
-	})
-	document.getElementsByTagName("body")[0].addEventListener("click", e => {
-		if(e.target == modal) {
-			modal.style.display = "none";
-		}
-	})
-	document.getElementById("Regions").addEventListener("change", e => {
-
-		localStorage.setItem('chosenRegion', e.target.value);
-
-		var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));
-		cells.forEach(c => {
-			if(c.className.includes("white")) {
-				c.className = `cell white${localStorage.getItem("chosenRegion")}`;
-			} else {
-				c.className = `cell black${localStorage.getItem("chosenRegion")}`;
-			}
-		})
-		var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
-		document.body.style.backgroundImage = "url(" + bgFileName + ")";
-
-		var infoBox = document.getElementById("infoBox");
-		var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
-
-		infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
-		environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
-
-		clearInterval(factsInterval);
-		factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
-
-	})
+	// var modal = document.getElementById("settingsModal");
+	//
+	// document.getElementById("settings").addEventListener("click",e => {
+	// 	modal.style.display = "block";
+	// 	document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
+	// })
+	// document.getElementById("close").addEventListener("click", e => {
+	// 	modal.style.display = "none";
+	// })
+	// document.getElementsByTagName("body")[0].addEventListener("click", e => {
+	// 	if(e.target == modal) {
+	// 		modal.style.display = "none";
+	// 	}
+	// })
+	// document.getElementById("Regions").addEventListener("change", e => {
+	//
+	// 	localStorage.setItem('chosenRegion', e.target.value);
+	//
+	// 	var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));
+	// 	cells.forEach(c => {
+	// 		if(c.className.includes("white")) {
+	// 			c.className = `cell white${localStorage.getItem("chosenRegion")}`;
+	// 		} else {
+	// 			c.className = `cell black${localStorage.getItem("chosenRegion")}`;
+	// 		}
+	// 	})
+	// 	var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+	// 	document.body.style.backgroundImage = "url(" + bgFileName + ")";
+	//
+	// 	var infoBox = document.getElementById("infoBox");
+	// 	var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
+	//
+	// 	infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
+	// 	environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
+	//
+	// 	clearInterval(factsInterval);
+	// 	factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
+	//
+	// })
 
 	</script>
 </body>

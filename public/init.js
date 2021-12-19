@@ -20,3 +20,7 @@ if(!room) {
     socket.emit("playerName", {name:name});
 
 }
+
+if(!localStorage.getItem("chosenRegion")) {
+    localStorage.setItem("chosenRegion", "Ocean");
+}
