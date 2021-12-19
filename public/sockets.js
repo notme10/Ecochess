@@ -50,8 +50,6 @@ function convertPieces(pieces) {
   pieces = result;
 }
 socket.on("playerConnect", (data) => {
-    console.log(data.name);
-    console.log(data.sides);
     if(data.info.pieces && turn == 0) {
       //convert objects in pieces from server into classes
         pieces = data.info.pieces;
@@ -161,7 +159,6 @@ socket.on("sendMove", (data) => {
 });
 
 socket.on("sidesInfo", (data) => {
-    console.log(data);
     if(data.w == name) {
         side = "w";
     } else if(data.b == name) {

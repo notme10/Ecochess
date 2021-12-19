@@ -147,7 +147,7 @@
 		}
 	}
 
-	generateBoard("b");
+	generateBoard("w");
 
 	var virtualBoard;
 
@@ -282,7 +282,6 @@
 			blackMove.innerText = lastMove.pieceName + "." + lastMove.oldPos + "." + lastMove.newPos;
 
 			var moveBox = document.querySelector("#movesBox");
-			console.log(moveBox);
 			var newMove = moveBox.lastElementChild;
 			newMove.appendChild(blackMove);
 		}
@@ -304,7 +303,6 @@
 	})
 	document.getElementById("Regions").addEventListener("change", e => {
 
-		console.log("selection is: " + e.target.value);
 		localStorage.setItem('chosenRegion', e.target.value);
 
 		var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));

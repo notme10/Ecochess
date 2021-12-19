@@ -5,9 +5,7 @@ IMPORTNANT STUFF TO DO!!!
 		flip board around (in settings page?)
 
 	OUTSIDE OF CLASS STUFF!!!
-		testing!
-		write the + when check, and # when checkmated
-		change the sprites on captured bar to animals and trash
+		write # when checkmated
 		only display captured pieces of opponent on bottom bar
 
 	NEWLY FOUND BUGS!!!
@@ -17,11 +15,8 @@ IMPORTNANT STUFF TO DO!!!
 		new players will have a bugged board because they don't have a chosen region -- implement something so that if the chosen region is null, it automatically gets set to something
 
 	FINISHED!!!
-		promoted moveslist
-		castling for movesList
-		castling is bugged
-		capturing for multiplayer
-		moves list only displays moves after spectator joins
+		write + when check
+		change the sprites on captured bar to animals and trash
 */
 
 class Piece {
@@ -38,7 +33,6 @@ class Piece {
 	}
 
 	checkedOrCheckmated() {
-		// console.log(pieces[]);
 		var kingCoords = pieces[this.color + "k"][0].coords;
 		if(this.color == "w") {
 			var opponentColor = "b";
@@ -46,8 +40,6 @@ class Piece {
 			var opponentColor = "w";
 		}
 		return this.isKingChecked(kingCoords[0], kingCoords[1], opponentColor);
-
-		// return this.isKingChecked(kingCoords[0], kingCoords[1], virtualBoard[kingCoords[0], kingCoords[1]].color) || this.isCheckmated();
 	}
 
 	movePiece(captureMove) {
@@ -186,6 +178,14 @@ class Piece {
 
 		var newPosTxt = this.coords;
 		if(captureMove == true) { newPosTxt += ".x" }
+
+		var oppColor = this.color=="w" ? "b" : "w";
+		var kingCoords = pieces[oppColor + "k"][0].coords;
+
+		if(this.isKingChecked(convertRowsToIndex(kingCoords[1]), convertColsToIndex(kingCoords[0]), oppColor)) {
+			newPosTxt += ".+";
+		}
+
 		if(moveList.length < turn) {
 			moveList.push({pieceName: this.pieceName,
 				 		   oldPos: prv_coords,
@@ -223,9 +223,6 @@ class Piece {
 		var y = convertColsToIndex(cellCoord[0]);
 		var pieceToCapture = virtualBoard[x][y];
 
-		console.log(x);
-		console.log(y);
-
 		var t = document.querySelector(`.${virtualBoard[x][y].pieceName}.${cellCoord}`)
 		var q = t.className;
 		t.remove();
@@ -253,7 +250,12 @@ class Piece {
 				capturedPiece.style.height = "75px";
 				pieceImg.style.width = "100%";
 				pieceImg.style.height = "100%";
-				document.querySelector(".capturedPieces").appendChild(capturedPiece);
+				console.log(this.color);
+				console.log(pieceToCapture.color);
+				if(this.color !== item.color) {
+
+					document.querySelector(".capturedPieces").appendChild(capturedPiece);
+				}
 			});
 		}
 	}
