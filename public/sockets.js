@@ -109,11 +109,18 @@ socket.on("sendMove", (data) => {
 });
 
 socket.on("sidesInfo", (data) => {
-    if(data.w == name) {
+    if(data.w == name && side !== "w") {
         side = "w";
-    } else if(data.b == name) {
+        board.innerHTML = '';
+        generateBoard(side);
+    } else if(data.b == name && side !== "b") {
         side = "b";
-    } else {
+        board.innerHTML = '';
+        generateBoard(side);
+    } else if(side !== "w" && side !== "b") {
         side = "s";
     }
+
+
+
 })

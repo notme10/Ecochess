@@ -2,21 +2,19 @@
 IMPORTNANT STUFF TO DO!!!
 
 	IN CLASS STUFF!
-		flip board around (in settings page?)
+		finish my side is always fish, opponent side is always trash
+		why are there 16 white pawns in pieces?
 
 	OUTSIDE OF CLASS STUFF!!!
+		make sure everything works on heroku
+		play some games on heroku until checkmate
 		write # when checkmated
 		only display captured pieces of opponent on bottom bar
 
 	NEWLY FOUND BUGS!!!
 		threatened does not work in movesList
-		reset rooms if nobody is in it
-		only display captured pieces of opponent on bottom bar
-		new players will have a bugged board because they don't have a chosen region -- implement something so that if the chosen region is null, it automatically gets set to something
 
 	FINISHED!!!
-		write + when check
-		change the sprites on captured bar to animals and trash
 */
 
 class Piece {
@@ -478,7 +476,7 @@ class Pawn extends Piece {
 		super(color, coords);
 		this.enPassantPossible = false;
 		this.pieceName = color + "p";
-		if(color == "w") {
+		if((side == color) || (side == "s" && color == "w")) {
 			this.imgurl = "images/ocean_images/ocean_pawn.png";
 		} else {
 			this.imgurl = "images/trash_images/trash_pawn.png";
@@ -724,7 +722,7 @@ class Rook extends Piece {
 		super(color, coords);
 		this.pieceName = color + "r"
 		this.hasMoved = 0;
-		if(color == "w") {
+		if((side == color) || (side == "s" && color == "w")) {
 			this.imgurl = "images/ocean_images/ocean_rook.png";
 		} else {
 			this.imgurl = "images/trash_images/trash_rook.png";
@@ -828,7 +826,7 @@ class Knight extends Piece {
 	constructor(color, coords) {
 		super(color, coords);
 		this.pieceName = color + "n";
-		if(color == "w") {
+		if((side == color) || (side == "s" && color == "w")) {
 			this.imgurl = "images/ocean_images/ocean_knight.png";
 		} else {
 			this.imgurl = "images/trash_images/trash_knight.png";
@@ -979,10 +977,10 @@ class Bishop extends Piece {
 		super(color, coords);
 
 		this.pieceName = color + "b";
-		if(color == "w") {
-			this.imgurl = "images/ocean_images/ocean_knight.png";
+		if((side == color) || (side == "s" && color == "w")) {
+			this.imgurl = "images/ocean_images/ocean_bishop.png";
 		} else {
-			this.imgurl = "images/trash_images/trash_knight.png";
+			this.imgurl = "images/trash_images/trash_bishop.png";
 		}
 	}
 	setEverything(color, coords, hasMoved, pinned, imgurl, pieceName) {
@@ -1086,7 +1084,7 @@ class Queen extends Piece {
 		super(color, coords);
 
 		this.pieceName = color + "q";
-		if(color == "w") {
+		if((side == color) || (side == "s" && color == "w")) {
 			this.imgurl = "images/ocean_images/ocean_queen.png";
 		} else {
 			this.imgurl = "images/trash_images/trash_queen.png";
@@ -1256,7 +1254,7 @@ class King extends Piece {
 
 		this.pieceName = color + "k";
 		this.hasMoved = false;
-		if(color == "w") {
+		if((side == color) || (side == "s" && color == "w")) {
 			this.imgurl = "images/ocean_images/ocean_king.png";
 		} else {
 			this.imgurl = "images/trash_images/trash_king.png";
