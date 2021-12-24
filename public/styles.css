@@ -13,7 +13,7 @@ body {
 
 }
 
-#settingsModal {
+/* #settingsModal {
 	display: none;
 	position: fixed;
 	z-index: 1;
@@ -23,7 +23,7 @@ body {
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.4);
-}
+} */
 
 #close {
 	float: right;
@@ -52,7 +52,7 @@ body {
 #sidebar {
 	grid-area: s;
 	display: flex;
-	font-size: 50px;
+	font-size: 25px;
 	font-family: 'Verdana', sans-serif;
 	flex-direction: column-reverse;
 	align-items: center;
@@ -62,7 +62,7 @@ body {
 #bottombar {
 	grid-area: b;
 	display: flex;
-	font-size: 50px;
+	font-size: 25px;
     font-family: 'Verdana', sans-serif;
 	flex-direction: row;
 	align-items: center;
@@ -100,13 +100,13 @@ body {
 	grid-template-columns: 10% 45% 45%;
 }
 
-#settings {
+/* #settings {
 	position: absolute;
 	left: 20px;
 	top: 20px;
 	background-color: transparent;
 	border: none;
-}
+} */
 
 #Regions {
 	font-size: 25px;
@@ -210,7 +210,7 @@ body {
 .wn {
 	height: 100%;
 	width: 100%;
-	background-image: url('https://media.discordapp.net/attachments/754834621543219325/921805527825145916/Ecohero_Seahorse.png?width=676&height=676');
+	background-image: url('images/ocean_images/ocean_knight.png');
 	background-size: 100%;
 }
 

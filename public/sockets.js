@@ -93,16 +93,16 @@ socket.on("sendMove", (data) => {
         // }
 
         if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
-            console.log(data);
-            console.log(cellCoord);
-            console.log(pieceInfo);
+            // console.log(data);
+            // console.log(cellCoord);
+            // console.log(pieceInfo);
 
             if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
                 virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
-                console.log("EAT!");
+                // console.log("EAT!");
             } else {
                 virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
-                console.log("MOVE!");
+                // console.log("MOVE!");
             }
         }
     }

@@ -4,17 +4,17 @@ IMPORTNANT STUFF TO DO!!!
 	IN CLASS STUFF!
 		finish my side is always fish, opponent side is always trash
 		why are there 16 white pawns in pieces?
+		only display captured pieces of opponent on bottom bar
+		threatened does not work in movesList
 
 	OUTSIDE OF CLASS STUFF!!!
 		make sure everything works on heroku
 		play some games on heroku until checkmate
-		write # when checkmated
-		only display captured pieces of opponent on bottom bar
-
-	NEWLY FOUND BUGS!!!
-		threatened does not work in movesList
 
 	FINISHED!!!
+		remove settings icon
+		proportions for letters
+		write # when checkmated
 */
 
 class Piece {
@@ -184,18 +184,6 @@ class Piece {
 			newPosTxt += ".+";
 		}
 
-		if(moveList.length < turn) {
-			moveList.push({pieceName: this.pieceName,
-				 		   oldPos: prv_coords,
-						   newPos: newPosTxt,
-						   color: this.color,
-						   captured: captureMove,
-						   threatened: this.checkedOrCheckmated()});
-			pushMoveMessage();
-		}
-
-		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room, pieces: pieces, turn: turn});
-
 		var thisTurnColor;
 		var thisTurnKing;
 		turn % 2 == 1 ? thisTurnColor = 'b' : thisTurnColor = "w";
@@ -208,7 +196,25 @@ class Piece {
 		}
 
 		if(thisTurnKing.isCheckmated()) {
+			newPosTxt += ".#";
+		}
+
+		if(moveList.length < turn) {
+			moveList.push({pieceName: this.pieceName,
+				 		   oldPos: prv_coords,
+						   newPos: newPosTxt,
+						   color: this.color,
+						   captured: captureMove,
+						   threatened: this.checkedOrCheckmated()});
+			pushMoveMessage();
+		}
+
+		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room, pieces: pieces, turn: turn});
+
+		if(thisTurnKing.isCheckmated()) {
 			loser = thisTurnColor;
+			console.log(loser);
+
 		}
 		return true;
 	}
@@ -248,8 +254,8 @@ class Piece {
 				capturedPiece.style.height = "75px";
 				pieceImg.style.width = "100%";
 				pieceImg.style.height = "100%";
-				console.log(this.color);
-				console.log(pieceToCapture.color);
+				// console.log(this.color);
+				// console.log(pieceToCapture.color);
 				if(this.color !== item.color) {
 
 					document.querySelector(".capturedPieces").appendChild(capturedPiece);
@@ -371,7 +377,6 @@ class Piece {
 
 		var tempStorage = virtualBoard[x][y];
 		virtualBoard[x][y] = '';
-
 		var kingCoords = pieces[this.color + "k"][0].coords;
 
 		// king's x, king's y, king's color
@@ -543,7 +548,6 @@ class Pawn extends Piece {
 		}
 
 		// EN PASSANT - WHITE
-
 		if(this.color == "w" && this.coords[1] == "5" && this.enPassantPossible == true) {
 
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
@@ -560,8 +564,6 @@ class Pawn extends Piece {
 								   captured: true,
 								   threatened: this.checkedOrCheckmated()
 							   });
-
-					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
@@ -582,10 +584,8 @@ class Pawn extends Piece {
 								   captured: true,
 								   threatened: this.checkedOrCheckmated()
 							   });
-
 							   pushMoveMessage();
 
-					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
@@ -603,7 +603,6 @@ class Pawn extends Piece {
 			if((X-1) > 0) {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
 					this.movePiece(false);
-					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 
 					moveList.push({pieceName: this.pieceName,
 						 		   oldPos: prv_coords,
@@ -612,7 +611,6 @@ class Pawn extends Piece {
 								   captured: true,
 								   threatened: this.checkedOrCheckmated()
 							   });
-
 							   pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
@@ -633,10 +631,8 @@ class Pawn extends Piece {
 								   captured: true,
 								   threatened: this.checkedOrCheckmated()
 							   });
-
 							   pushMoveMessage();
 
-					// moveList.push(this.color + "p used en passant to capture piece on " + (turn+1));
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X+1) + (convertIndexToRows(Y)).toString()
@@ -945,7 +941,6 @@ class Knight extends Piece {
 
 		const possible_knight_moves = [[2,1], [-2,1], [-2,-1], [1,2], [1,-2],[2,-1], [-1,2],[-1,-2]];
 
-		// FIXME: replace map with reduce
 		var resultList = possible_knight_moves.map(move => {
 			var test_row = knight_row + move[0];
 			var test_col = knight_col + move[1];
@@ -1074,7 +1069,6 @@ class Bishop extends Piece {
 				break;
 			}
 		}
-
 		return false;
 	}
 }
@@ -1327,7 +1321,6 @@ class King extends Piece {
 					if(virtualBoard[7][5] == '' && virtualBoard[7][6] == '' && virtualBoard[7][7].pieceName == "wr") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "6", "w") == false) {
-								// moveList.push("wk castled king side on turn " + (turn+1));
 
 								moveList.push({pieceName: "0",
 									 		   oldPos: "0",
@@ -1390,7 +1383,6 @@ class King extends Piece {
 					if(virtualBoard[0][5] == '' && virtualBoard[0][6] == '' && virtualBoard[0][7].pieceName == "br") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "6", "b") == false) {
-								// moveList.push("bk castled king side on turn " + (turn+1));
 
 								moveList.push({pieceName: "0",
 									 		   oldPos: "0",
@@ -1418,7 +1410,6 @@ class King extends Piece {
 					if(virtualBoard[0][1] == '' && virtualBoard[0][2] == '' && virtualBoard[0][3] == '' && virtualBoard[0][0].pieceName == "br") {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "1", "b") == false) {
-								// moveList.push("bk castled queen side on turn " + (turn+1));
 
 								moveList.push({pieceName: "0",
 									 		   oldPos: "0",
