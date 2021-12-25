@@ -1,6 +1,15 @@
 /*
 IMPORTNANT STUFF TO DO!!!
 
+	NEW BUGS!!!
+		castling bug - ss in discord
+			spectator sees that only king moved, not rook
+		promotion asks both players what they want
+		game randomly doesnt let you move
+		rooms dont reset
+		opponent can't move after castling
+
+
 	IN CLASS STUFF!
 		finish my side is always fish, opponent side is always trash
 		why are there 16 white pawns in pieces?
@@ -15,6 +24,7 @@ IMPORTNANT STUFF TO DO!!!
 		remove settings icon
 		proportions for letters
 		write # when checkmated
+		added logo thing
 */
 
 class Piece {
@@ -319,9 +329,9 @@ class Piece {
 
 	winnerAlert() {
 		if(loser == "w") {
-			alert("Black wins!");
+			alert("Black wins! Please disconnect. ");
 		} else if(loser == "b") {
-			alert("White wins!");
+			alert("White wins! Please disconnect. ");
 		}
 	}
 
