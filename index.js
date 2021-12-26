@@ -83,12 +83,13 @@ function addSockets() {
 					rooms[roomId] = null;
 			}
 			else {
-				if (rooms[roomId]["w"] == name) {
-					rooms[roomId]["w"] = null;
-				}
-				if (rooms[roomId]["b"] == name) {
-					rooms[roomId]["b"] = null;
-				}
+				// if (rooms[roomId]["w"] == name) {
+				rooms[roomId]["w"] = null;
+				// }
+				// if (rooms[roomId]["b"] == name) {
+				rooms[roomId]["b"] = null;
+				console.log("Your opponent has left!");
+				// }
 			}
 			io.emit('sidesInfo', rooms[roomId])
 		});

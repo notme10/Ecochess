@@ -4,10 +4,10 @@ IMPORTNANT STUFF TO DO!!!
 	NEW BUGS!!!
 		castling bug - ss in discord
 			spectator sees that only king moved, not rook
-		promotion asks both players what they want
-		game randomly doesnt let you move
-		rooms dont reset
-		opponent can't move after castling
+			opponent can't move after castling
+		promotion prompts both players what piece they want
+		game randomly doesnt let you move - nothing in console
+		capturing + promotion doesn't update on opponent's screen
 
 
 	IN CLASS STUFF!
@@ -17,14 +17,16 @@ IMPORTNANT STUFF TO DO!!!
 		threatened does not work in movesList
 
 	OUTSIDE OF CLASS STUFF!!!
-		make sure everything works on heroku
-		play some games on heroku until checkmate
+
 
 	FINISHED!!!
 		remove settings icon
 		proportions for letters
 		write # when checkmated
 		added logo thing
+		rooms dont reset bug
+		make sure everything works on heroku
+		play some games on heroku until checkmate
 */
 
 class Piece {
@@ -95,71 +97,76 @@ class Piece {
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 			var promotionDone = false;
 
+			var userColor = window.prompt("What color are you playing as?");
+			console.log(userColor);
+			console.log(this.color);
+
 			while(promotionDone == false) {
+				if((userColor == "w" || userColor == "b") && (userColor == this.color)) {
+
 				// ask user until user provides valid piece name
-				var promotionPiece = window.prompt("What piece do you want?")
 
-				switch(promotionPiece) {
-					case "q": // promote to queen
-					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
-					promotionDone = true;
-					// moveList.push(this.color+ "p on " + prevCoords + " promoted to queen on turn " + (turn+1));
+				// something to check if the promoting piece color is the same as the player's color
+					if(true) {
+						var promotionPiece = window.prompt("What piece do you want?")
 
-					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords + "=q",
-								   color: this.color,
-								   captured: captureMove,
-								   threatened: this.checkedOrCheckmated()
-							   });
+						switch(promotionPiece) {
 
-					break;
-					case "b": // promote to bishop
-					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
-					promotionDone = true;
-					// moveList.push(this.color+ "p on " + prevCoords + " promoted to bishop on turn " + (turn+1));
+							// promote to queen
+							case "q":
+							virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
+							promotionDone = true;
+							moveList.push({pieceName: this.pieceName,
+								 		   oldPos: prv_coords,
+										   newPos: this.coords + "=q",
+										   color: this.color,
+										   captured: captureMove,
+										   threatened: this.checkedOrCheckmated()
+									   });
+							break;
 
-					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords + "=b",
-								   color: this.color,
-								   captured: captureMove,
-								   threatened: this.checkedOrCheckmated()
-							   });
+	 						// promote to bishop
+							case "b":
+							virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
+							promotionDone = true;
+							moveList.push({pieceName: this.pieceName,
+								 		   oldPos: prv_coords,
+										   newPos: this.coords + "=b",
+										   color: this.color,
+										   captured: captureMove,
+										   threatened: this.checkedOrCheckmated()
+									   });
+							break;
 
-					break;
-					case "r": // promote to rook
-					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
-					promotionDone = true;
-					// moveList.push(this.color+ "p on " + prevCoords + " promoted to rook on turn " + (turn+1));
+							// promote to rook
+							case "r":
+							virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
+							promotionDone = true;
+							moveList.push({pieceName: this.pieceName,
+								 		   oldPos: prv_coords,
+										   newPos: this.coords + "=r",
+										   color: this.color,
+										   captured: captureMove,
+										   threatened: this.checkedOrCheckmated()
+									   });
+							break;
 
-					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords + "=r",
-								   color: this.color,
-								   captured: captureMove,
-								   threatened: this.checkedOrCheckmated()
-							   });
-
-					break;
-					case "n": // promote to knight
-					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
-					promotionDone = true;
-					// moveList.push(this.color+ "p on " + prevCoords + " promoted to knight on turn " + (turn+1));
-
-					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords + "=n",
-								   color: this.color,
-								   captured: captureMove,
-								   threatened: this.checkedOrCheckmated()
-							   });
-
-					break;
+							// promote to knight
+							case "n":
+							virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
+							promotionDone = true;
+							moveList.push({pieceName: this.pieceName,
+								 		   oldPos: prv_coords,
+										   newPos: this.coords + "=n",
+										   color: this.color,
+										   captured: captureMove,
+										   threatened: this.checkedOrCheckmated()
+									   });
+							break;
+						}
+					}
 				}
-
 				pushMoveMessage();
-
 			}
 
 			var p = document.createElement('div'); // makes a new div called p
