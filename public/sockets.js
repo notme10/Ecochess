@@ -91,7 +91,7 @@ socket.on("sendMove", (data) => {
         // if(virtualBoard[convertRowsToIndex(cellCoord[0])][convertColsToIndex(cellCoord[1])]) {
         //
         // }
-
+        console.log(data);
         if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
             // console.log(data);
             // console.log(cellCoord);

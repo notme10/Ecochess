@@ -8,6 +8,7 @@ IMPORTNANT STUFF TO DO!!!
 		promotion prompts both players what piece they want
 		game randomly doesnt let you move - nothing in console
 		capturing + promotion doesn't update on opponent's screen
+		duplicated move list
 
 
 	IN CLASS STUFF!
@@ -118,10 +119,11 @@ class Piece {
 							promotionDone = true;
 							moveList.push({pieceName: this.pieceName,
 								 		   oldPos: prv_coords,
-										   newPos: this.coords + "=q",
+										   newPos: this.coords,
 										   color: this.color,
 										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated()
+										   threatened: this.checkedOrCheckmated(),
+											 display: `${this.pieceName}.${prv_coords}.${this.coords}=q`
 									   });
 							break;
 
@@ -131,10 +133,11 @@ class Piece {
 							promotionDone = true;
 							moveList.push({pieceName: this.pieceName,
 								 		   oldPos: prv_coords,
-										   newPos: this.coords + "=b",
+										   newPos: this.coords,
 										   color: this.color,
 										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated()
+										   threatened: this.checkedOrCheckmated(),
+											 display: `${this.pieceName}.${prv_coords}.${this.coords}=b`
 									   });
 							break;
 
@@ -144,10 +147,11 @@ class Piece {
 							promotionDone = true;
 							moveList.push({pieceName: this.pieceName,
 								 		   oldPos: prv_coords,
-										   newPos: this.coords + "=r",
+										   newPos: this.coords,
 										   color: this.color,
 										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated()
+										   threatened: this.checkedOrCheckmated(),
+											 display: `${this.pieceName}.${prv_coords}.${this.coords}=r`
 									   });
 							break;
 
@@ -157,10 +161,11 @@ class Piece {
 							promotionDone = true;
 							moveList.push({pieceName: this.pieceName,
 								 		   oldPos: prv_coords,
-										   newPos: this.coords + "=n",
+										   newPos: this.coords,
 										   color: this.color,
 										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated()
+										   threatened: this.checkedOrCheckmated(),
+											 display: `${this.pieceName}.${prv_coords}.${this.coords}=n`
 									   });
 							break;
 						}
@@ -222,7 +227,9 @@ class Piece {
 						   newPos: newPosTxt,
 						   color: this.color,
 						   captured: captureMove,
-						   threatened: this.checkedOrCheckmated()});
+						   threatened: this.checkedOrCheckmated(),
+							 display: `${this.pieceName}.${prv_coords}.${this.coords}`
+						 });
 			pushMoveMessage();
 		}
 
@@ -579,7 +586,8 @@ class Pawn extends Piece {
 								   newPos: this.coords,
 								   color: this.color,
 								   captured: true,
-								   threatened: this.checkedOrCheckmated()
+								   threatened: this.checkedOrCheckmated(),
+									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
 							   });
 					pushMoveMessage();
 
@@ -599,7 +607,8 @@ class Pawn extends Piece {
 								   newPos: this.coords,
 								   color: this.color,
 								   captured: true,
-								   threatened: this.checkedOrCheckmated()
+								   threatened: this.checkedOrCheckmated(),
+									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
 							   });
 							   pushMoveMessage();
 
@@ -626,7 +635,8 @@ class Pawn extends Piece {
 								   newPos: this.coords,
 								   color: this.color,
 								   captured: true,
-								   threatened: this.checkedOrCheckmated()
+								   threatened: this.checkedOrCheckmated(),
+									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
 							   });
 							   pushMoveMessage();
 
@@ -646,7 +656,8 @@ class Pawn extends Piece {
 								   newPos: this.coords,
 								   color: this.color,
 								   captured: true,
-								   threatened: this.checkedOrCheckmated()
+								   threatened: this.checkedOrCheckmated(),
+									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
 							   });
 							   pushMoveMessage();
 
@@ -1339,12 +1350,13 @@ class King extends Piece {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("7", "6", "w") == false) {
 
-								moveList.push({pieceName: "0",
-									 		   oldPos: "0",
-											   newPos: '',
+								moveList.push({pieceName: this.pieceName,
+									 		   oldPos: this.coords,
+											   newPos: cellCoord,
 											   color: this.color,
 											   captured: false,
-											   threatened: false
+											   threatened: false,
+												 display: "0-0"
 										   });
 
 								pushMoveMessage();
@@ -1369,12 +1381,13 @@ class King extends Piece {
 							if(this.isKingChecked("7", "1", "w") == false) {
 								// moveList.push("wk castled queen side on turn " + (turn+1));
 
-								moveList.push({pieceName: "0",
-											   oldPos: "0",
-											   newPos: "0",
+								moveList.push({pieceName: this.pieceName,
+											   oldPos: this.coords,
+											   newPos: cellCoord,
 											   color: this.color,
 											   captured: false,
-											   threatened: false
+											   threatened: false,
+												 display: "0-0-0"
 										   });
 
 
@@ -1401,12 +1414,13 @@ class King extends Piece {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "6", "b") == false) {
 
-								moveList.push({pieceName: "0",
-									 		   oldPos: "0",
-											   newPos: '',
+								moveList.push({pieceName: this.pieceName,
+									 		   oldPos: this.coords,
+											   newPos: cellCoord,
 											   color: this.color,
 											   captured: false,
-											   threatened: false
+											   threatened: false,
+												 display: "0-0"
 										   });
 
 								this.movePiece(false);
@@ -1428,12 +1442,13 @@ class King extends Piece {
 						if(this.hasMoved == false) {
 							if(this.isKingChecked("0", "1", "b") == false) {
 
-								moveList.push({pieceName: "0",
-									 		   oldPos: "0",
-											   newPos: "0",
+								moveList.push({pieceName: this.pieceName,
+									 		   oldPos: this.coords,
+											   newPos: cellCoord,
 											   color: this.color,
 											   captured: false,
-											   threatened: false
+											   threatened: false,
+												 display: "0-0-0"
 										   });
 
 
