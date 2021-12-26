@@ -4,6 +4,7 @@ fix the captured pieces at the bottombar
 enemy is always trash
 better promotion screen
 	no typing stuff
+why are there 16 white pawns in pieces?
 
 NEW BUGS!!!
 game randomly doesnt let you move - nothing in console
@@ -13,9 +14,8 @@ game randomly doesnt let you move - nothing in console
 
 IN CLASS STUFF!
 finish my side is always fish, opponent side is always trash
-why are there 16 white pawns in pieces?
 only display captured pieces of opponent on bottom bar
-threatened does not work in movesList
+
 
 OUTSIDE OF CLASS STUFF!!!
 
