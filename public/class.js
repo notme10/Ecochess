@@ -1,10 +1,14 @@
 /*
 IMPORTNANT STUFF TO DO!!!
 fix the captured pieces at the bottombar
+enemy is always trash
+better promotion screen
+	no typing stuff
 
 NEW BUGS!!!
 game randomly doesnt let you move - nothing in console
-duplicated move list
+	figure out cause of problemo
+
 
 
 IN CLASS STUFF!
@@ -27,6 +31,7 @@ play some games on heroku until checkmate
 castling bug - ss in discord
 promotion prompts both players what piece they want
 capturing + promotion doesn't update on opponent's screen
+duplicated move list
 */
 
 class Piece {
