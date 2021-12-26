@@ -173,7 +173,7 @@
 
 	var virtualBoard;
 
-	let state = "castle"
+	let state = "promotion white"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -271,8 +271,8 @@
 			var whiteMove = document.createElement("div");
 
 			newMove.classList += "move";
-			turn.classList += "move";
-			whiteMove.classList += "move";
+			// turn.classList += "move";
+			// whiteMove.classList += "move";
 
 			turn.innerText = Math.ceil(moveList.length/2);
 
@@ -284,7 +284,7 @@
 
 		} else {
 			var blackMove = document.createElement("div");
-			blackMove.classList += "move";
+			// blackMove.classList += "move";
 			blackMove.innerText = lastMove.display;
 
 			var moveBox = document.querySelector("#movesBox");

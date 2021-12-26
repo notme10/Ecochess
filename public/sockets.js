@@ -87,6 +87,7 @@ socket.on("sendMove", (data) => {
         // console.log(data.moves);
         cellCoord = data.moves.newPos.substring(0, 2);
         pieceInfo = [data.moves.pieceName, data.moves.oldPos];
+        enemyPromotion = data.moves.display.split("=")[1];
 
         // if(virtualBoard[convertRowsToIndex(cellCoord[0])][convertColsToIndex(cellCoord[1])]) {
         //

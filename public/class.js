@@ -1,33 +1,31 @@
 /*
 IMPORTNANT STUFF TO DO!!!
 
-	NEW BUGS!!!
-		castling bug - ss in discord
-			spectator sees that only king moved, not rook
-			opponent can't move after castling
-		promotion prompts both players what piece they want
-		game randomly doesnt let you move - nothing in console
-		capturing + promotion doesn't update on opponent's screen
-		duplicated move list
+NEW BUGS!!!
+promotion prompts both players what piece they want
+game randomly doesnt let you move - nothing in console
+capturing + promotion doesn't update on opponent's screen
+duplicated move list
 
 
-	IN CLASS STUFF!
-		finish my side is always fish, opponent side is always trash
-		why are there 16 white pawns in pieces?
-		only display captured pieces of opponent on bottom bar
-		threatened does not work in movesList
+IN CLASS STUFF!
+finish my side is always fish, opponent side is always trash
+why are there 16 white pawns in pieces?
+only display captured pieces of opponent on bottom bar
+threatened does not work in movesList
 
-	OUTSIDE OF CLASS STUFF!!!
+OUTSIDE OF CLASS STUFF!!!
 
 
-	FINISHED!!!
-		remove settings icon
-		proportions for letters
-		write # when checkmated
-		added logo thing
-		rooms dont reset bug
-		make sure everything works on heroku
-		play some games on heroku until checkmate
+FINISHED!!!
+remove settings icon
+proportions for letters
+write # when checkmated
+added logo thing
+rooms dont reset bug
+make sure everything works on heroku
+play some games on heroku until checkmate
+castling bug - ss in discord
 */
 
 class Piece {
@@ -98,79 +96,81 @@ class Piece {
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 			var promotionDone = false;
 
-			var userColor = window.prompt("What color are you playing as?");
-			console.log(userColor);
-			console.log(this.color);
+			// var userColor = window.prompt("What color are you playing as?");
+			// console.log(userColor);
+			// console.log(this.color);
 
 			while(promotionDone == false) {
-				if((userColor == "w" || userColor == "b") && (userColor == this.color)) {
-
+				var promotionPiece;
 				// ask user until user provides valid piece name
 
 				// something to check if the promoting piece color is the same as the player's color
-					if(true) {
-						var promotionPiece = window.prompt("What piece do you want?")
-
-						switch(promotionPiece) {
-
-							// promote to queen
-							case "q":
-							virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
-							promotionDone = true;
-							moveList.push({pieceName: this.pieceName,
-								 		   oldPos: prv_coords,
-										   newPos: this.coords,
-										   color: this.color,
-										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated(),
-											 display: `${this.pieceName}.${prv_coords}.${this.coords}=q`
-									   });
-							break;
-
-	 						// promote to bishop
-							case "b":
-							virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
-							promotionDone = true;
-							moveList.push({pieceName: this.pieceName,
-								 		   oldPos: prv_coords,
-										   newPos: this.coords,
-										   color: this.color,
-										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated(),
-											 display: `${this.pieceName}.${prv_coords}.${this.coords}=b`
-									   });
-							break;
-
-							// promote to rook
-							case "r":
-							virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
-							promotionDone = true;
-							moveList.push({pieceName: this.pieceName,
-								 		   oldPos: prv_coords,
-										   newPos: this.coords,
-										   color: this.color,
-										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated(),
-											 display: `${this.pieceName}.${prv_coords}.${this.coords}=r`
-									   });
-							break;
-
-							// promote to knight
-							case "n":
-							virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
-							promotionDone = true;
-							moveList.push({pieceName: this.pieceName,
-								 		   oldPos: prv_coords,
-										   newPos: this.coords,
-										   color: this.color,
-										   captured: captureMove,
-										   threatened: this.checkedOrCheckmated(),
-											 display: `${this.pieceName}.${prv_coords}.${this.coords}=n`
-									   });
-							break;
-						}
-					}
+				if((side === "w" && turn%2===0) || (side === "b" && turn%2===1)) {
+					promotionPiece = window.prompt("What piece do you want?")
 				}
+				else {
+					promotionPiece = enemyPromotion;
+				}
+				switch(promotionPiece) {
+
+					// promote to queen
+					case "q":
+					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push({pieceName: this.pieceName,
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: captureMove,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}=q`
+					});
+					break;
+
+					// promote to bishop
+					case "b":
+					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push({pieceName: this.pieceName,
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: captureMove,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}=b`
+					});
+					break;
+
+					// promote to rook
+					case "r":
+					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push({pieceName: this.pieceName,
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: captureMove,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}=r`
+					});
+					break;
+
+					// promote to knight
+					case "n":
+					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
+					promotionDone = true;
+					moveList.push({pieceName: this.pieceName,
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: captureMove,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}=n`
+					});
+					break;
+				}
+
+
 				pushMoveMessage();
 			}
 
@@ -223,13 +223,13 @@ class Piece {
 
 		if(moveList.length < turn) {
 			moveList.push({pieceName: this.pieceName,
-				 		   oldPos: prv_coords,
-						   newPos: newPosTxt,
-						   color: this.color,
-						   captured: captureMove,
-						   threatened: this.checkedOrCheckmated(),
-							 display: `${this.pieceName}.${prv_coords}.${this.coords}`
-						 });
+				oldPos: prv_coords,
+				newPos: newPosTxt,
+				color: this.color,
+				captured: captureMove,
+				threatened: this.checkedOrCheckmated(),
+				display: `${this.pieceName}.${prv_coords}.${this.coords}`
+			});
 			pushMoveMessage();
 		}
 
@@ -582,13 +582,13 @@ class Pawn extends Piece {
 					this.movePiece(false);
 
 					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords,
-								   color: this.color,
-								   captured: true,
-								   threatened: this.checkedOrCheckmated(),
-									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
-							   });
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: true,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					});
 					pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
@@ -603,14 +603,14 @@ class Pawn extends Piece {
 					this.movePiece(false);
 
 					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords,
-								   color: this.color,
-								   captured: true,
-								   threatened: this.checkedOrCheckmated(),
-									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
-							   });
-							   pushMoveMessage();
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: true,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					});
+					pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -631,14 +631,14 @@ class Pawn extends Piece {
 					this.movePiece(false);
 
 					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords,
-								   color: this.color,
-								   captured: true,
-								   threatened: this.checkedOrCheckmated(),
-									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
-							   });
-							   pushMoveMessage();
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: true,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					});
+					pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -652,14 +652,14 @@ class Pawn extends Piece {
 					this.movePiece(false);
 
 					moveList.push({pieceName: this.pieceName,
-						 		   oldPos: prv_coords,
-								   newPos: this.coords,
-								   color: this.color,
-								   captured: true,
-								   threatened: this.checkedOrCheckmated(),
-									 display: `${this.pieceName}.${prv_coords}.${this.coords}`
-							   });
-							   pushMoveMessage();
+						oldPos: prv_coords,
+						newPos: this.coords,
+						color: this.color,
+						captured: true,
+						threatened: this.checkedOrCheckmated(),
+						display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					});
+					pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -1351,13 +1351,13 @@ class King extends Piece {
 							if(this.isKingChecked("7", "6", "w") == false) {
 
 								moveList.push({pieceName: this.pieceName,
-									 		   oldPos: this.coords,
-											   newPos: cellCoord,
-											   color: this.color,
-											   captured: false,
-											   threatened: false,
-												 display: "0-0"
-										   });
+									oldPos: this.coords,
+									newPos: cellCoord,
+									color: this.color,
+									captured: false,
+									threatened: false,
+									display: "0-0"
+								});
 
 								pushMoveMessage();
 
@@ -1382,13 +1382,13 @@ class King extends Piece {
 								// moveList.push("wk castled queen side on turn " + (turn+1));
 
 								moveList.push({pieceName: this.pieceName,
-											   oldPos: this.coords,
-											   newPos: cellCoord,
-											   color: this.color,
-											   captured: false,
-											   threatened: false,
-												 display: "0-0-0"
-										   });
+									oldPos: this.coords,
+									newPos: cellCoord,
+									color: this.color,
+									captured: false,
+									threatened: false,
+									display: "0-0-0"
+								});
 
 
 								pushMoveMessage();
@@ -1415,13 +1415,13 @@ class King extends Piece {
 							if(this.isKingChecked("0", "6", "b") == false) {
 
 								moveList.push({pieceName: this.pieceName,
-									 		   oldPos: this.coords,
-											   newPos: cellCoord,
-											   color: this.color,
-											   captured: false,
-											   threatened: false,
-												 display: "0-0"
-										   });
+									oldPos: this.coords,
+									newPos: cellCoord,
+									color: this.color,
+									captured: false,
+									threatened: false,
+									display: "0-0"
+								});
 
 								this.movePiece(false);
 								virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
@@ -1443,13 +1443,13 @@ class King extends Piece {
 							if(this.isKingChecked("0", "1", "b") == false) {
 
 								moveList.push({pieceName: this.pieceName,
-									 		   oldPos: this.coords,
-											   newPos: cellCoord,
-											   color: this.color,
-											   captured: false,
-											   threatened: false,
-												 display: "0-0-0"
-										   });
+									oldPos: this.coords,
+									newPos: cellCoord,
+									color: this.color,
+									captured: false,
+									threatened: false,
+									display: "0-0-0"
+								});
 
 
 								this.movePiece(false);

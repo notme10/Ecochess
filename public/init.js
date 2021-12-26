@@ -1,5 +1,5 @@
 var socket = io();
-
+var enemyPromotion;
 var pieces = {};
 var pieceInfo;
 var cellCoord;
