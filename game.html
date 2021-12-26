@@ -173,7 +173,7 @@
 
 	var virtualBoard;
 
-	let state = "promotion white"
+	let state = "main"
 
 	if (state == "main") {
 		virtualBoard = [
@@ -191,7 +191,7 @@
 	if (state == "promotion white") {
 		virtualBoard =
 		[
-			[new King('b'),'','','','','','',''],
+			[new King('b'),'','','','',new Knight('b'),'',''],
 			['','','','','','',new Pawn('w'),''],
 			['','','','','','','',''],
 			['','','','','','','',''],

@@ -1,10 +1,9 @@
 /*
 IMPORTNANT STUFF TO DO!!!
+fix the captured pieces at the bottombar
 
 NEW BUGS!!!
-promotion prompts both players what piece they want
 game randomly doesnt let you move - nothing in console
-capturing + promotion doesn't update on opponent's screen
 duplicated move list
 
 
@@ -26,6 +25,8 @@ rooms dont reset bug
 make sure everything works on heroku
 play some games on heroku until checkmate
 castling bug - ss in discord
+promotion prompts both players what piece they want
+capturing + promotion doesn't update on opponent's screen
 */
 
 class Piece {
@@ -267,6 +268,7 @@ class Piece {
 			p.className = q; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		} else {
+			console.log("has a piece been eaten");
 			capturedPieces.push(pieceToCapture);
 			document.querySelector(".capturedPieces").innerHTML = '';
 			capturedPieces.forEach(item => {
