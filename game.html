@@ -11,328 +11,355 @@
 <body>
 
 	<!-- <button id='settings'>
-		<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-	</button> -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+</button> -->
 
-	<!-- <div id = 'settingsModal'>
-		<div class = 'modalContent'>
+<!-- <div id = 'settingsModal'>
+<div class = 'modalContent'>
 
-			<div id = 'close'>
-				<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-			</div>
+<div id = 'close'>
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</div>
 
-			<p>Select a region</p>
+<p>Select a region</p>
 
-			<select id="Regions">
+<select id="Regions">
 
-				<optgroup>
-					<option value="Standard">Standard</option>
-					<option value="Reef">Reef</option>
-					<option value="Ocean">Ocean</option>
-					<option value="Forest">Forest</option>
-					<option value="Tundra">Tundra</option>
-					<option value="Desert">Desert</option>
-					<option value="Sky">Sky</option>
-				</optgroup>
+<optgroup>
+<option value="Standard">Standard</option>
+<option value="Reef">Reef</option>
+<option value="Ocean">Ocean</option>
+<option value="Forest">Forest</option>
+<option value="Tundra">Tundra</option>
+<option value="Desert">Desert</option>
+<option value="Sky">Sky</option>
+</optgroup>
 
-			</select>
-		</div> -->
-	</div>
+</select>
+</div> -->
 
-	<div id='layout'>
-		<div id='board'></div>
-		<div id='sidebar'>
-			<div>1</div>
-			<div>2</div>
-			<div>3</div>
-			<div>4</div>
-			<div>5</div>
-			<div>6</div>
-			<div>7</div>
-			<div>8</div>
-		</div>
+<div id = 'homeModal'>
+	<div class = 'modalContent'>
 
-		<div id='bottombar'>
-			<div>a</div>
-			<div>b</div>
-			<div>c</div>
-			<div>d</div>
-			<div>e</div>
-			<div>f</div>
-			<div>g</div>
-			<div>h</div>
-		</div>
-
-		<div id='infoBox'>
-			<div id='environmentFacts'> </div>
-			<div id='movesBox'> </div>
-		</div>
-
-		<div class='capturedPieces'></div>
+		<p>Enter your name: </p>
+		<input type = "text" id = "nameInput"/>
+		<p>Which room would you join? </p>
+		<input type = "text" id = "roomInput"/>
+		<button id = "randomRoom"> Random Room </button>
+		<button id = "goToRoom"> Go To Room </button>
 
 	</div>
 
-	<script src="socket.io.js"></script>
-	<script src = "init.js"></script>
-	<script src = "sockets.js"></script>
-	<script src="class.js"> </script>
-	<script src="facts.js"> </script>
-	<script>
+</div>
 
-	document.addEventListener('keypress', e => {
-		if (e.key == 'q') {
-			let selectedCell = document.querySelector(".selected")
+<div id='layout'>
+	<div id='board'></div>
+	<div id='sidebar'>
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+		<div>4</div>
+		<div>5</div>
+		<div>6</div>
+		<div>7</div>
+		<div>8</div>
+	</div>
 
-			if (selectedCell) {
-				selectedCell.className = selectedCell.className.replace(' selected', '')
-			}
-			pieceInfo = null;
+	<div id='bottombar'>
+		<div>a</div>
+		<div>b</div>
+		<div>c</div>
+		<div>d</div>
+		<div>e</div>
+		<div>f</div>
+		<div>g</div>
+		<div>h</div>
+	</div>
+
+	<div id='infoBox'>
+		<div id='environmentFacts'> </div>
+		<div id='movesBox'> </div>
+	</div>
+
+	<div class='capturedPieces'></div>
+
+</div>
+
+<script src="socket.io.js"></script>
+<script src = "init.js"></script>
+<script src = "sockets.js"></script>
+<script src="class.js"> </script>
+<script src="facts.js"> </script>
+<script>
+
+document.addEventListener('keypress', e => {
+	if (e.key == 'q') {
+		let selectedCell = document.querySelector(".selected")
+
+		if (selectedCell) {
+			selectedCell.className = selectedCell.className.replace(' selected', '')
 		}
-	})
+		pieceInfo = null;
+	}
+})
 
-	let board = document.getElementById('board'); // We are getting the board into the JS
-	var width = 8, height = 8;
-	var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
-	var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
+let board = document.getElementById('board'); // We are getting the board into the JS
+var width = 8, height = 8;
+var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
+var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-	function generateBoard(s) {
+function generateBoard(s) {
 
-		var topLeft = (s == "w");
+	var topLeft = (s == "w");
 
-		for (row = topLeft ? 0 : (height - 1); topLeft ? (row < height) : (row >= 0); row = topLeft ? (row + 1) : (row - 1)) {
-			for (col = topLeft ? 0 : (width - 1); topLeft ? (col < width) : (col >= 0); col = topLeft ? (col + 1) : (col - 1)) {
-				var cell = document.createElement('div');
-				cell.addEventListener('click', e => {
-					cellCoord = e.target.id; // get cellCoord
-					if (cellCoord) { // clicked on a tile without piece
-						if (pieceInfo) { // clicked on a piece before
-							let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
-							let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
+	for (row = topLeft ? 0 : (height - 1); topLeft ? (row < height) : (row >= 0); row = topLeft ? (row + 1) : (row - 1)) {
+		for (col = topLeft ? 0 : (width - 1); topLeft ? (col < width) : (col >= 0); col = topLeft ? (col + 1) : (col - 1)) {
+			var cell = document.createElement('div');
+			cell.addEventListener('click', e => {
+				cellCoord = e.target.id; // get cellCoord
+				if (cellCoord) { // clicked on a tile without piece
+					if (pieceInfo) { // clicked on a piece before
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]); // we get the row of prev pos
+						let colPrevious = columns.indexOf(pieceInfo[1][0]); // we get col of prev pos
 
-							// we move the piece
-							if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
-								virtualBoard[rowPrevious][colPrevious].move();
-							}
-						}
-					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
-						// clear old selected pieces
-						let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
-
-						if (selectedCell) {
-							selectedCell.className = selectedCell.className.replace(' selected', ''); // get rid of selected tag
-						}
-
-						pieceInfo = e.target.className.split(" ");
-						document.getElementById(pieceInfo[1]).className += " selected"
-					} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
-						if (pieceInfo) {
-							cellCoord = e.target.className.split(" ")[1];
-
-							let rowPrevious = rows.indexOf(pieceInfo[1][1]);
-							let colPrevious = columns.indexOf(pieceInfo[1][0]);
-							if(virtualBoard[rowPrevious][colPrevious] != '') {
-								virtualBoard[rowPrevious][colPrevious].eat();
-							}
+						// we move the piece
+						if(virtualBoard[rowPrevious][colPrevious] !== '') { // checks if piece is actually there
+							virtualBoard[rowPrevious][colPrevious].move();
 						}
 					}
-				});
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
+					// clear old selected pieces
+					let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
 
-				board.appendChild(cell);
-				if ((row + col) % 2 == 0) { // white
-					cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
-				}
-
-				else { // black
-					cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
-				}
-
-				// var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
-				var bgFileName = `images/${localStorage.getItem("chosenRegion")}.png`
-				document.body.style.backgroundImage = "url(" + bgFileName + ")";
-				cell.id = columns[col] + rows[row];
-			}
-		}
-
-		for (let i = 0; i < 8; i++) {
-			for (let j = 0; j < 8; j++) {
-				if (virtualBoard[i][j]) {
-					virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
-					if(!(virtualBoard[i][j].pieceName in pieces)) {
-						pieces[virtualBoard[i][j].pieceName] = [];
+					if (selectedCell) {
+						selectedCell.className = selectedCell.className.replace(' selected', ''); // get rid of selected tag
 					}
-					pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
 
-					p = document.createElement('div'); // creates a piece
-					p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
-					document.getElementById(columns[j] + rows[i]).appendChild(p);
+					pieceInfo = e.target.className.split(" ");
+					document.getElementById(pieceInfo[1]).className += " selected"
+				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" || turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
+					if (pieceInfo) {
+						cellCoord = e.target.className.split(" ")[1];
+
+						let rowPrevious = rows.indexOf(pieceInfo[1][1]);
+						let colPrevious = columns.indexOf(pieceInfo[1][0]);
+						if(virtualBoard[rowPrevious][colPrevious] != '') {
+							virtualBoard[rowPrevious][colPrevious].eat();
+						}
+					}
 				}
+			});
+
+			board.appendChild(cell);
+			if ((row + col) % 2 == 0) { // white
+				cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
+			}
+
+			else { // black
+				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
+			}
+
+			// var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+			var bgFileName = `images/${localStorage.getItem("chosenRegion")}.png`
+			document.body.style.backgroundImage = "url(" + bgFileName + ")";
+			cell.id = columns[col] + rows[row];
+		}
+	}
+
+	for (let i = 0; i < 8; i++) {
+		for (let j = 0; j < 8; j++) {
+			if (virtualBoard[i][j]) {
+				virtualBoard[i][j].setCoord(`${columns[j]}${rows[i]}`)
+				if(!(virtualBoard[i][j].pieceName in pieces)) {
+					pieces[virtualBoard[i][j].pieceName] = [];
+				}
+				pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
+
+				p = document.createElement('div'); // creates a piece
+				p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+				document.getElementById(columns[j] + rows[i]).appendChild(p);
 			}
 		}
-
 	}
 
-	var virtualBoard;
+}
 
-	let state = "main"
+var virtualBoard;
 
-	if (state == "main") {
-		virtualBoard = [
-			[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
-			[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
-			[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
-		];
+let state = "main"
+
+if (state == "main") {
+	virtualBoard = [
+		[new Rook('b'),new Knight('b'),new Bishop('b'),new Queen('b'),new King('b'),new Bishop('b'),new Knight('b'),new Rook('b')],
+		[new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b'),new Pawn('b')],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		[new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w'),new Pawn('w')],
+		[new Rook('w'),new Knight('w'),new Bishop('w'),new Queen('w'),new King('w'),new Bishop('w'),new Knight('w'),new Rook('w')]
+	];
+}
+
+if (state == "promotion white") {
+	virtualBoard =
+	[
+		[new King('b'),'','','','',new Knight('b'),'',''],
+		['','','','','','',new Pawn('w'),''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',new King('w')]
+	];
+}
+
+if (state == "promotion black") {
+	virtualBoard =
+	[
+		[new King('b'),'','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','',new Pawn('b'),'','','','',''],
+		['','','','','','','',new King('w')]
+	];
+}
+
+if (state == "castle") {
+	virtualBoard = [
+		[new King('b'),'','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','',new King('w'),'','',new Rook('w')]
+	];
+}
+
+if (state == "promote + capture") {
+	virtualBoard = [
+		[new King('b'),'','','','','',new Rook('b'),''],
+		['','','','','','','',new Pawn('w')],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',new King('w')]
+	];
+}
+
+if (state == "AAAAAAAA") {
+	virtualBoard = [
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','',''],
+		['','','','','','','','']
+	];
+}
+
+generateBoard("w");
+
+function convertRowsToIndex(row) { return rows.indexOf(row) }
+function convertColsToIndex(col) { return columns.indexOf(col) }
+function convertIndexToRows(index) { return rows[index] }
+function convertIndexToCols(index) { return columns[index] }
+
+function pushMoveMessage() {
+	var lastMove = moveList[moveList.length-1];
+
+	if(lastMove.color == "w") {
+		var newMove = document.createElement("div");
+		var turn = document.createElement("div");
+		var whiteMove = document.createElement("div");
+
+		newMove.classList += "move";
+		// turn.classList += "move";
+		// whiteMove.classList += "move";
+
+		turn.innerText = Math.ceil(moveList.length/2);
+
+		whiteMove.innerText = lastMove.display;
+
+		newMove.appendChild(turn);
+		newMove.appendChild(whiteMove);
+		document.querySelector("#movesBox").appendChild(newMove);
+
+	} else {
+		var blackMove = document.createElement("div");
+		// blackMove.classList += "move";
+		blackMove.innerText = lastMove.display;
+
+		var moveBox = document.querySelector("#movesBox");
+		var newMove = moveBox.lastElementChild;
+		newMove.appendChild(blackMove);
 	}
+}
 
-	if (state == "promotion white") {
-		virtualBoard =
-		[
-			[new King('b'),'','','','',new Knight('b'),'',''],
-			['','','','','','',new Pawn('w'),''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('w')]
-		];
-	}
+var modal = document.getElementById("homeModal");
+var randomizerButton = document.getElementById("randomRoom");
+var goToRoom = document.getElementById("goToRoom");
+var nameInput = document.getElementById("nameInput");
+var roomInput = document.getElementById("roomInput");
 
-	if (state == "promotion black") {
-		virtualBoard =
-		[
-			[new King('b'),'','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','',new Pawn('b'),'','','','',''],
-			['','','','','','','',new King('w')]
-		];
-	}
+randomizerButton.addEventListener("click", e => {
+	roomInput.value = Math.floor(Math.random() * 10000000);
+});
 
-	if (state == "castle") {
-		virtualBoard = [
-			[new King('b'),'','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','',new King('w'),'','',new Rook('w')]
-		];
-	}
+goToRoom.addEventListener("click", e => {
+	location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
+});
 
-	if (state == "promote + capture") {
-		virtualBoard = [
-			[new King('b'),'','','','','',new Rook('b'),''],
-			['','','','','','','',new Pawn('w')],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',new King('w')]
-		];
-	}
 
-	if (state == "AAAAAAAA") {
-		virtualBoard = [
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','',''],
-			['','','','','','','','']
-		];
-	}
+//
+// document.getElementById("settings").addEventListener("click",e => {
+// 	modal.style.display = "block";
+// 	document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
+// })
+// document.getElementById("close").addEventListener("click", e => {
+// 	modal.style.display = "none";
+// })
+// document.getElementsByTagName("body")[0].addEventListener("click", e => {
+// 	if(e.target == modal) {
+// 		modal.style.display = "none";
+// 	}
+// })
+// document.getElementById("Regions").addEventListener("change", e => {
+//
+// 	localStorage.setItem('chosenRegion', e.target.value);
+//
+// 	var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));
+// 	cells.forEach(c => {
+// 		if(c.className.includes("white")) {
+// 			c.className = `cell white${localStorage.getItem("chosenRegion")}`;
+// 		} else {
+// 			c.className = `cell black${localStorage.getItem("chosenRegion")}`;
+// 		}
+// 	})
+// 	var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
+// 	document.body.style.backgroundImage = "url(" + bgFileName + ")";
+//
+// 	var infoBox = document.getElementById("infoBox");
+// 	var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
+//
+// 	infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
+// 	environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
+//
+// 	clearInterval(factsInterval);
+// 	factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
+//
+// })
 
-	generateBoard("w");
-
-	function convertRowsToIndex(row) { return rows.indexOf(row) }
-	function convertColsToIndex(col) { return columns.indexOf(col) }
-	function convertIndexToRows(index) { return rows[index] }
-	function convertIndexToCols(index) { return columns[index] }
-
-	function pushMoveMessage() {
-		var lastMove = moveList[moveList.length-1];
-
-		if(lastMove.color == "w") {
-			var newMove = document.createElement("div");
-			var turn = document.createElement("div");
-			var whiteMove = document.createElement("div");
-
-			newMove.classList += "move";
-			// turn.classList += "move";
-			// whiteMove.classList += "move";
-
-			turn.innerText = Math.ceil(moveList.length/2);
-
-			whiteMove.innerText = lastMove.display;
-
-			newMove.appendChild(turn);
-			newMove.appendChild(whiteMove);
-			document.querySelector("#movesBox").appendChild(newMove);
-
-		} else {
-			var blackMove = document.createElement("div");
-			// blackMove.classList += "move";
-			blackMove.innerText = lastMove.display;
-
-			var moveBox = document.querySelector("#movesBox");
-			var newMove = moveBox.lastElementChild;
-			newMove.appendChild(blackMove);
-		}
-	}
-
-	// var modal = document.getElementById("settingsModal");
-	//
-	// document.getElementById("settings").addEventListener("click",e => {
-	// 	modal.style.display = "block";
-	// 	document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
-	// })
-	// document.getElementById("close").addEventListener("click", e => {
-	// 	modal.style.display = "none";
-	// })
-	// document.getElementsByTagName("body")[0].addEventListener("click", e => {
-	// 	if(e.target == modal) {
-	// 		modal.style.display = "none";
-	// 	}
-	// })
-	// document.getElementById("Regions").addEventListener("change", e => {
-	//
-	// 	localStorage.setItem('chosenRegion', e.target.value);
-	//
-	// 	var cells = Array.prototype.slice.call(document.getElementById("board").getElementsByClassName("cell"));
-	// 	cells.forEach(c => {
-	// 		if(c.className.includes("white")) {
-	// 			c.className = `cell white${localStorage.getItem("chosenRegion")}`;
-	// 		} else {
-	// 			c.className = `cell black${localStorage.getItem("chosenRegion")}`;
-	// 		}
-	// 	})
-	// 	var bgFileName = "'images/"+`${localStorage.getItem("chosenRegion")}` + ".png'"
-	// 	document.body.style.backgroundImage = "url(" + bgFileName + ")";
-	//
-	// 	var infoBox = document.getElementById("infoBox");
-	// 	var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
-	//
-	// 	infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
-	// 	environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
-	//
-	// 	clearInterval(factsInterval);
-	// 	factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);
-	//
-	// })
-
-	</script>
+</script>
 </body>
 </html>

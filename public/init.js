@@ -10,15 +10,15 @@ var loser = "";
 var side = "";
 const params = new URLSearchParams(window.location.search);
 var room = Object.fromEntries(params.entries())["r"];
+var name = Object.fromEntries(params.entries())["n"];
 
 if(!room) {
-    room = prompt("Which room would you like to join?");
-    location.href = "/?r=" + room;
+    // room = prompt("Which room would you like to join?");
+    // location.href = "/?r=" + room;
+    document.getElementById("homeModal").style.display = "block";
 } else {
     socket.emit('setRoom', {room:room});
-    var name = prompt("What is your name? ");
     socket.emit("playerName", {name:name});
-
 }
 
 if(!localStorage.getItem("chosenRegion")) {

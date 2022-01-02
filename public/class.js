@@ -1,15 +1,12 @@
 /*
-IMPORTNANT STUFF TO DO!!!
-
-better promotion screen - no typing stuff
-duplicate pieces in pieces object
-
-NEW BUGS!!!
-
 
 IN CLASS STUFF!
 
 finish my side is always fish, opponent side is always trash
+better promotion screen - no typing stuff
+duplicate pieces in pieces object
+remember active rooms
+localization with ip adresses
 
 OUTSIDE OF CLASS STUFF!!!
 
@@ -31,6 +28,7 @@ black rook doesn't move (line 261, Uncaught TypeError: Cannot read property 'cla
 en passant broken
 fix the captured pieces at the bottombar
 only display captured pieces of opponent on bottom bar
+beginning screen
 */
 
 class Piece {
