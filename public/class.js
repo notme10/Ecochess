@@ -1,21 +1,15 @@
 /*
 IMPORTNANT STUFF TO DO!!!
-fix the captured pieces at the bottombar
-enemy is always trash
-better promotion screen
-	no typing stuff
-why are there 16 white pawns in pieces?
+
+better promotion screen - no typing stuff
+duplicate pieces in pieces object
 
 NEW BUGS!!!
-game randomly doesnt let you move - nothing in console
-	figure out cause of problemo
-
 
 
 IN CLASS STUFF!
-finish my side is always fish, opponent side is always trash
-only display captured pieces of opponent on bottom bar
 
+finish my side is always fish, opponent side is always trash
 
 OUTSIDE OF CLASS STUFF!!!
 
@@ -32,6 +26,11 @@ castling bug - ss in discord
 promotion prompts both players what piece they want
 capturing + promotion doesn't update on opponent's screen
 duplicated move list
+castling for black side does not work
+black rook doesn't move (line 261, Uncaught TypeError: Cannot read property 'className' of null)
+en passant broken
+fix the captured pieces at the bottombar
+only display captured pieces of opponent on bottom bar
 */
 
 class Piece {
@@ -203,13 +202,14 @@ class Piece {
 		turn++;
 
 		var newPosTxt = this.coords;
-		if(captureMove == true) { newPosTxt += ".x" }
+		var displayText = `${this.pieceName}.${prv_coords}.${this.coords}`;
+		if(captureMove == true) { displayText += ".x" }
 
 		var oppColor = this.color=="w" ? "b" : "w";
 		var kingCoords = pieces[oppColor + "k"][0].coords;
 
 		if(this.isKingChecked(convertRowsToIndex(kingCoords[1]), convertColsToIndex(kingCoords[0]), oppColor)) {
-			newPosTxt += ".+";
+			displayText += ".+";
 		}
 
 		var thisTurnColor;
@@ -224,7 +224,7 @@ class Piece {
 		}
 
 		if(thisTurnKing.isCheckmated()) {
-			newPosTxt += ".#";
+			displayText += ".#";
 		}
 
 		if(moveList.length < turn) {
@@ -275,23 +275,14 @@ class Piece {
 		} else {
 			console.log("has a piece been eaten");
 			capturedPieces.push(pieceToCapture);
-			document.querySelector(".capturedPieces").innerHTML = '';
-			capturedPieces.forEach(item => {
+			var item = capturedPieces[capturedPieces.length - 1];
+			if(side !== item.color) {
 				var capturedPiece = document.createElement("div");
-				var pieceImg = document.createElement("img");
-				pieceImg.src = item.imgurl;
-				capturedPiece.appendChild(pieceImg);
+				capturedPiece.className = item.pieceName;
 				capturedPiece.style.width = "75px";
 				capturedPiece.style.height = "75px";
-				pieceImg.style.width = "100%";
-				pieceImg.style.height = "100%";
-				// console.log(this.color);
-				// console.log(pieceToCapture.color);
-				if(this.color !== item.color) {
-
-					document.querySelector(".capturedPieces").appendChild(capturedPiece);
-				}
-			});
+				document.querySelector(".capturedPieces").appendChild(capturedPiece);
+			}
 		}
 	}
 
@@ -581,6 +572,7 @@ class Pawn extends Piece {
 		// EN PASSANT - WHITE
 		if(this.color == "w" && this.coords[1] == "5" && this.enPassantPossible == true) {
 
+			var prv_coords = this.coords;
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
@@ -588,15 +580,16 @@ class Pawn extends Piece {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
 					this.movePiece(false);
 
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: true,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					});
-					pushMoveMessage();
+					// console.log("condition 1");
+					// moveList.push({pieceName: this.pieceName,
+					// 	oldPos: prv_coords,
+					// 	newPos: this.coords,
+					// 	color: this.color,
+					// 	captured: true,
+					// 	threatened: this.checkedOrCheckmated(),
+					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					// });
+					// pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -605,19 +598,19 @@ class Pawn extends Piece {
 				}
 			}
 
-			if(((X+1) < 7) && (convertColsToIndex(cellCoord[0]) == (X+1))) {
+			else if(((X+1) < 7) && (convertColsToIndex(cellCoord[0]) == (X+1))) {
 				if(virtualBoard[Y][X+1].pieceName == "bp") {
 					this.movePiece(false);
-
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: true,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					});
-					pushMoveMessage();
+					console.log("condition dos");
+					// moveList.push({pieceName: this.pieceName,
+					// 	oldPos: prv_coords,
+					// 	newPos: this.coords,
+					// 	color: this.color,
+					// 	captured: true,
+					// 	threatened: this.checkedOrCheckmated(),
+					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					// });
+					// pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -629,7 +622,7 @@ class Pawn extends Piece {
 
 		// EN PASSANT - BLACK
 		else if (this.color == "b" && this.coords[1] == "4" && this.enPassantPossible == true) {
-
+			var prv_coords = this.coords;
 			var Y = parseInt(convertRowsToIndex(this.coords[1]));
 			var X = parseInt(convertColsToIndex(this.coords[0]));
 
@@ -637,15 +630,15 @@ class Pawn extends Piece {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
 					this.movePiece(false);
 
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: true,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					});
-					pushMoveMessage();
+					// moveList.push({pieceName: this.pieceName,
+					// 	oldPos: prv_coords,
+					// 	newPos: this.coords,
+					// 	color: this.color,
+					// 	captured: true,
+					// 	threatened: this.checkedOrCheckmated(),
+					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					// });
+					// pushMoveMessage();
 
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
@@ -654,19 +647,19 @@ class Pawn extends Piece {
 				}
 			}
 
-			if((X+1) < 7) {
+			else if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "wp") {
 					this.movePiece(false);
 
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: true,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					});
-					pushMoveMessage();
+					// moveList.push({pieceName: this.pieceName,
+					// 	oldPos: prv_coords,
+					// 	newPos: this.coords,
+					// 	color: this.color,
+					// 	captured: true,
+					// 	threatened: this.checkedOrCheckmated(),
+					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
+					// });
+					// pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -1430,8 +1423,10 @@ class King extends Piece {
 									display: "0-0"
 								});
 
+								pushMoveMessage();
+
 								this.movePiece(false);
-								virtualBoard[0][5] = virtualBoard[7][7]; // move rook to new location
+								virtualBoard[0][5] = virtualBoard[0][7]; // move rook to new location
 								virtualBoard[0][7] = ''; // delete old rook
 
 								virtualBoard[0][5].coords = "f8";
@@ -1458,7 +1453,7 @@ class King extends Piece {
 									display: "0-0-0"
 								});
 
-
+								pushMoveMessage();
 								this.movePiece(false);
 								virtualBoard[0][2] = virtualBoard[0][0]; // move rook to new location
 								virtualBoard[0][0] = ''; // delete old rook

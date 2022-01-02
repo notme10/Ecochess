@@ -218,14 +218,14 @@ body {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_bishop.png');
-	background-size: 120%;
+	background-size: 100%;
 }
 
 .wq {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_queen.png');
-	background-size: 92%;
+	background-size: 100%;
 }
 
 .wk {
@@ -240,6 +240,7 @@ body {
 	width: 100%;
 	background-image: url('images/trash_images/trash_pawn.png');
 	background-size: 100%;
+	background-repeat: no-repeat;
 }
 
 .br {
