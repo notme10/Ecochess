@@ -14,15 +14,12 @@ OUTSIDE OF CLASS STUFF!!!
 FINISHED!!!
 remove settings icon
 proportions for letters
-write # when checkmated
+write special characters for moves
 added logo thing
 rooms dont reset bug
-make sure everything works on heroku
-play some games on heroku until checkmate
 castling bug - ss in discord
 promotion prompts both players what piece they want
 capturing + promotion doesn't update on opponent's screen
-duplicated move list
 castling for black side does not work
 black rook doesn't move (line 261, Uncaught TypeError: Cannot read property 'className' of null)
 en passant broken
