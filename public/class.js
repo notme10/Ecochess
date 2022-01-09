@@ -8,7 +8,13 @@ duplicate pieces in pieces object
 remember active rooms
 localization with ip adresses
 
+NEW BUGS:
+
+layout is stretched vertically after a piece is captured
+
 OUTSIDE OF CLASS STUFF!!!
+Find out why cause of layout stretched
+add messages when connect and disconnect
 
 
 FINISHED!!!
@@ -235,6 +241,10 @@ class Piece {
 		}
 
 		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room, pieces: pieces, turn: turn});
+
+		var newTurnMessage = turn%2 === 0 ? "white's turn" : "black's turn";
+
+		document.getElementById("messageBoard").innerText = newTurnMessage;
 
 		if(thisTurnKing.isCheckmated()) {
 			loser = thisTurnColor;
