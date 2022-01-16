@@ -78,7 +78,15 @@ function addSockets() {
 		socket.on('disconnect', (data) => { // server listens for a disconnection
 
 			// Do something
-			io.emit('playerDisconnect', name);
+
+			if(rooms[roomId]) {
+				if(rooms[roomId]["w"] == name) {
+					io.emit('playerDisconnect', "w");
+				} else if(rooms[roomId]["b"] == name) {
+					io.emit('playerDisconnect', "b");
+				}
+			}
+
 			if (rooms[roomId] == null || rooms[roomId]["w"] == null && rooms[roomId]["b"] == null) {
 					rooms[roomId] = null;
 			}
@@ -88,7 +96,6 @@ function addSockets() {
 				// }
 				// if (rooms[roomId]["b"] == name) {
 				rooms[roomId]["b"] = null;
-				console.log("Your opponent has left!");
 				// }
 			}
 			io.emit('sidesInfo', rooms[roomId])

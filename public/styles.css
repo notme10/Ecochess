@@ -35,7 +35,16 @@ body {
 	grid-template-rows: 10fr 1fr;
 	grid-template-areas:
 		"s g i"
-		". b i";
+		". b i"
+		". c i";
+}
+
+#capturedPieces {
+	height: 100px;
+	grid-area: c;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 #board {

@@ -10,10 +10,9 @@ localization with ip adresses
 
 NEW BUGS:
 
-layout is stretched vertically after a piece is captured
+
 
 OUTSIDE OF CLASS STUFF!!!
-Find out why cause of layout stretched
 add messages when connect and disconnect
 
 
@@ -32,6 +31,9 @@ en passant broken
 fix the captured pieces at the bottombar
 only display captured pieces of opponent on bottom bar
 beginning screen
+data doesn't exist ??? (sockets.js line 118)
+layout is stretched vertically after a piece is captured
+Find out why cause of layout stretched
 */
 
 class Piece {
@@ -242,7 +244,12 @@ class Piece {
 
 		socket.emit("makeMove", {moves: moveList[moveList.length - 1], room:room, pieces: pieces, turn: turn});
 
-		var newTurnMessage = turn%2 === 0 ? "white's turn" : "black's turn";
+		var newTurnMessage = '';
+		if((turn%2 == 0 && side == "w") || (turn%2 == 1 && side == "b")) {
+			newTurnMessage = "my turn";
+		} else {
+			newTurnMessage = "opponent's turn";
+		}
 
 		document.getElementById("messageBoard").innerText = newTurnMessage;
 
@@ -286,7 +293,7 @@ class Piece {
 				capturedPiece.className = item.pieceName;
 				capturedPiece.style.width = "75px";
 				capturedPiece.style.height = "75px";
-				document.querySelector(".capturedPieces").appendChild(capturedPiece);
+				document.getElementById("capturedPieces").appendChild(capturedPiece);
 			}
 		}
 	}
