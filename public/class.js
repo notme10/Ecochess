@@ -1,4 +1,9 @@
 /*
+POSSIBLE THINGS:
+- Optimization for mobile
+- IP tracking
+- Copy room button
+- floating trash in background
 
 IN CLASS STUFF!
 
