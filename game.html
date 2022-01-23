@@ -40,17 +40,26 @@
 
 <div id = 'homeModal'>
 	<div class = 'modalContent'>
-
 		<p>Enter your name: </p>
 		<input type = "text" id = "nameInput"/>
 		<p>Which room would you join? </p>
 		<input type = "text" id = "roomInput"/>
 		<button id = "randomRoom"> Random Room </button>
 		<button id = "goToRoom"> Go To Room </button>
-
 	</div>
-
 </div>
+
+	<div id = 'promotionModal'>
+		<div class = 'modalContent'>
+			<p>PROMOTION</p>
+			<div id = 'promotionSelector'>
+				<img src = 'images/ocean_images/ocean_queen.png' class = 'promotionItem' piece = 'q'/>
+				<img src = 'images/ocean_images/ocean_rook.png' class = 'promotionItem' piece = 'r'/>
+				<img src = 'images/ocean_images/ocean_bishop.png' class = 'promotionItem' piece = 'b'/>
+				<img src = 'images/ocean_images/ocean_knight.png' class = 'promotionItem' piece = 'n'/>
+			</div>
+		</div>
+	</div>
 
 <div id='layout'>
 	<div id='board'></div>
@@ -321,7 +330,12 @@ goToRoom.addEventListener("click", e => {
 	location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
 
-
+let promotionChoices = document.getElementsByClassName("promotionItem");
+for (i = 0; i<promotionChoices.length; i++) {
+	promotionChoices[i].addEventListener("click", e=> {
+		console.log(e.target.getAttribute("piece"));
+	})
+}
 //
 // document.getElementById("settings").addEventListener("click",e => {
 // 	modal.style.display = "block";

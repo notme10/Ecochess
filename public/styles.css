@@ -25,6 +25,31 @@ body {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
+#promotionModal {
+	/* display: none; */
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+#promotionSelector {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	height: 10vh;
+}
+
+.promotionItem {
+	width: 13vh;
+	height: 13vh;
+}
+
 #close {
 	float: right;
 }
