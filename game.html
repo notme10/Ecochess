@@ -49,6 +49,7 @@
 	</div>
 </div>
 
+<template id = "promotionTemplate">
 	<div id = 'promotionModal'>
 		<div class = 'modalContent'>
 			<p>PROMOTION</p>
@@ -60,6 +61,7 @@
 			</div>
 		</div>
 	</div>
+</template>
 
 <div id='layout'>
 	<div id='board'></div>
@@ -196,7 +198,7 @@ function generateBoard(s) {
 
 var virtualBoard;
 
-let state = "main"
+let state = "promotion white"
 
 if (state == "main") {
 	virtualBoard = [
@@ -330,12 +332,6 @@ goToRoom.addEventListener("click", e => {
 	location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
 
-let promotionChoices = document.getElementsByClassName("promotionItem");
-for (i = 0; i<promotionChoices.length; i++) {
-	promotionChoices[i].addEventListener("click", e=> {
-		console.log(e.target.getAttribute("piece"));
-	})
-}
 //
 // document.getElementById("settings").addEventListener("click",e => {
 // 	modal.style.display = "block";

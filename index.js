@@ -1,24 +1,12 @@
 // MaYBE TRY RESTARTING THE SERVERY :)
 
-
-
 /* The express module is used to look at the address of the request and send it to the correct function */
 var express = require('express');
-
 var bodyParser = require('body-parser');
-
-/* The http module is used to listen for requests from a web browser */
-var http = require('http');
-
-/* The path module is used to transform relative paths to absolute paths */
-var path = require('path');
-
+var http = require('http'); /* The http module is used to listen for requests from a web browser */
+var path = require('path'); /* The path module is used to transform relative paths to absolute paths */
 var mongoose = require('mongoose');
-
 var Io = require('socket.io');
-
-var passport = require('passport');
-
 var dbAddress = process.env.MONGODB_URI || 'mongodb://127.0.0.1/spacecrash';
 
 /* Creates an express application */

@@ -109,82 +109,31 @@ class Piece {
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
 			var promotionDone = false;
 
-			// var userColor = window.prompt("What color are you playing as?");
-			// console.log(userColor);
-			// console.log(this.color);
-
 			while(promotionDone == false) {
 				var promotionPiece;
 				// ask user until user provides valid piece name
 
 				// something to check if the promoting piece color is the same as the player's color
 				if((side === "w" && turn%2===0) || (side === "b" && turn%2===1)) {
-					promotionPiece = window.prompt("What piece do you want?")
+					// show modal
+
+					let promotionModal =
+						document.getElementById("promotionTemplate")
+						.content.firstElementChild;
+					document.body.appendChild(promotionModal);
+
+					let promotionChoices = document.getElementsByClassName("promotionItem");
+					for (i = 0; i<promotionChoices.length; i++) {
+						promotionChoices[i].addEventListener("click", e=> {
+							console.log(e.target.getAttribute("piece"));
+							this.promote(e.target.getAttribute("piece", rowNow, colNow));
+							promotionModal.remove();
+						});
+					}
 				}
 				else {
-					promotionPiece = enemyPromotion;
+					this.promote(enemyPromotion, rowNow, colNow);
 				}
-				switch(promotionPiece) {
-
-					// promote to queen
-					case "q":
-					virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
-					promotionDone = true;
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: captureMove,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}=q`
-					});
-					break;
-
-					// promote to bishop
-					case "b":
-					virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
-					promotionDone = true;
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: captureMove,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}=b`
-					});
-					break;
-
-					// promote to rook
-					case "r":
-					virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
-					promotionDone = true;
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: captureMove,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}=r`
-					});
-					break;
-
-					// promote to knight
-					case "n":
-					virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
-					promotionDone = true;
-					moveList.push({pieceName: this.pieceName,
-						oldPos: prv_coords,
-						newPos: this.coords,
-						color: this.color,
-						captured: captureMove,
-						threatened: this.checkedOrCheckmated(),
-						display: `${this.pieceName}.${prv_coords}.${this.coords}=n`
-					});
-					break;
-				}
-
-
-				pushMoveMessage();
 			}
 
 			var p = document.createElement('div'); // makes a new div called p
@@ -526,6 +475,71 @@ class Pawn extends Piece {
 			this.imgurl = "images/trash_images/trash_pawn.png";
 		}
 	}
+
+	promote(pieceToPromote, rowNow, colNow) {
+		switch(pieceToPromote) {
+
+			// promote to queen
+			case "q":
+			virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
+			promotionDone = true;
+			moveList.push({pieceName: this.pieceName,
+				oldPos: prv_coords,
+				newPos: this.coords,
+				color: this.color,
+				captured: captureMove,
+				threatened: this.checkedOrCheckmated(),
+				display: `${this.pieceName}.${prv_coords}.${this.coords}=q`
+			});
+			break;
+
+			// promote to bishop
+			case "b":
+			virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
+			promotionDone = true;
+			moveList.push({pieceName: this.pieceName,
+				oldPos: prv_coords,
+				newPos: this.coords,
+				color: this.color,
+				captured: captureMove,
+				threatened: this.checkedOrCheckmated(),
+				display: `${this.pieceName}.${prv_coords}.${this.coords}=b`
+			});
+			break;
+
+			// promote to rook
+			case "r":
+			virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
+			promotionDone = true;
+			moveList.push({pieceName: this.pieceName,
+				oldPos: prv_coords,
+				newPos: this.coords,
+				color: this.color,
+				captured: captureMove,
+				threatened: this.checkedOrCheckmated(),
+				display: `${this.pieceName}.${prv_coords}.${this.coords}=r`
+			});
+			break;
+
+			// promote to knight
+			case "n":
+			virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
+			promotionDone = true;
+			moveList.push({pieceName: this.pieceName,
+				oldPos: prv_coords,
+				newPos: this.coords,
+				color: this.color,
+				captured: captureMove,
+				threatened: this.checkedOrCheckmated(),
+				display: `${this.pieceName}.${prv_coords}.${this.coords}=n`
+			});
+			break;
+		}
+
+
+		pushMoveMessage();
+	}
+
 	setEverything(color, coords, hasMoved, pinned, imgurl, enPassantPossible, pieceName) {
 		this.color = color;
 		this.coords = coords;
