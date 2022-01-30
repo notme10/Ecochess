@@ -71,7 +71,6 @@ class Piece {
 		this.coords = cellCoord;
 
 		let rowPrevious = rows.indexOf(pieceInfo[1][1]); // get the row of previous position
-
 		let colPrevious = columns.indexOf(pieceInfo[1][0]); // get the column of previous position
 		let rowNow = rows.indexOf(cellCoord[1]); // get row of current position
 		let colNow = columns.indexOf(cellCoord[0]); // get column of current position
@@ -107,39 +106,30 @@ class Piece {
 		var prevCoords = this.coords[0] + prevRow;
 
 		if((pieceInfo[0] == this.color + "p") && (pieceInfo[1][1] == prevRow) && (rowNow == curRow)) { // if pawn is at the 7th or 2nd row
-			var promotionDone = false;
+			var promotionPiece;
 
-			while(promotionDone == false) {
-				var promotionPiece;
-				// ask user until user provides valid piece name
+			// something to check if the promoting piece color is the same as the player's color
+			if((side === "w" && turn%2===0) || (side === "b" && turn%2===1)) {
+				// show modal
 
-				// something to check if the promoting piece color is the same as the player's color
-				if((side === "w" && turn%2===0) || (side === "b" && turn%2===1)) {
-					// show modal
+				let promotionModal =
+				document.getElementById("promotionTemplate")
+				.content.firstElementChild;
+				document.body.appendChild(promotionModal);
 
-					let promotionModal =
-						document.getElementById("promotionTemplate")
-						.content.firstElementChild;
-					document.body.appendChild(promotionModal);
-
-					let promotionChoices = document.getElementsByClassName("promotionItem");
-					for (i = 0; i<promotionChoices.length; i++) {
-						promotionChoices[i].addEventListener("click", e=> {
-							console.log(e.target.getAttribute("piece"));
-							this.promote(e.target.getAttribute("piece", rowNow, colNow));
-							promotionModal.remove();
-						});
-					}
-				}
-				else {
-					this.promote(enemyPromotion, rowNow, colNow);
+				let promotionChoices = document.getElementsByClassName("promotionItem");
+				for (i = 0; i<promotionChoices.length; i++) {
+					promotionChoices[i].addEventListener("click", e=> {
+						console.log(rowNow);
+						this.promote(e.target.getAttribute("piece"), rowNow, colNow, prv_coords, captureMove);
+						promotionModal.remove();
+					});
 				}
 			}
-
-			var p = document.createElement('div'); // makes a new div called p
-
-			p.className = `${this.color + promotionPiece} ${cellCoord}`; // creates promoted piece
-			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+			else {
+				this.promote(enemyPromotion, rowNow, colNow, prv_coords, captureMove);
+			}
+			return;
 		}
 
 		else { // normal move
@@ -155,7 +145,11 @@ class Piece {
 				pawns[i].enPassantPossible	= false;
 			}
 		}
+		this.endTurn(prv_coords, captureMove);
+		return true;
+	}
 
+	endTurn(prv_coords, captureMove) {
 		turn++;
 
 		var newPosTxt = this.coords;
@@ -476,13 +470,14 @@ class Pawn extends Piece {
 		}
 	}
 
-	promote(pieceToPromote, rowNow, colNow) {
+	promote(pieceToPromote, rowNow, colNow, prv_coords, captureMove) {
+		// console.log(rowNow);
+		// console.log(virtualBoard[rowNow]);
 		switch(pieceToPromote) {
 
 			// promote to queen
 			case "q":
 			virtualBoard[rowNow][colNow] = new Queen(this.color, cellCoord);
-			promotionDone = true;
 			moveList.push({pieceName: this.pieceName,
 				oldPos: prv_coords,
 				newPos: this.coords,
@@ -496,7 +491,6 @@ class Pawn extends Piece {
 			// promote to bishop
 			case "b":
 			virtualBoard[rowNow][colNow] = new Bishop(this.color, cellCoord);
-			promotionDone = true;
 			moveList.push({pieceName: this.pieceName,
 				oldPos: prv_coords,
 				newPos: this.coords,
@@ -510,7 +504,6 @@ class Pawn extends Piece {
 			// promote to rook
 			case "r":
 			virtualBoard[rowNow][colNow] = new Rook(this.color, cellCoord);
-			promotionDone = true;
 			moveList.push({pieceName: this.pieceName,
 				oldPos: prv_coords,
 				newPos: this.coords,
@@ -524,7 +517,6 @@ class Pawn extends Piece {
 			// promote to knight
 			case "n":
 			virtualBoard[rowNow][colNow] = new Knight(this.color, cellCoord);
-			promotionDone = true;
 			moveList.push({pieceName: this.pieceName,
 				oldPos: prv_coords,
 				newPos: this.coords,
@@ -535,9 +527,14 @@ class Pawn extends Piece {
 			});
 			break;
 		}
-
-
 		pushMoveMessage();
+
+		var p = document.createElement('div'); // makes a new div called p
+
+		p.className = `${this.color + pieceToPromote} ${cellCoord}`; // creates promoted piece
+		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
+
+		this.endTurn(prv_coords, captureMove);
 	}
 
 	setEverything(color, coords, hasMoved, pinned, imgurl, enPassantPossible, pieceName) {
