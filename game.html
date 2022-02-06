@@ -332,6 +332,9 @@ var roomInput = document.getElementById("roomInput");
 
 randomizerButton.addEventListener("click", e => {
 	roomInput.value = Math.floor(Math.random() * 10000000);
+	navigator.clipboard.writeText(roomInput.value);
+	alert("Room Code copied to clipboard");
+	//make into a popup later
 });
 
 goToRoom.addEventListener("click", e => {
