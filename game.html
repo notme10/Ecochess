@@ -126,6 +126,14 @@ var width = 8, height = 8;
 var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
+function pieceIdentifier(side, pieceName) {
+	if (side == pieceName[0] || side == 's' && pieceName[0] == 'w') {
+		return 'f'+pieceName[1];
+	}
+	else {
+		return 'e'+pieceName[1];
+	}
+}
 function generateBoard(s) {
 
 	var topLeft = (s == "w");
@@ -194,7 +202,8 @@ function generateBoard(s) {
 				pieces[virtualBoard[i][j].pieceName].push(virtualBoard[i][j]);
 
 				p = document.createElement('div'); // creates a piece
-				p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+				pieceName = virtualBoard[i][j].pieceName
+				p.className = `${pieceName} ${columns[j] + rows[i]} ${pieceIdentifier(side, pieceName)}`; // p.className = 'br a8'
 				document.getElementById(columns[j] + rows[i]).appendChild(p);
 			}
 		}

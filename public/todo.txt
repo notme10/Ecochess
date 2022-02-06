@@ -8,7 +8,6 @@ POSSIBLE THINGS:
 IN CLASS STUFF!
 
 finish my side is always fish, opponent side is always trash
-better promotion screen - no typing stuff
 duplicate pieces in pieces object
 remember active rooms
 localization with ip adresses
@@ -18,8 +17,7 @@ NEW BUGS:
 
 
 OUTSIDE OF CLASS STUFF!!!
-add messages when connect and disconnect
-make a file for each piece type (shorten class.js)
+fix promotion ()promoting and capturing at same time does not remove captured piece (they overlap))
 
 
 FINISHED!!!

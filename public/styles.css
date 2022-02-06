@@ -218,7 +218,7 @@ body {
 	background-color: blue;
 }
 
-.wp {
+.fp {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_pawn.png');
@@ -227,7 +227,7 @@ body {
 	background-position: bottom;
 }
 
-.wr {
+.fr {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_rook.png');
@@ -235,35 +235,35 @@ body {
 	background-repeat:no-repeat;
 }
 
-.wn {
+.fn {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_knight.png');
 	background-size: 100%;
 }
 
-.wb {
+.fb {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_bishop.png');
 	background-size: 100%;
 }
 
-.wq {
+.fq {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_queen.png');
 	background-size: 100%;
 }
 
-.wk {
+.fk {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/ocean_images/ocean_king.png');
 	background-size: 100%;
 }
 
-.bp {
+.ep {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_pawn.png');
@@ -271,35 +271,35 @@ body {
 	background-repeat: no-repeat;
 }
 
-.br {
+.er {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_rook.png');
 	background-size: 100%;
 }
 
-.bn {
+.en {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_knight.png');
 	background-size: 100%;
 }
 
-.bb {
+.eb {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_bishop.png');
 	background-size: 100%;
 }
 
-.bq {
+.eq {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_queen.png');
 	background-size: 100%;
 }
 
-.bk {
+.ek {
 	height: 100%;
 	width: 100%;
 	background-image: url('images/trash_images/trash_king.png');

@@ -70,8 +70,8 @@ class Pawn extends Piece {
 		pushMoveMessage();
 
 		var p = document.createElement('div'); // makes a new div called p
-
-		p.className = `${this.color + pieceToPromote} ${cellCoord}`; // creates promoted piece
+		let pieceName = this.color + pieceToPromote;
+		p.className = `${pieceName} ${cellCoord} ${pieceIdentifier(side, pieceName)}`; // creates promoted piece
 		document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 
 		this.endTurn(prv_coords, captureMove);

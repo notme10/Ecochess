@@ -92,7 +92,7 @@ class Piece {
 		else { // normal move
 			var p = document.createElement('div'); // makes a new div called p
 
-			p.className = `${pieceInfo[0]} ${cellCoord}`; // puts the first part of pieceInfo and the cellCoord into the p's className
+			p.className = `${pieceInfo[0]} ${cellCoord} ${pieceIdentifier(side, pieceInfo[0])}`; // puts the first part of pieceInfo and the cellCoord into the p's className
 			document.getElementById(cellCoord).appendChild(p); // puts the piece we created in js into the cell that we clicked on
 		}
 
@@ -195,7 +195,7 @@ class Piece {
 			var item = capturedPieces[capturedPieces.length - 1];
 			if(side !== item.color) {
 				var capturedPiece = document.createElement("div");
-				capturedPiece.className = item.pieceName;
+				capturedPiece.className = 'e'+item.pieceName[1];
 				capturedPiece.style.width = "75px";
 				capturedPiece.style.height = "75px";
 				document.getElementById("capturedPieces").appendChild(capturedPiece);

@@ -74,7 +74,8 @@ socket.on("playerConnect", (data) => {
                 cell.innerHTML = ""
                 if (virtualBoard[i][j]) {
                     p = document.createElement('div'); // creates a piece
-                    p.className = `${virtualBoard[i][j].pieceName} ${columns[j] + rows[i]}`; // p.className = 'br a8'
+                    pieceName = virtualBoard[i][j].pieceName
+            				p.className = `${pieceName} ${columns[j] + rows[i]} ${pieceIdentifier(side, pieceName)}`; // p.className = 'br a8'
                     cell.appendChild(p);
                 }
             }
