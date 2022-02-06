@@ -19,6 +19,7 @@ NEW BUGS:
 
 OUTSIDE OF CLASS STUFF!!!
 add messages when connect and disconnect
+make a file for each piece type (shorten class.js)
 
 
 FINISHED!!!
