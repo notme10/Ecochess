@@ -127,6 +127,7 @@ var columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
 function pieceIdentifier(side, pieceName) {
+	console.log(side);
 	if (side == pieceName[0] || side == 's' && pieceName[0] == 'w') {
 		return 'f'+pieceName[1];
 	}
@@ -136,7 +137,7 @@ function pieceIdentifier(side, pieceName) {
 }
 function generateBoard(s) {
 
-	var topLeft = (s == "w");
+	var topLeft = (s !== "b");
 
 	for (row = topLeft ? 0 : (height - 1); topLeft ? (row < height) : (row >= 0); row = topLeft ? (row + 1) : (row - 1)) {
 		for (col = topLeft ? 0 : (width - 1); topLeft ? (col < width) : (col >= 0); col = topLeft ? (col + 1) : (col - 1)) {
@@ -208,7 +209,6 @@ function generateBoard(s) {
 			}
 		}
 	}
-
 }
 
 var virtualBoard;

@@ -117,6 +117,8 @@ socket.on("sidesInfo", (data) => {
         generateBoard(side);
     } else if(side !== "w" && side !== "b") {
         side = "s";
+        board.innerHTML = '';
+        generateBoard(side);
     }
 
 

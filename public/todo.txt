@@ -11,6 +11,11 @@ IN CLASS STUFF
     remember active rooms
     localization with ip addresses
     font size scaling
+    promotion while capturing is buggy
+    both sides show up as black on spectator's screen
+    replace small piece icons in the corner with just one color (to determine what piece it is)
+    gray out the background during home screen thingy
+    coordinate labels fix
 
 NEW BUGS:
 

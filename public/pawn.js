@@ -11,8 +11,6 @@ class Pawn extends Piece {
 	}
 
 	promote(pieceToPromote, rowNow, colNow, prv_coords, captureMove) {
-		// console.log(rowNow);
-		// console.log(virtualBoard[rowNow]);
 		switch(pieceToPromote) {
 
 			// promote to queen
@@ -69,6 +67,8 @@ class Pawn extends Piece {
 		}
 		pushMoveMessage();
 
+		document.getElementById(cellCoord).innerHTML = '';
+		console.log("clear");
 		var p = document.createElement('div'); // makes a new div called p
 		let pieceName = this.color + pieceToPromote;
 		p.className = `${pieceName} ${cellCoord} ${pieceIdentifier(side, pieceName)}`; // creates promoted piece
@@ -148,17 +148,6 @@ class Pawn extends Piece {
 				if(virtualBoard[Y][X-1].pieceName == "bp") {
 					this.movePiece(false);
 
-					// console.log("condition 1");
-					// moveList.push({pieceName: this.pieceName,
-					// 	oldPos: prv_coords,
-					// 	newPos: this.coords,
-					// 	color: this.color,
-					// 	captured: true,
-					// 	threatened: this.checkedOrCheckmated(),
-					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					// });
-					// pushMoveMessage();
-
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
@@ -170,15 +159,6 @@ class Pawn extends Piece {
 				if(virtualBoard[Y][X+1].pieceName == "bp") {
 					this.movePiece(false);
 					console.log("condition dos");
-					// moveList.push({pieceName: this.pieceName,
-					// 	oldPos: prv_coords,
-					// 	newPos: this.coords,
-					// 	color: this.color,
-					// 	captured: true,
-					// 	threatened: this.checkedOrCheckmated(),
-					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					// });
-					// pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
@@ -198,16 +178,6 @@ class Pawn extends Piece {
 				if(virtualBoard[Y][X-1].pieceName == "wp") {
 					this.movePiece(false);
 
-					// moveList.push({pieceName: this.pieceName,
-					// 	oldPos: prv_coords,
-					// 	newPos: this.coords,
-					// 	color: this.color,
-					// 	captured: true,
-					// 	threatened: this.checkedOrCheckmated(),
-					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					// });
-					// pushMoveMessage();
-
 					virtualBoard[Y][X-1] = ''; // old virt space is set back to ''
 
 					var capturedPieceInfo = convertIndexToCols(X-1) + (convertIndexToRows(Y)).toString()
@@ -218,16 +188,6 @@ class Pawn extends Piece {
 			else if((X+1) < 7) {
 				if(virtualBoard[Y][X+1].pieceName == "wp") {
 					this.movePiece(false);
-
-					// moveList.push({pieceName: this.pieceName,
-					// 	oldPos: prv_coords,
-					// 	newPos: this.coords,
-					// 	color: this.color,
-					// 	captured: true,
-					// 	threatened: this.checkedOrCheckmated(),
-					// 	display: `${this.pieceName}.${prv_coords}.${this.coords}`
-					// });
-					// pushMoveMessage();
 
 					virtualBoard[Y][X+1] = ''; // old virt space is set back to ''
 
