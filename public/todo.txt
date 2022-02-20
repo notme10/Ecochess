@@ -12,7 +12,6 @@ IN CLASS STUFF
     localization with ip addresses
     font size scaling
     promotion while capturing is buggy
-    both sides show up as black on spectator's screen
     replace small piece icons in the corner with just one color (to determine what piece it is)
     gray out the background during home screen thingy
     coordinate labels fix
@@ -25,6 +24,7 @@ OUTSIDE OF CLASS STUFF
 
 
 FINISHED
+    both sides show up as black on spectator's screen
     remove settings icon
     proportions for letters
     write special characters for moves
