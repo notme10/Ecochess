@@ -1,40 +1,35 @@
 
-POSSIBLE THINGS:
-- Optimization for mobile
-- IP tracking
-- Popup for notifying that the room code has been copied :?
-- floating trash in background
+POSSIBLE
+    optimization for mobile devices
+    IP tracking
+    popup for notifying that the room code has been copied :?
+    floating trash in background
 
-IN CLASS STUFF!
-
-finish my side is always fish, opponent side is always trash
-duplicate pieces in pieces object
-remember active rooms
-localization with ip adresses
+IN CLASS STUFF
+    finish my side is always fish, opponent side is always trash
+    duplicate pieces in pieces object
+    remember active rooms
+    localization with ip addresses
+    font size scaling
 
 NEW BUGS:
 
 
+OUTSIDE OF CLASS STUFF
+    fix promotion (promoting and capturing at same time does not remove captured piece (they overlap))
 
-OUTSIDE OF CLASS STUFF!!!
-fix promotion ()promoting and capturing at same time does not remove captured piece (they overlap))
 
-
-FINISHED!!!
-remove settings icon
-proportions for letters
-write special characters for moves
-added logo thing
-rooms dont reset bug
-castling bug - ss in discord
-promotion prompts both players what piece they want
-capturing + promotion doesn't update on opponent's screen
-castling for black side does not work
-black rook doesn't move (line 261, Uncaught TypeError: Cannot read property 'className' of null)
-en passant broken
-fix the captured pieces at the bottombar
-only display captured pieces of opponent on bottom bar
-beginning screen
-data doesn't exist ??? (sockets.js line 118)
-layout is stretched vertically after a piece is captured
-Find out why cause of layout stretched
+FINISHED
+    remove settings icon
+    proportions for letters
+    write special characters for moves
+    added logo thing
+    room reset bug
+    castling bug
+    promotion prompt bug
+    promotion update bug
+    black side castling bug
+    en passant for multiplayer fix
+    captured pieces bug
+    home screen
+    layout stretch bug
