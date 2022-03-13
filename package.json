@@ -18,6 +18,7 @@
   "homepage": "https://github.com/notme10/Ecochess#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "js-chess-engine": "^1.0.2",
     "mongoose": "^6.0.11",
     "passport": "^0.5.0",
     "socket.io": "^4.3.0"
