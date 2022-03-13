@@ -16,6 +16,8 @@ var app = express();
 var server = http.createServer(app);
 
 var io = Io(server);
+var axios = require("axios").default;
+
 
 /* Defines what port to use to listen to web requests */
 var port =  process.env.PORT
@@ -108,6 +110,27 @@ function startServer() {
 	app.post('/', (req, res, next) => {
 		console.log(req.body);
 		res.send('OK');
+	})
+	app.get('/ipTest', (req, res, next) => {
+		var options = {
+		  method: 'GET',
+		  url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
+		  headers: {
+		    'x-rapidapi-host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
+		    'x-rapidapi-key': '72e9555b18msh88c262cebd13cc6p1082bejsnb6b410214595'
+		  }
+		};
+
+		axios.request(options).then(function (response) {
+			console.log(response.data);
+			let city = `${response.data.city}, ${response.data.region}`
+			res.send(city);
+		}).catch(function (error) {
+			console.error(error);
+			res.send(error);
+		});
+		// console.dir(req.ip)
+		// res.send(req.ip);
 	})
 
 	/* Defines what function to all when the server recieves any request from http://localhost:8080 */
