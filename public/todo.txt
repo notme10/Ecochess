@@ -12,7 +12,6 @@ IN CLASS STUFF
     localization with ip addresses
     font size scaling
     promotion while capturing is buggy
-    replace small piece icons in the corner with just one color (to determine what piece it is)
     gray out the background during home screen thingy
     coordinate labels fix
 
