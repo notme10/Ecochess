@@ -5,9 +5,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http'); /* The http module is used to listen for requests from a web browser */
 var path = require('path'); /* The path module is used to transform relative paths to absolute paths */
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var Io = require('socket.io');
-var dbAddress = process.env.MONGODB_URI || 'mongodb://127.0.0.1/spacecrash';
+// var dbAddress = process.env.MONGODB_URI || 'mongodb://127.0.0.1/spacecrash';
 
 /* Creates an express application */
 var app = express();
@@ -152,4 +152,5 @@ function startServer() {
 
 }
 
-mongoose.connect(dbAddress, startServer);
+// mongoose.connect(dbAddress, startServer);
+startServer();
