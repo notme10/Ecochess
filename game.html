@@ -1,222 +1,294 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link rel="stylesheet" href="styles.css">
-	<title> ecochess </title>
-	<link rel="icon" href="images/favicon.png"/>
-</head>
-<body>
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+        <title>ecochess</title>
+        <link rel="icon" href="images/favicon.png" />
+    </head>
+    <body>
+        <div id="homeModal">
+            <div class="modalContent">
+                <p>Enter your name:</p>
+                <input type="text" id="nameInput" />
+                <p>Which room would you join?</p>
+                <input type="text" id="roomInput" />
+                <button id="randomRoom">Random Room</button>
+                <button id="goToRoom">Go To Room</button>
+            </div>
+        </div>
 
+        <template id="promotionTemplate">
+            <div id="promotionModal">
+                <div class="modalContent">
+                    <p>PROMOTION</p>
+                    <div id="promotionSelector">
+                        <img
+                            src="images/ocean_images/ocean_queen.png"
+                            class="promotionItem"
+                            piece="q"
+                        />
+                        <img
+                            src="images/ocean_images/ocean_rook.png"
+                            class="promotionItem"
+                            piece="r"
+                        />
+                        <img
+                            src="images/ocean_images/ocean_bishop.png"
+                            class="promotionItem"
+                            piece="b"
+                        />
+                        <img
+                            src="images/ocean_images/ocean_knight.png"
+                            class="promotionItem"
+                            piece="n"
+                        />
+                    </div>
+                </div>
+            </div>
+        </template>
 
-<div id = 'homeModal'>
-	<div class = 'modalContent'>
-		<p>Enter your name: </p>
-		<input type = "text" id = "nameInput"/>
-		<p>Which room would you join? </p>
-		<input type = "text" id = "roomInput"/>
-		<button id = "randomRoom"> Random Room </button>
-		<button id = "goToRoom"> Go To Room </button>
-	</div>
-</div>
+        <div id="layout">
+            <div id="board"></div>
+            <div id="sidebar">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+            </div>
 
-<template id = "promotionTemplate">
-	<div id = 'promotionModal'>
-		<div class = 'modalContent'>
-			<p>PROMOTION</p>
-			<div id = 'promotionSelector'>
-				<img src = 'images/ocean_images/ocean_queen.png' class = 'promotionItem' piece = 'q'/>
-				<img src = 'images/ocean_images/ocean_rook.png' class = 'promotionItem' piece = 'r'/>
-				<img src = 'images/ocean_images/ocean_bishop.png' class = 'promotionItem' piece = 'b'/>
-				<img src = 'images/ocean_images/ocean_knight.png' class = 'promotionItem' piece = 'n'/>
-			</div>
-		</div>
-	</div>
-</template>
+            <div id="bottombar">
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+                <div>d</div>
+                <div>e</div>
+                <div>f</div>
+                <div>g</div>
+                <div>h</div>
+            </div>
 
-<div id='layout'>
-	<div id='board'></div>
-	<div id='sidebar'>
-		<div>1</div>
-		<div>2</div>
-		<div>3</div>
-		<div>4</div>
-		<div>5</div>
-		<div>6</div>
-		<div>7</div>
-		<div>8</div>
-	</div>
+            <div id="infoBox">
+                <div id="messageBoard"></div>
+                <div id="environmentFacts"></div>
+                <div id="movesBox"></div>
+            </div>
 
-	<div id='bottombar'>
-		<div>a</div>
-		<div>b</div>
-		<div>c</div>
-		<div>d</div>
-		<div>e</div>
-		<div>f</div>
-		<div>g</div>
-		<div>h</div>
-	</div>
+            <div id="capturedPieces"></div>
+        </div>
 
-	<div id='infoBox'>
-		<div id = 'messageBoard'></div>
-		<div id='environmentFacts'></div>
-		<div id='movesBox'></div>
-	</div>
+        <script src="socket.io.js"></script>
+        <!-- <script src="js-chess-engine.js"></script> -->
+        <script src="init.js"></script>
+        <script src="sockets.js"></script>
+        <script src="facts.js"></script>
+        <script>
+            let game;
 
-	<div id='capturedPieces'></div>
+            let fromCoord;
+        </script>
 
-</div>
+        <script type="module">
+            import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
+            game = new Game();
+            let pieces = game.board.configuration.pieces;
+			console.log(pieces);
 
-<script src="socket.io.js"></script>
-<!-- <script src="js-chess-engine.js"></script> -->
-<script src = "init.js"></script>
-<script src = "sockets.js"></script>
-<script src="facts.js"> </script>
-<script>
-let game;
+            for (cell in pieces) {
+                // cell is the coordinate, pieces[cell] is the actual piece
+                let cellHTML = document.getElementById(cell);
+                cellHTML.innerHTML = "";
+                p = document.createElement("div"); // creates a piece
+                let pieceName = virtualBoard[i][j].pieceName;
+                p.className = `${pieceName} ${
+                    cell
+                } ${pieceIdentifier(side, pieceName)}`; // p.className = 'br a8'
+                cellHTML.appendChild(p);
+            }
+        </script>
+        <script>
+            document.addEventListener("keypress", (e) => {
+                if (e.key == "q") {
+                    let selectedCell = document.querySelector(".selected");
 
-let fromCoord;
-</script>
+                    if (selectedCell) {
+                        selectedCell.className = selectedCell.className.replace(
+                            " selected",
+                            ""
+                        );
+                    }
+                    fromCoord = null;
+                }
+            });
 
-<script type = "module">
-import {
-	Game
-} from "/js-chess-engine/lib/js-chess-engine.mjs";
-game = new Game();
+            let board = document.getElementById("board"); // We are getting the board into the JS
+            var width = 8,
+                height = 8;
+            var columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
+            var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-</script>
-<script>
+            function pieceIdentifier(side, pieceName) {
+                console.log(side);
+                if (
+                    side == pieceName[0] ||
+                    (side == "s" && pieceName[0] == "w")
+                ) {
+                    return "f" + pieceName[1];
+                } else {
+                    return "e" + pieceName[1];
+                }
+            }
+            function generateBoard(s) {
+                var topLeft = s !== "b";
 
-document.addEventListener('keypress', e => {
-	if (e.key == 'q') {
-		let selectedCell = document.querySelector(".selected")
+                for (
+                    row = topLeft ? 0 : height - 1;
+                    topLeft ? row < height : row >= 0;
+                    row = topLeft ? row + 1 : row - 1
+                ) {
+                    for (
+                        col = topLeft ? 0 : width - 1;
+                        topLeft ? col < width : col >= 0;
+                        col = topLeft ? col + 1 : col - 1
+                    ) {
+                        var cell = document.createElement("div");
+                        cell.addEventListener("click", (e) => {
+                            let newCoord = e.target.id; // get cellCoord
+                            if (newCoord) {
+                                // clicked on a tile without piece
+                                if (fromCoord) {
+                                    // clicked on a piece before
+                                    game.move(fromCoord, newCoord);
+                                }
+                            } else if (
+                                (turn % 2 == 0 &&
+                                    e.target.className.split(" ")[0][0] ==
+                                        "w" &&
+                                    side == "w") ||
+                                (turn % 2 == 1 &&
+                                    e.target.className.split(" ")[0][0] ==
+                                        "b" &&
+                                    side == "b")
+                            ) {
+                                // clicked on a piece
+                                // clear old selected pieces
+                                let selectedCell =
+                                    document.querySelector(".selected"); // gets the cell that is selected
 
-		if (selectedCell) {
-			selectedCell.className = selectedCell.className.replace(' selected', '')
-		}
-		fromCoord = null;
-	}
-})
+                                if (selectedCell) {
+                                    selectedCell.className =
+                                        selectedCell.className.replace(
+                                            " selected",
+                                            ""
+                                        ); // get rid of selected tag
+                                }
 
-let board = document.getElementById('board'); // We are getting the board into the JS
-var width = 8, height = 8;
-var columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
-var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
+                                fromCoord = e.target.className.split(" ")[1];
+                                document.getElementById(fromCoord).className +=
+                                    " selected";
+                            } else if (
+                                (turn % 2 == 0 &&
+                                    e.target.className.split(" ")[0][0] ==
+                                        "b") ||
+                                (turn % 2 == 1 &&
+                                    e.target.className.split(" ")[0][0] == "w")
+                            ) {
+                                if (fromCoord) {
+                                    newCoord = e.target.className.split(" ")[1];
 
-function pieceIdentifier(side, pieceName) {
-	console.log(side);
-	if (side == pieceName[0] || side == 's' && pieceName[0] == 'w') {
-		return 'f'+pieceName[1];
-	}
-	else {
-		return 'e'+pieceName[1];
-	}
-}
-function generateBoard(s) {
+                                    game.move(fromCoord, newCoord);
+                                }
+                            }
+                        });
 
-	var topLeft = (s !== "b");
+                        board.appendChild(cell);
+                        if ((row + col) % 2 == 0) {
+                            // white
+                            cell.className = `cell white${localStorage.getItem(
+                                "chosenRegion"
+                            )}`;
+                        } else {
+                            // black
+                            cell.className = `cell black${localStorage.getItem(
+                                "chosenRegion"
+                            )}`;
+                        }
 
-	for (row = topLeft ? 0 : (height - 1); topLeft ? (row < height) : (row >= 0); row = topLeft ? (row + 1) : (row - 1)) {
-		for (col = topLeft ? 0 : (width - 1); topLeft ? (col < width) : (col >= 0); col = topLeft ? (col + 1) : (col - 1)) {
-			var cell = document.createElement('div');
-			cell.addEventListener('click', e => {
-				let newCoord = e.target.id; // get cellCoord
-				if (newCoord) { // clicked on a tile without piece
-					if (fromCoord) { // clicked on a piece before
-						game.move(fromCoord, newCoord);
-					}
-				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "w" && side == "w" ||
-						   turn % 2 == 1 && e.target.className.split(" ")[0][0] == "b" && side == "b") { // clicked on a piece
-					// clear old selected pieces
-					let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
+                        var bgFileName = `images/${localStorage.getItem(
+                            "chosenRegion"
+                        )}.png`;
+                        document.body.style.backgroundImage =
+                            "url(" + bgFileName + ")";
+                        cell.id = columns[col] + rows[row];
+                    }
+                }
+            }
 
-					if (selectedCell) {
-						selectedCell.className = selectedCell.className.replace(' selected', ''); // get rid of selected tag
-					}
+            generateBoard("w");
 
-					fromCoord = e.target.className.split(" ")[1];
-					document.getElementById(fromCoord).className += " selected"
-				} else if (turn % 2 == 0 && e.target.className.split(" ")[0][0] == "b" ||
-					       turn % 2 == 1 && e.target.className.split(" ")[0][0] == "w") {
-					if (fromCoord) {
-						newCoord = e.target.className.split(" ")[1];
+            function convertRowsToIndex(row) {
+                return rows.indexOf(row);
+            }
+            function convertColsToIndex(col) {
+                return columns.indexOf(col);
+            }
+            function convertIndexToRows(index) {
+                return rows[index];
+            }
+            function convertIndexToCols(index) {
+                return columns[index];
+            }
 
-						game.move(fromCoord, newCoord);
-					}
-				}
-			});
+            function pushMoveMessage() {
+                var lastMove = moveList[moveList.length - 1];
 
-			board.appendChild(cell);
-			if ((row + col) % 2 == 0) { // white
-				cell.className = `cell white${localStorage.getItem("chosenRegion")}`;
-			}
+                if (lastMove.color == "w") {
+                    var newMove = document.createElement("div");
+                    var turn = document.createElement("div");
+                    var whiteMove = document.createElement("div");
 
-			else { // black
-				cell.className = `cell black${localStorage.getItem("chosenRegion")}`;
-			}
+                    newMove.classList += "move";
+                    // turn.classList += "move";
+                    // whiteMove.classList += "move";
 
-			var bgFileName = `images/${localStorage.getItem("chosenRegion")}.png`
-			document.body.style.backgroundImage = "url(" + bgFileName + ")";
-			cell.id = columns[col] + rows[row];
-		}
-	}
-}
+                    turn.innerText = Math.ceil(moveList.length / 2);
 
-generateBoard("w");
+                    whiteMove.innerText = lastMove.display;
 
-function convertRowsToIndex(row) { return rows.indexOf(row) }
-function convertColsToIndex(col) { return columns.indexOf(col) }
-function convertIndexToRows(index) { return rows[index] }
-function convertIndexToCols(index) { return columns[index] }
+                    newMove.appendChild(turn);
+                    newMove.appendChild(whiteMove);
+                    document.querySelector("#movesBox").appendChild(newMove);
+                } else {
+                    var blackMove = document.createElement("div");
+                    // blackMove.classList += "move";
+                    blackMove.innerText = lastMove.display;
 
-function pushMoveMessage() {
-	var lastMove = moveList[moveList.length-1];
+                    var moveBox = document.querySelector("#movesBox");
+                    var newMove = moveBox.lastElementChild;
+                    newMove.appendChild(blackMove);
+                }
+            }
 
-	if(lastMove.color == "w") {
-		var newMove = document.createElement("div");
-		var turn = document.createElement("div");
-		var whiteMove = document.createElement("div");
+            var modal = document.getElementById("homeModal");
+            var randomizerButton = document.getElementById("randomRoom");
+            var goToRoom = document.getElementById("goToRoom");
+            var nameInput = document.getElementById("nameInput");
+            var roomInput = document.getElementById("roomInput");
 
-		newMove.classList += "move";
-		// turn.classList += "move";
-		// whiteMove.classList += "move";
+            randomizerButton.addEventListener("click", (e) => {
+                roomInput.value = Math.floor(Math.random() * 10000000);
+                navigator.clipboard.writeText(roomInput.value);
+                alert("Room Code copied to clipboard");
+                //make into a popup later
+            });
 
-		turn.innerText = Math.ceil(moveList.length/2);
-
-		whiteMove.innerText = lastMove.display;
-
-		newMove.appendChild(turn);
-		newMove.appendChild(whiteMove);
-		document.querySelector("#movesBox").appendChild(newMove);
-
-	} else {
-		var blackMove = document.createElement("div");
-		// blackMove.classList += "move";
-		blackMove.innerText = lastMove.display;
-
-		var moveBox = document.querySelector("#movesBox");
-		var newMove = moveBox.lastElementChild;
-		newMove.appendChild(blackMove);
-	}
-}
-
-var modal = document.getElementById("homeModal");
-var randomizerButton = document.getElementById("randomRoom");
-var goToRoom = document.getElementById("goToRoom");
-var nameInput = document.getElementById("nameInput");
-var roomInput = document.getElementById("roomInput");
-
-randomizerButton.addEventListener("click", e => {
-	roomInput.value = Math.floor(Math.random() * 10000000);
-	navigator.clipboard.writeText(roomInput.value);
-	alert("Room Code copied to clipboard");
-	//make into a popup later
-});
-
-goToRoom.addEventListener("click", e => {
-	location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
-});
-
-</script>
-</body>
+            goToRoom.addEventListener("click", (e) => {
+                location.href =
+                    "/?r=" + roomInput.value + "&n=" + nameInput.value;
+            });
+        </script>
+    </body>
 </html>

@@ -1,6 +1,6 @@
 var socket = io();
 var enemyPromotion;
-var pieces = {};
+//var pieces = {};
 var pieceInfo;
 var cellCoord;
 var turn = 0;
