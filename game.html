@@ -95,7 +95,6 @@
             import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
             game = new Game();
             let pieces = game.board.configuration.pieces;
-			console.log(pieces);
 
             for (let cell in pieces) {
                 // cell is the coordinate, pieces[cell] is the actual piece
@@ -134,12 +133,9 @@
 			var lowercase = ["p", "r", "b", "n", "q", "k"];
 
             function pieceIdentifier(side, pieceName) {
-				console.log(side, pieceName, uppercase.includes(pieceName));
-                if (
-                    (side == "w" && uppercase.includes(pieceName)) ||
+                if ((side == "w" && uppercase.includes(pieceName)) ||
 					(side == "b" && lowercase.includes(pieceName)) ||
-                    (side == "s" && uppercase.includes(pieceName))
-                ) {
+                    (side == "s" && uppercase.includes(pieceName))) {
                     return "f" + pieceName.toLowerCase();
                 } else {
                     return "e" + pieceName.toLowerCase();
