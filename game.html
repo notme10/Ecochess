@@ -95,10 +95,18 @@
             import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
             game = new Game();
             let pieces = game.board.configuration.pieces;
+<<<<<<< Updated upstream
+=======
+			console.log(pieces);
+            console.log(generateBoard);
+
+            generateBoard(side);
+>>>>>>> Stashed changes
 
             for (let cell in pieces) {
                 // cell is the coordinate, pieces[cell] is the actual piece
                 let cellHTML = document.getElementById(cell);
+                console.log(cellHTML);
                 cellHTML.innerHTML = "";
                 let p = document.createElement("div"); // creates a piece
                 let pieceName = pieces[cell];
@@ -227,7 +235,14 @@
                 }
             }
 
-            generateBoard("w");
+            function flipBoard() {
+                const BOARD = document.getElementById("board");
+                let cellArray = Array.prototype.slice.call(BOARD.children); 
+                BOARD.innerHTML = "";
+                for (i = cellArray.length-1; i>=0; i--) {
+                    BOARD.appendChild(cellArray[i]);
+                }
+            }
 
             function convertRowsToIndex(row) {
                 return rows.indexOf(row);
