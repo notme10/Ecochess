@@ -111,18 +111,19 @@ socket.on("sidesInfo", (data) => {
     console.log(data);
     if(data.w == name && side !== "w") {
         side = "w";
-        board.innerHTML = '';
+        // board.innerHTML = '';
         // generateBoard(side);
     } else if(data.b == name && side !== "b") {
         side = "b";
-        board.innerHTML = '';
+        // board.innerHTML = '';
         flipBoard();
         // generateBoard(side);
     } else if(side !== "w" && side !== "b") {
         side = "s";
-        board.innerHTML = '';
+        // board.innerHTML = '';
         // generateBoard(side);
     }
+    // if there are two boards, fix this code
 })
 
 socket.on("playerDisconnect", (data) => {
