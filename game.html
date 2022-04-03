@@ -87,26 +87,20 @@
         <script src="facts.js"></script>
         <script>
             let game;
-
             let fromCoord;
+            let pieceClicked;
         </script>
 
         <script type="module">
             import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
             game = new Game();
             let pieces = game.board.configuration.pieces;
-<<<<<<< Updated upstream
-=======
-			console.log(pieces);
-            console.log(generateBoard);
 
             generateBoard(side);
->>>>>>> Stashed changes
 
             for (let cell in pieces) {
                 // cell is the coordinate, pieces[cell] is the actual piece
                 let cellHTML = document.getElementById(cell);
-                console.log(cellHTML);
                 cellHTML.innerHTML = "";
                 let p = document.createElement("div"); // creates a piece
                 let pieceName = pieces[cell];
@@ -137,13 +131,13 @@
             var columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
             var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-			var uppercase = ["P", "R", "B", "N", "Q", "K"];
-			var lowercase = ["p", "r", "b", "n", "q", "k"];
+			var whitePieces = ["P", "R", "B", "N", "Q", "K"];
+			var blackPieces = ["p", "r", "b", "n", "q", "k"];
 
             function pieceIdentifier(side, pieceName) {
-                if ((side == "w" && uppercase.includes(pieceName)) ||
-					(side == "b" && lowercase.includes(pieceName)) ||
-                    (side == "s" && uppercase.includes(pieceName))) {
+                if ((side == "w" && whitePieces.includes(pieceName)) ||
+					(side == "b" && blackPieces.includes(pieceName)) ||
+                    (side == "s" && whitePieces.includes(pieceName))) {
                     return "f" + pieceName.toLowerCase();
                 } else {
                     return "e" + pieceName.toLowerCase();
@@ -165,20 +159,20 @@
                         var cell = document.createElement("div");
                         cell.addEventListener("click", (e) => {
                             let newCoord = e.target.id; // get cellCoord
+
                             if (newCoord) {
                                 // clicked on a tile without piece
                                 if (fromCoord) {
                                     // clicked on a piece before
-                                    game.move(fromCoord, newCoord);
+                                    console.log(e.target.className);
+                                    makeMove(fromCoord, newCoord, e.target.className.substring(0, 1));
                                 }
                             } else if (
                                 (turn % 2 == 0 &&
-                                    e.target.className.split(" ")[0][0] ==
-                                        "w" &&
+                                    whitePieces.includes(e.target.className.substring(0, 1)) &&
                                     side == "w") ||
                                 (turn % 2 == 1 &&
-                                    e.target.className.split(" ")[0][0] ==
-                                        "b" &&
+                                    blackPieces.includes(e.target.className.substring(0, 1)) &&
                                     side == "b")
                             ) {
                                 // clicked on a piece
@@ -193,7 +187,7 @@
                                             ""
                                         ); // get rid of selected tag
                                 }
-
+                                pieceClicked = e.target.className.substring(0, 1);
                                 fromCoord = e.target.className.split(" ")[1];
                                 document.getElementById(fromCoord).className +=
                                     " selected";
@@ -207,7 +201,7 @@
                                 if (fromCoord) {
                                     newCoord = e.target.className.split(" ")[1];
 
-                                    game.move(fromCoord, newCoord);
+                                    makeMove(fromCoord, newCoord, e.target.className.substring(0, 1));
                                 }
                             }
                         });
@@ -243,6 +237,32 @@
                     BOARD.appendChild(cellArray[i]);
                 }
             }
+
+            function makeMove(fromCoords, toCoords) {
+                let oldPiece = document.querySelector(`.${pieceClicked}.${fromCoords}`);
+                let pieceClasses = oldPiece.className;
+
+                game.move(fromCoords, toCoords);
+                console.log(pieceClicked, fromCoords, toCoords);
+                oldPiece.remove(); // removes piece from old square
+
+                let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
+                if (selectedCell) {
+                    selectedCell.className =
+                        selectedCell.className.replace(
+                            " selected",
+                            ""
+                        ); // get rid of selected tag
+                }
+
+                let clickedCell = document.getElementById(toCoords);
+                let newPiece = document.createElement("div");
+                newPiece.className = pieceClasses;
+                clickedCell.appendChild(newPiece);
+
+                turn++;
+            }
+
 
             function convertRowsToIndex(row) {
                 return rows.indexOf(row);

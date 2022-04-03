@@ -1,36 +1,40 @@
 var curX = 122;
 var curY = 40;
 
-var array = [
-    sf = {
+var cities = [
+    {
         City: "San Fransisco",
         X_coord: "122",
         Y_coord: "38",
         Biome: "Ocean"
     },
-    veracruz = {
+
+    {
         City: "Veracruz",
         X_coord: "96",
         Y_coord: "19",
         Biome: "Forest"
     },
-    phoenix = {
+
+    {
         City: "Phoenix",
         X_coord: "112",
         Y_coord: "33",
-        Biome: "Forest"
+        Biome: "Desert"
     },
-    winnipeg = {
+
+    {
         City: "Winnipeg",
         X_coord: "97",
         Y_coord: "50",
-        Biome: "Forest"
+        Biome: "Tundra"
     },
-    miami = {
+    
+    {
         City: "Miami",
         X_coord: "80",
         Y_coord: "26",
-        Biome: "Forest"
+        Biome: "Reef"
     }
 ];
 
@@ -41,9 +45,9 @@ function distanceCalculator(curX, curY, targetX, targetY) {
 var nearestCity = "";
 var shortestDistance = 100000000000;
 
-for(var i = 0; i<array.length - 1; i++) {
-    var targetX = array[i]["X_coord"];
-    var targetY = array[i]["Y_coord"];
+for(var i = 0; i<cities.length - 1; i++) {
+    var targetX = cities[i]["X_coord"];
+    var targetY = cities[i]["Y_coord"];
     var distance = distanceCalculator(curX, curY, targetX, targetY);
 
     if(distance < shortestDistance) {
