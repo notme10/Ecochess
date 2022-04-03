@@ -95,13 +95,10 @@
             import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
             game = new Game();
             let pieces = game.board.configuration.pieces;
-<<<<<<< Updated upstream
-=======
-			console.log(pieces);
+            console.log(pieces);
             console.log(generateBoard);
 
             generateBoard(side);
->>>>>>> Stashed changes
 
             for (let cell in pieces) {
                 // cell is the coordinate, pieces[cell] is the actual piece
@@ -110,9 +107,10 @@
                 cellHTML.innerHTML = "";
                 let p = document.createElement("div"); // creates a piece
                 let pieceName = pieces[cell];
-                p.className = `${pieceName} ${
-                    cell
-                } ${pieceIdentifier(side, pieceName)}`; // p.className = 'br a8'
+                p.className = `${pieceName} ${cell} ${pieceIdentifier(
+                    side,
+                    pieceName
+                )}`; // p.className = 'br a8'
                 cellHTML.appendChild(p);
             }
         </script>
@@ -137,13 +135,15 @@
             var columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
             var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-			var uppercase = ["P", "R", "B", "N", "Q", "K"];
-			var lowercase = ["p", "r", "b", "n", "q", "k"];
+            var uppercase = ["P", "R", "B", "N", "Q", "K"];
+            var lowercase = ["p", "r", "b", "n", "q", "k"];
 
             function pieceIdentifier(side, pieceName) {
-                if ((side == "w" && uppercase.includes(pieceName)) ||
-					(side == "b" && lowercase.includes(pieceName)) ||
-                    (side == "s" && uppercase.includes(pieceName))) {
+                if (
+                    (side == "w" && uppercase.includes(pieceName)) ||
+                    (side == "b" && lowercase.includes(pieceName)) ||
+                    (side == "s" && uppercase.includes(pieceName))
+                ) {
                     return "f" + pieceName.toLowerCase();
                 } else {
                     return "e" + pieceName.toLowerCase();
@@ -237,9 +237,9 @@
 
             function flipBoard() {
                 const BOARD = document.getElementById("board");
-                let cellArray = Array.prototype.slice.call(BOARD.children); 
+                let cellArray = Array.prototype.slice.call(BOARD.children);
                 BOARD.innerHTML = "";
-                for (i = cellArray.length-1; i>=0; i--) {
+                for (i = cellArray.length - 1; i >= 0; i--) {
                     BOARD.appendChild(cellArray[i]);
                 }
             }
