@@ -1,5 +1,6 @@
-
 socket.on("playerConnect", (data) => {
+console.log(data.name);
+console.log(data.info);
     // if(data.info.w) {
     //     document.getElementById("messageBoard").innerText = "white has joined";
     // }
@@ -107,22 +108,21 @@ socket.on("sendMove", (data) => {
 });
 
 socket.on("sidesInfo", (data) => {
+    console.log(data);
     if(data.w == name && side !== "w") {
         side = "w";
         board.innerHTML = '';
-        generateBoard(side);
+        // generateBoard(side);
     } else if(data.b == name && side !== "b") {
         side = "b";
         board.innerHTML = '';
-        generateBoard(side);
+        flipBoard();
+        // generateBoard(side);
     } else if(side !== "w" && side !== "b") {
         side = "s";
         board.innerHTML = '';
-        generateBoard(side);
+        // generateBoard(side);
     }
-
-
-
 })
 
 socket.on("playerDisconnect", (data) => {
