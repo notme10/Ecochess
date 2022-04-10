@@ -93,21 +93,23 @@ console.log(data.info);
 
 socket.on("sendMove", (data) => {
     if (data.room == room) {
-        cellCoord = data.moves.newPos.substring(0, 2);
-        pieceInfo = [data.moves.pieceName, data.moves.oldPos];
-        enemyPromotion = data.moves.display.split("=")[1];
-        console.log(data);
-        if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
-            if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
-                virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
-            } else {
-                virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
-            }
-        }
+        makeMove(data.fromCoords, data.toCoords, false);
+        // cellCoord = data.moves.newPos.substring(0, 2);
+        // pieceInfo = [data.moves.pieceName, data.moves.oldPos];
+        // enemyPromotion = data.moves.display.split("=")[1];
+        // console.log(data);
+        // if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
+        //     if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
+        //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
+        //     } else {
+        //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
+        //     }
+        // }
     }
 });
 
 socket.on("sidesInfo", (data) => {
+    //data is null pls fix
     console.log(data);
     if(data.w == name && side !== "w") {
         side = "w";

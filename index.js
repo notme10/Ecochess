@@ -28,6 +28,7 @@ function addSockets() {
 
 	var rooms = {};
 
+
 	io.on('connection', (socket) => { // server listens for a connection from a client
 
 		var name; // server-side variables for specific connections
@@ -55,13 +56,14 @@ function addSockets() {
 		})
 
 		socket.on('makeMove', (data) => {
-			rooms[roomId]["pieces"] = data.pieces;
-			rooms[roomId]["turn"] = data.turn;
-			var movesListArray = rooms[roomId]["moveList"];
-			var lastPiece = movesListArray[movesListArray.length - 1];
-			if(!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
-				rooms[roomId]["moveList"].push(data.moves);
-			}
+			// rooms[roomId]["pieces"] = data.pieces;
+			// rooms[roomId]["turn"] = data.turn;
+			// var movesListArray = rooms[roomId]["moveList"];
+			// var lastPiece = movesListArray[movesListArray.length - 1];
+			// if(!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
+			// 	rooms[roomId]["moveList"].push(data.moves);
+			// }
+			
 			io.emit("sendMove", (data));
 		});
 
