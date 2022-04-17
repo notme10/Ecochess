@@ -127,6 +127,9 @@ function startServer() {
                 var curX = response.data.longitude;
                 var curY = response.data.latitude;
 
+                // curX = 117;
+                // curY = 25;
+
                 let citiesObject = {
 
                     // City_Name: {

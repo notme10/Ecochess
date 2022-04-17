@@ -37,3 +37,13 @@ FINISHED
     captured pieces bug
     home screen
     layout stretch bug
+
+
+
+IMPORTANT FILES:
+
+sockets.js
+game.html
+index.js
+init.js
+facts.js
