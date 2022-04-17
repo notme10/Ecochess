@@ -135,3 +135,7 @@ socket.on("playerDisconnect", (data) => {
         document.getElementById("messageBoard").innerText = "black has disconnected";
     }
 });
+
+socket.on("finishedRoom", (data) => {
+    socket.emit("playerName", {name:name});
+})

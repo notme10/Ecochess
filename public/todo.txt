@@ -1,19 +1,18 @@
 
 POSSIBLE
     optimization for mobile devices
-    IP tracking
     popup for notifying that the room code has been copied :?
     floating trash in background
-
-IN CLASS STUFF
-    finish my side is always fish, opponent side is always trash
-    duplicate pieces in pieces object
-    remember active rooms
-    localization with ip addresses
-    font size scaling
     promotion while capturing is buggy
     gray out the background during home screen thingy
     coordinate labels fix
+
+IN CLASS STUFF
+    IP tracking
+    remember active rooms
+    localization with ip addresses
+    font size scaling
+
 
 NEW BUGS:
 
@@ -23,6 +22,7 @@ OUTSIDE OF CLASS STUFF
 
 
 FINISHED
+    finish my side is always fish, opponent side is always trash
     both sides show up as black on spectator's screen
     remove settings icon
     proportions for letters
@@ -38,6 +38,18 @@ FINISHED
     home screen
     layout stretch bug
 
+
+    
+
+FOR NEXT TWO WEEKS:
+
+functions
+1. a general description of the function
+2. a list of the parameters and what they do
+3. what the return value is/means
+
+variables
+1. write down what the variable does
 
 
 IMPORTANT FILES:
