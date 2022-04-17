@@ -129,42 +129,144 @@ function startServer() {
             .request(options)
             .then(function (response) {
 
-                var curX = response.data.latitude;
-                var curY = response.data.longitude;
+                var curX = response.data.longitude;
+                var curY = response.data.latitude;
 
                 let citiesObject = {
-                    SanFransisco: {
-                        x: 122,
-                        y: 38,
-                        biome: "Ocean",
+
+                    // City_Name: {
+                    //     x: XCOORD,
+                    //     y: YCOORD,
+                    //     biome: "BIOME",
+                    // },
+
+
+                    Anchorage: {
+                        x: -150,
+                        y: 61,
+                        biome: "Tundra",
                     },
-                    Veracruz: {
-                        x: 96,
-                        y: 19,
-                        biome: "Forest",
+
+                    Calgary: {
+                        x: -114,
+                        y: 51,
+                        biome: "Tundra",
                     },
-                    Phoenix: {
-                        x: 112,
-                        y: 33,
-                        biome: "Desert",
-                    },
+
                     Winnipeg: {
-                        x: 97,
+                        x: -97,
                         y: 50,
                         biome: "Tundra",
                     },
-                    Miami: {
-                        x: 80,
-                        y: 26,
+
+                    Toronto: {
+                        x: -80,
+                        y: 44,
+                        biome: "Tundra",
+                    },
+
+                    Montreal: {
+                        x: -118,
+                        y: 34,
+                        biome: "Tundra",
+                    },
+
+                    Quebec: {
+                        x: -71,
+                        y: 46,
+                        biome: "Tundra",
+                    },
+                                        
+                    San_Fransisco: {
+                        x: -122,
+                        y: 37,
+                        biome: "Ocean",
+                    },
+                                        
+                    Phoenix: {
+                        x: -112,
+                        y: 33,
+                        biome: "Desert",
+                    },
+                                        
+                    Dallas: {
+                        x: -96,
+                        y: 32,
+                        biome: "Desert",
+                    },
+                                        
+                    Atlanta: {
+                        x: -84,
+                        y: 33,
+                        biome: "Ocean",
+                    },
+                                        
+                    Bermuda_City: {
+                        x: -64,
+                        y: 32,
                         biome: "Reef",
                     },
+                                        
+                    Mexico_City: {
+                        x: -99,
+                        y: 19,
+                        biome: "Desert",
+                    },
+                                        
+                    Havana: {
+                        x: -82,
+                        y: 23,
+                        biome: "Reef",
+                    },
+                                        
+                    St_Domingo: {
+                        x: -69,
+                        y: 18,
+                        biome: "Reef",
+                    },
+                    
+                    Caracas: {
+                        x: -66,
+                        y: 10,
+                        biome: "Forest",
+                    },
+                                        
+                    Lima: {
+                        x: -77,
+                        y: -12,
+                        biome: "Forest",
+                    },
+                                        
+                    Santiago: {
+                        x: -70,
+                        y: -33,
+                        biome: "Forest",
+                    },
+                                        
+                    Asuncion: {
+                        x: -57,
+                        y: -25,
+                        biome: "Forest",
+                    },
+                                        
+                    Cordoba: {
+                        x: -64,
+                        y: -31,
+                        biome: "Forest",
+                    },
+
+                    Buenos_Aires: {
+                        x: -58,
+                        y: -34,
+                        biome: "Ocean",
+                    }
                 };
 
                 function distCalc(curX, curY, targetX, targetY) {
                     return Math.abs(
                         Math.sqrt(
                             (curX - targetX) * (curX - targetX) +
-                                (curY - targetY) * (curX - targetX)
+                                (curY - targetY) * (curY - targetY)
                         )
                     );
                 }
