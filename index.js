@@ -22,81 +22,76 @@ var axios = require("axios").default;
 var port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 
 function addSockets() {
-    var rooms = {};
 
-    io.on("connection", (socket) => {
-        // server listens for a connection from a client
+	var rooms = {};
 
-        var name; // server-side variables for specific connections
-        var roomId;
-        socket.on("setRoom", (data) => {
-            roomId = data.room;
-            if (!rooms[roomId]) {
-                rooms[roomId] = {
-                    w: null,
-                    b: null,
-                    pieces: null,
-                    turn: 0,
-                    moveList: [],
-                };
-            }
-        });
-        socket.on("playerName", (data) => {
-            name = data.name;
 
-            if (rooms[roomId]["w"] == null) {
-                rooms[roomId]["w"] = name;
-            } else if (rooms[roomId]["b"] == null) {
-                rooms[roomId]["b"] = name;
-            }
+	io.on('connection', (socket) => { // server listens for a connection from a client
 
-            io.emit("sidesInfo", rooms[roomId]);
-            io.emit("playerConnect", {
-                name: name,
-                info: rooms[roomId],
-            }); // emits a message
-        });
+		var name; // server-side variables for specific connections
+		var roomId;
+		socket.on('setRoom', (data) => {
+			roomId = data.room;
+			if (!rooms[roomId]) {
+				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0, "moveList": []};
+			}
+		})
+		socket.on('playerName', (data) => {
+			name = data.name;
 
-        socket.on("makeMove", (data) => {
-            rooms[roomId]["pieces"] = data.pieces;
-            rooms[roomId]["turn"] = data.turn;
-            var movesListArray = rooms[roomId]["moveList"];
-            var lastPiece = movesListArray[movesListArray.length - 1];
-            if (!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
-                rooms[roomId]["moveList"].push(data.moves);
-            }
-            io.emit("sendMove", data);
-        });
+			if(rooms[roomId]["w"] == null) {
+				rooms[roomId]["w"] = name;
+			} else if(rooms[roomId]["b"] == null) {
+				rooms[roomId]["b"] = name;
+			}
 
-        socket.on("disconnect", (data) => {
-            // server listens for a disconnection
+			io.emit('sidesInfo', rooms[roomId])
+			io.emit('playerConnect', {
+				name: name,
+				info: rooms[roomId]
+			}); // emits a message
+		})
 
-            // Do something
+		socket.on('makeMove', (data) => {
+			// rooms[roomId]["pieces"] = data.pieces;
+			// rooms[roomId]["turn"] = data.turn;
+			// var movesListArray = rooms[roomId]["moveList"];
+			// var lastPiece = movesListArray[movesListArray.length - 1];
+			// if(!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
+			// 	rooms[roomId]["moveList"].push(data.moves);
+			// }
+			
+			io.emit("sendMove", (data));
+		});
 
-            if (rooms[roomId]) {
-                if (rooms[roomId]["w"] == name) {
-                    io.emit("playerDisconnect", "w");
-                } else if (rooms[roomId]["b"] == name) {
-                    io.emit("playerDisconnect", "b");
-                }
-            }
+		socket.on('disconnect', (data) => { // server listens for a disconnection
 
-            if (
-                rooms[roomId] == null ||
-                (rooms[roomId]["w"] == null && rooms[roomId]["b"] == null)
-            ) {
-                rooms[roomId] = null;
-            } else {
-                // if (rooms[roomId]["w"] == name) {
-                rooms[roomId]["w"] = null;
-                // }
-                // if (rooms[roomId]["b"] == name) {
-                rooms[roomId]["b"] = null;
-                // }
-            }
-            io.emit("sidesInfo", rooms[roomId]);
-        });
-    });
+			// Do something
+
+			if(rooms[roomId]) {
+				if(rooms[roomId]["w"] == name) {
+					io.emit('playerDisconnect', "w");
+				} else if(rooms[roomId]["b"] == name) {
+					io.emit('playerDisconnect', "b");
+				}
+			}
+
+			if (rooms[roomId] == null || rooms[roomId]["w"] == null && rooms[roomId]["b"] == null) {
+					rooms[roomId] = null;
+			}
+			else {
+				// if (rooms[roomId]["w"] == name) {
+				rooms[roomId]["w"] = null;
+				// }
+				// if (rooms[roomId]["b"] == name) {
+				rooms[roomId]["b"] = null;
+				// }
+			}
+			io.emit('sidesInfo', rooms[roomId])
+		});
+
+	});
+
 }
 
 function startServer() {

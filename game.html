@@ -171,7 +171,7 @@
                                     makeMove(
                                         fromCoord,
                                         newCoord,
-                                        e.target.className.substring(0, 1)
+                                        side
                                     );
                                 }
                             } else if (
@@ -218,7 +218,7 @@
                                     makeMove(
                                         fromCoord,
                                         newCoord,
-                                        e.target.className.substring(0, 1)
+                                        side
                                     );
                                 }
                             }
@@ -256,15 +256,22 @@
                 }
             }
 
-            function makeMove(fromCoords, toCoords) {
+            function makeMove(fromCoords, toCoords, movedSide) {
                 let oldPiece = document.querySelector(
                     `.${pieceClicked}.${fromCoords}`
                 );
                 let pieceClasses = oldPiece.className;
-
-                game.move(fromCoords, toCoords);
+                
+                try {
+                    game.move(fromCoords, toCoords);
+                }
+                catch(err) {
+                    alert("Invalid Move");
+                    return;
+                }
                 console.log(pieceClicked, fromCoords, toCoords);
                 oldPiece.remove(); // removes piece from old square
+                socket.emit("makeMove", {fromCoords:fromCoords, toCoords:toCoords, room:room, side:side});
 
                 let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
                 if (selectedCell) {
@@ -281,6 +288,8 @@
 
                 turn++;
             }
+            
+            
 
             function convertRowsToIndex(row) {
                 return rows.indexOf(row);
