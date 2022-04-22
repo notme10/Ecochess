@@ -257,10 +257,11 @@
             }
 
             function makeMove(fromCoords, toCoords, movedSide) {
-                let oldPiece = document.querySelector(
-                    `.${pieceClicked}.${fromCoords}`
-                );
-                let pieceClasses = oldPiece.className;
+                let oldPiece = document.getElementById(fromCoords).childNodes[0];
+                if (!oldPiece) {
+                    return;
+                }
+                let pieceClasses = oldPiece.classList;
                 
                 try {
                     game.move(fromCoords, toCoords);
@@ -271,7 +272,7 @@
                 }
                 console.log(pieceClicked, fromCoords, toCoords);
                 oldPiece.remove(); // removes piece from old square
-                socket.emit("makeMove", {fromCoords:fromCoords, toCoords:toCoords, room:room, side:side});
+                socket.emit("makeMove", {fromCoords:fromCoords, toCoords:toCoords, room:room, side:movedSide});
 
                 let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
                 if (selectedCell) {
@@ -283,7 +284,7 @@
 
                 let clickedCell = document.getElementById(toCoords);
                 let newPiece = document.createElement("div");
-                newPiece.className = pieceClasses;
+                newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
                 clickedCell.appendChild(newPiece);
 
                 turn++;

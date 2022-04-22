@@ -92,8 +92,8 @@ console.log(data.info);
 });
 
 socket.on("sendMove", (data) => {
-    if (data.room == room) {
-        makeMove(data.fromCoords, data.toCoords, false);
+    if (data.room === room && data.side !== side) {
+        makeMove(data.fromCoords, data.toCoords, data.side);
         // cellCoord = data.moves.newPos.substring(0, 2);
         // pieceInfo = [data.moves.pieceName, data.moves.oldPos];
         // enemyPromotion = data.moves.display.split("=")[1];
@@ -111,7 +111,9 @@ socket.on("sendMove", (data) => {
 socket.on("sidesInfo", (data) => {
     //data is null pls fix
     console.log(data);
-    if(data.w == name && side !== "w") {
+    if (!data) {
+        //x
+    } else if(data.w == name && side !== "w") {
         side = "w";
         // board.innerHTML = '';
         // generateBoard(side);
@@ -136,6 +138,4 @@ socket.on("playerDisconnect", (data) => {
     }
 });
 
-socket.on("finishedRoom", (data) => {
-    socket.emit("playerName", {name:name});
-})
+

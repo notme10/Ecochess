@@ -18,7 +18,7 @@ if(!room) {
     document.getElementById("homeModal").style.display = "block";
 } else {
     socket.emit('setRoom', {room:room});
-
+    socket.emit("playerName", {name:name});
 }
 
 if(!localStorage.getItem("chosenRegion")) {

@@ -15,7 +15,9 @@ IN CLASS STUFF
 
 
 NEW BUGS:
-
+    Board flips again when a spectator joins
+    Eating does not work
+    
 
 OUTSIDE OF CLASS STUFF
     fix promotion (promoting and capturing at same time does not remove captured piece (they overlap))

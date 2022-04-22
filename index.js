@@ -35,7 +35,6 @@ function addSockets() {
 			if (!rooms[roomId]) {
 				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0, "moveList": []};
 			}
-            io.emit('finishedRoom', true);
 		})
 		socket.on('playerName', (data) => {
 			name = data.name;
