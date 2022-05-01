@@ -1,5 +1,6 @@
 // info box
 
+// facts that are randomly chosen and cycled through in the facts box
 var factsList = {
   Standard: [
     "The years 2016 and 2020 hold the tied record for the hottest recorded temperatures on earth.",
@@ -105,10 +106,11 @@ var factsList = {
   ]
 }
 
-var infoBox = document.getElementById("infoBox");
-var chosenRegion = `${localStorage.getItem("chosenRegion")}`;
+var infoBox = document.getElementById("infoBox"); // initializes infoBox
+var chosenRegion = `${localStorage.getItem("chosenRegion")}`; // gets the chosen region of the player
 
 infoBox.className = `black${localStorage.getItem("chosenRegion")}`;
 environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)];
 
+// sets the interval of how fast the facts show
 var factsInterval = setInterval(function() {environmentFacts.innerText = factsList[chosenRegion][Math.floor(Math.random()*factsList[chosenRegion].length)]}, 5000);

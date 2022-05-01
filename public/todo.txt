@@ -56,8 +56,8 @@ variables
 
 IMPORTANT FILES:
 
-sockets.js
-game.html
+    sockets.js
+    game.html
+    init.js
+    facts.js
 index.js
-init.js
-facts.js

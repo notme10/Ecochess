@@ -87,8 +87,8 @@
         <script src="facts.js"></script>
         <script>
             let game;
-            let fromCoord;
-            let pieceClicked;
+            let fromCoord; // where the piece was at before the move was made
+            let pieceClicked; // piece that was clicked (that the player wants to move)
         </script>
 
         <script type="module">
@@ -98,12 +98,13 @@
 
             generateBoard(side);
 
+
+            // cell is the coordinate of the piece, pieces[cell] is the actual piece name
             for (let cell in pieces) {
-                // cell is the coordinate, pieces[cell] is the actual piece
                 let cellHTML = document.getElementById(cell);
                 cellHTML.innerHTML = "";
-                let p = document.createElement("div"); // creates a piece
-                let pieceName = pieces[cell];
+                let p = document.createElement("div"); // creates a piece div
+                let pieceName = pieces[cell]; // pieceName is the name of the piece at coordinates (cell)
                 p.className = `${pieceName} ${cell} ${pieceIdentifier(
                     side,
                     pieceName
@@ -112,6 +113,9 @@
             }
         </script>
         <script>
+
+            // if key Q is pressed, remove selected tag
+            // set fromCoord to null
             document.addEventListener("keypress", (e) => {
                 if (e.key == "q") {
                     let selectedCell = document.querySelector(".selected");
@@ -127,14 +131,17 @@
             });
 
             let board = document.getElementById("board"); // We are getting the board into the JS
-            var width = 8,
-                height = 8;
-            var columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
-            var rows = ["8", "7", "6", "5", "4", "3", "2", "1"];
+            let width = 8; // width of the board
+            let height = 8; // height of the board
+            let columns = ["A", "B", "C", "D", "E", "F", "G", "H"]; // column letters, from left to right
+            let rows = ["8", "7", "6", "5", "4", "3", "2", "1"]; // row numbers ,from top to bottom
 
-            var whitePieces = ["P", "R", "B", "N", "Q", "K"];
-            var blackPieces = ["p", "r", "b", "n", "q", "k"];
+            let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // self explanatory
+            let blackPieces = ["p", "r", "b", "n", "q", "k"]; // self explanatory
 
+            // function that determines the piece name of the given info
+            // parameters: side (black or white) and pieceName (in arrays whitePieces and blackPieces)
+            // returns either friendly pieceName or enemy pieceName
             function pieceIdentifier(side, pieceName) {
                 if (
                     (side == "w" && whitePieces.includes(pieceName)) ||
@@ -146,6 +153,9 @@
                     return "e" + pieceName.toLowerCase();
                 }
             }
+
+            // generates board in the perspective of the s side
+            // no return
             function generateBoard(s) {
                 var topLeft = s !== "b";
 
@@ -168,11 +178,7 @@
                                 if (fromCoord) {
                                     // clicked on a piece before
                                     console.log(e.target.className);
-                                    makeMove(
-                                        fromCoord,
-                                        newCoord,
-                                        side
-                                    );
+                                    makeMove(fromCoord, newCoord, side);
                                 }
                             } else if (
                                 (turn % 2 == 0 &&
@@ -247,6 +253,9 @@
                 }
             }
 
+            // function that mirrors every piece from one side to the other
+            // to make sure that my side is always fish, enemy side is trash
+            // no params or return
             function flipBoard() {
                 const BOARD = document.getElementById("board");
                 let cellArray = Array.prototype.slice.call(BOARD.children);
@@ -256,6 +265,9 @@
                 }
             }
 
+            // piece at fromCoords moves to toCoords, movedSide is used to determine the message 
+            // that is sent to the other player
+            // no return value
             function makeMove(fromCoords, toCoords, movedSide) {
                 let oldPiece = document.getElementById(fromCoords).childNodes[0];
                 if (!oldPiece) {
@@ -279,7 +291,7 @@
                     selectedCell.className = selectedCell.className.replace(
                         " selected",
                         ""
-                    ); // get rid of selected tag
+                    ); // removes selected tag
                 }
 
                 let clickedCell = document.getElementById(toCoords);
@@ -291,20 +303,29 @@
             }
             
             
-
+            // returns index value of the given row
             function convertRowsToIndex(row) {
                 return rows.indexOf(row);
             }
+
+            // returns index value of the given column
             function convertColsToIndex(col) {
                 return columns.indexOf(col);
             }
+
+            // returns row of the given index
             function convertIndexToRows(index) {
                 return rows[index];
             }
+
+            // returns column of the given index
             function convertIndexToCols(index) {
                 return columns[index];
             }
 
+            // sends the moveMessage that will be displayed on the opponent's screen
+            // no params
+            // no returns
             function pushMoveMessage() {
                 var lastMove = moveList[moveList.length - 1];
 
@@ -335,12 +356,15 @@
                 }
             }
 
-            var modal = document.getElementById("homeModal");
+            var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
             var randomizerButton = document.getElementById("randomRoom");
             var goToRoom = document.getElementById("goToRoom");
             var nameInput = document.getElementById("nameInput");
             var roomInput = document.getElementById("roomInput");
 
+            // assigns a random value using Math.random to roomInput.value
+            // no params
+            // no return
             randomizerButton.addEventListener("click", (e) => {
                 roomInput.value = Math.floor(Math.random() * 10000000);
                 navigator.clipboard.writeText(roomInput.value);
@@ -348,6 +372,7 @@
                 //make into a popup later
             });
 
+            // adds room code and name to the end of the game url
             goToRoom.addEventListener("click", (e) => {
                 location.href =
                     "/?r=" + roomInput.value + "&n=" + nameInput.value;
