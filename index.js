@@ -21,22 +21,22 @@ var axios = require("axios").default;
 /* Defines what port to use to listen to web requests */
 var port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 
-function addSockets() {
+function addSockets() { /* initialize everything when there is a connection*/
 
-	var rooms = {};
+	var rooms = {}; // something to store all the rooms??
 
 
 	io.on('connection', (socket) => { // server listens for a connection from a client
 
 		var name; // server-side variables for specific connections
-		var roomId;
-		socket.on('setRoom', (data) => {
+		var roomId; // the actual roomId that that a player gets 
+		socket.on('setRoom', (data) => { //sets te room id to the the room of the connected user
 			roomId = data.room;
 			if (!rooms[roomId]) {
 				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0, "moveList": []};
 			}
 		})
-		socket.on('playerName', (data) => {
+		socket.on('playerName', (data) => { // sets name to the connected player's name
 			name = data.name;
 
 			if(rooms[roomId]["w"] == null) {
@@ -46,14 +46,14 @@ function addSockets() {
 			}
 
             console.log(rooms, roomId, rooms[roomId])
-			io.emit('sidesInfo', rooms[roomId])
-			io.emit('playerConnect', {
+			io.emit('sidesInfo', rooms[roomId]) // sends the rooms through sidesInfo
+			io.emit('playerConnect', { 
 				name: name,
 				info: rooms[roomId]
 			}); // emits a message
 		})
 
-		socket.on('makeMove', (data) => {
+		socket.on('makeMove', (data) => { // server listens for a move 
 			// rooms[roomId]["pieces"] = data.pieces;
 			// rooms[roomId]["turn"] = data.turn;
 			// var movesListArray = rooms[roomId]["moveList"];
@@ -62,14 +62,14 @@ function addSockets() {
 			// 	rooms[roomId]["moveList"].push(data.moves);
 			// }
 			
-			io.emit("sendMove", (data));
+			io.emit("sendMove", (data)); // sends move
 		});
 
 		socket.on('disconnect', (data) => { // server listens for a disconnection
 
 			// Do something
 
-			if(rooms[roomId]) {
+			if(rooms[roomId]) { 
 				if(rooms[roomId]["w"] == name) {
 					io.emit('playerDisconnect', "w");
 				} else if(rooms[roomId]["b"] == name) {
@@ -88,17 +88,19 @@ function addSockets() {
 				rooms[roomId]["b"] = null;
 				// }
 			}
-			io.emit('sidesInfo', rooms[roomId])
+			io.emit('sidesInfo', rooms[roomId]) // server sends the side info
 		});
 
 	});
 
 }
 
-function startServer() {
-    addSockets();
+function startServer() { // probably starts the server
+    addSockets(); // calls addSockets to initialize everything once the connections happen
 
-    app.use(bodyParser.json({ limit: "16mb" }));
+    // I have no clue how to decipher this
+
+    app.use(bodyParser.json({ limit: "16mb" })); 
     app.use(express.static(path.join(__dirname, "public")));
 
     app.get("/", (req, res, next) => {
@@ -125,8 +127,8 @@ function startServer() {
             .request(options)
             .then(function (response) {
 
-                var curX = response.data.longitude;
-                var curY = response.data.latitude;
+                var curX = response.data.longitude; // gets the longitude of the location for assignment
+                var curY = response.data.latitude; // gets the lat
 
                 // curX = 117;
                 // curY = 25;
@@ -495,7 +497,7 @@ function startServer() {
                     }
                 };
 
-                function distCalc(curX, curY, targetX, targetY) {
+                function distCalc(curX, curY, targetX, targetY) { //calculates distance from an important city
                     return Math.abs(
                         Math.sqrt(
                             (curX - targetX) * (curX - targetX) +
@@ -504,9 +506,9 @@ function startServer() {
                     );
                 }
 
-                var nearestCity;
-                var shortestDistance = Number.MAX_SAFE_INTEGER;
-                var cityBiome;
+                var nearestCity; // the nearest city is found and set into here
+                var shortestDistance = Number.MAX_SAFE_INTEGER; // shortest possible distance is set here, which is the max number allowed 
+                var cityBiome; // biome that will be assigned to the city
 
                 for (var cityKey in citiesObject) {
                     var targetX = citiesObject[cityKey].x;
