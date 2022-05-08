@@ -89,31 +89,36 @@
             let game;
             let fromCoord; // where the piece was at before the move was made
             let pieceClicked; // piece that was clicked (that the player wants to move)
+            let fillBoard;
         </script>
 
         <script type="module">
             import { Game } from "/js-chess-engine/lib/js-chess-engine.mjs";
             game = new Game();
-            let pieces = game.board.configuration.pieces;
 
             generateBoard(side);
 
+            fillBoard = () => {
+                let pieces = game.board.configuration.pieces;
+                // cell is the coordinate of the piece, pieces[cell] is the actual piece name
+                for (let cell in pieces) {
+                    let cellHTML = document.getElementById(cell);
+                    cellHTML.innerHTML = "";
+                    let p = document.createElement("div"); // creates a piece div
+                    let pieceName = pieces[cell]; // pieceName is the name of the piece at coordinates (cell)
+                    p.className = `${pieceName} ${cell} ${pieceIdentifier(
+                        side,
+                        pieceName
+                    )}`; // p.className = 'br a8'
+                    cellHTML.appendChild(p);
+                }
+            };
 
-            // cell is the coordinate of the piece, pieces[cell] is the actual piece name
-            for (let cell in pieces) {
-                let cellHTML = document.getElementById(cell);
-                cellHTML.innerHTML = "";
-                let p = document.createElement("div"); // creates a piece div
-                let pieceName = pieces[cell]; // pieceName is the name of the piece at coordinates (cell)
-                p.className = `${pieceName} ${cell} ${pieceIdentifier(
-                    side,
-                    pieceName
-                )}`; // p.className = 'br a8'
-                cellHTML.appendChild(p);
-            }
+            fillBoard();
+
+
         </script>
         <script>
-
             // if key Q is pressed, remove selected tag
             // set fromCoord to null
             document.addEventListener("keypress", (e) => {
@@ -153,6 +158,17 @@
                     return "e" + pieceName.toLowerCase();
                 }
             }
+
+            function replaceBoard() {
+
+                var arr = Array.prototype.slice.call(document.getElementsByClassName("cell"));
+
+
+                for(tile in arr) {
+                    arr[tile].innerHTML = "";
+                }
+            }
+
 
             // generates board in the perspective of the s side
             // no return
@@ -212,20 +228,23 @@
                                 document.getElementById(fromCoord).className +=
                                     " selected";
                             } else if (
-                                (turn % 2 == 0 &&
-                                    e.target.className.split(" ")[0][0] ==
-                                        "b") ||
                                 (turn % 2 == 1 &&
-                                    e.target.className.split(" ")[0][0] == "w")
+                                    whitePieces.includes(
+                                        e.target.className.substring(0, 1)
+                                    ) &&
+                                    side == "b") ||
+                                (turn % 2 == 0 &&
+                                    blackPieces.includes(
+                                        e.target.className.substring(0, 1)
+                                    ) &&
+                                    side == "w")
                             ) {
+                                console.log("clicked on opponent's piece!");
+
                                 if (fromCoord) {
                                     newCoord = e.target.className.split(" ")[1];
 
-                                    makeMove(
-                                        fromCoord,
-                                        newCoord,
-                                        side
-                                    );
+                                    makeMove(fromCoord, newCoord, side);
                                 }
                             }
                         });
@@ -265,26 +284,31 @@
                 }
             }
 
-            // piece at fromCoords moves to toCoords, movedSide is used to determine the message 
+            // piece at fromCoords moves to toCoords, movedSide is used to determine the message
             // that is sent to the other player
             // no return value
             function makeMove(fromCoords, toCoords, movedSide) {
-                let oldPiece = document.getElementById(fromCoords).childNodes[0];
+                let oldPiece =
+                    document.getElementById(fromCoords).childNodes[0];
                 if (!oldPiece) {
                     return;
                 }
                 let pieceClasses = oldPiece.classList;
-                
+
                 try {
                     game.move(fromCoords, toCoords);
-                }
-                catch(err) {
+                } catch (err) {
                     alert("Invalid Move");
                     return;
                 }
                 console.log(pieceClicked, fromCoords, toCoords);
                 oldPiece.remove(); // removes piece from old square
-                socket.emit("makeMove", {fromCoords:fromCoords, toCoords:toCoords, room:room, side:movedSide});
+                socket.emit("makeMove", {
+                    fromCoords: fromCoords,
+                    toCoords: toCoords,
+                    room: room,
+                    side: movedSide,
+                });
 
                 let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
                 if (selectedCell) {
@@ -295,14 +319,14 @@
                 }
 
                 let clickedCell = document.getElementById(toCoords);
+                clickedCell.innerHTML = "";
                 let newPiece = document.createElement("div");
                 newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
                 clickedCell.appendChild(newPiece);
 
                 turn++;
             }
-            
-            
+
             // returns index value of the given row
             function convertRowsToIndex(row) {
                 return rows.indexOf(row);
