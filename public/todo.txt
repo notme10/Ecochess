@@ -28,3 +28,7 @@ FINISHED
     layout stretch bug
     castling
     en passant
+
+    HW FOR THE WEEK: 
+        implement all of john's feedback for the ui
+        
