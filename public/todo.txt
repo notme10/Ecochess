@@ -1,29 +1,17 @@
 
-POSSIBLE
-    optimization for mobile devices
-    popup for notifying that the room code has been copied :?
-    floating trash in background
-    promotion while capturing is buggy
-    gray out the background during home screen thingy
-    coordinate labels fix
+TODO:
+    promotion
+    castling
+    en passant
+    align facts box text to the left
+    captured pieces show up at the bottom
+    moves are logged in the box
 
-IN CLASS STUFF
-    IP tracking
-    remember active rooms
-    localization with ip addresses
-    font size scaling
-
-
-NEW BUGS:
-    Board flips again when a spectator joins
-    Eating does not work
-    
-
-OUTSIDE OF CLASS STUFF
-    fix promotion (promoting and capturing at same time does not remove captured piece (they overlap))
 
 
 FINISHED
+    Eating does not work
+    commented all the files in the code
     finish my side is always fish, opponent side is always trash
     both sides show up as black on spectator's screen
     remove settings icon
@@ -40,24 +28,3 @@ FINISHED
     home screen
     layout stretch bug
 
-
-    
-
-FOR NEXT TWO WEEKS:
-
-functions
-1. a general description of the function
-2. a list of the parameters and what they do
-3. what the return value is/means
-
-variables
-1. write down what the variable does
-
-
-IMPORTANT FILES:
-
-sockets.js
-game.html
-index.js
-init.js
-facts.js
