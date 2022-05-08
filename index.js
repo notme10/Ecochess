@@ -33,7 +33,7 @@ function addSockets() { /* initialize everything when there is a connection*/
 		socket.on('setRoom', (data) => { //sets te room id to the the room of the connected user
 			roomId = data.room;
 			if (!rooms[roomId]) {
-				rooms[roomId] = {"w": null, "b": null, "pieces": null, "turn": 0, "moveList": []};
+				rooms[roomId] = {w: null, b: null, config: null, history: null};
 			}
 		})
 		socket.on('playerName', (data) => { // sets name to the connected player's name

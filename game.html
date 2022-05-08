@@ -112,6 +112,7 @@
                     )}`; // p.className = 'br a8'
                     cellHTML.appendChild(p);
                 }
+                console.log("filled");
             };
 
             fillBoard();
@@ -167,6 +168,8 @@
                 for(tile in arr) {
                     arr[tile].innerHTML = "";
                 }
+
+                 fillBoard();
             }
 
 
@@ -318,11 +321,12 @@
                     ); // removes selected tag
                 }
 
-                let clickedCell = document.getElementById(toCoords);
-                clickedCell.innerHTML = "";
-                let newPiece = document.createElement("div");
-                newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
-                clickedCell.appendChild(newPiece);
+                replaceBoard();
+                // let clickedCell = document.getElementById(toCoords);
+                // clickedCell.innerHTML = "";
+                // let newPiece = document.createElement("div");
+                // newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
+                // clickedCell.appendChild(newPiece);
 
                 turn++;
             }

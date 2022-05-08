@@ -1,11 +1,10 @@
 
 TODO:
-    promotion
-    castling
-    en passant
+    promotion - partial
     align facts box text to the left
     captured pieces show up at the bottom
     moves are logged in the box
+    revamp server (fix rooms[roomId])
 
 
 
@@ -27,4 +26,5 @@ FINISHED
     captured pieces bug
     home screen
     layout stretch bug
-
+    castling
+    en passant
