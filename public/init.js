@@ -1,3 +1,8 @@
+let game;
+let fromCoord; // where the piece was at before the move was made
+let pieceClicked; // piece that was clicked (that the player wants to move)
+let fillBoard;
+
 var socket = io();
 var enemyPromotion;
 //var pieces = {};
@@ -17,16 +22,16 @@ const params = new URLSearchParams(window.location.search);
 var room = Object.fromEntries(params.entries())["r"]; // room code
 var name = Object.fromEntries(params.entries())["n"]; // inputted name of the player
 
-if(!room) {
+if (!room) {
     // room = prompt("Which room would you like to join?");
     // location.href = "/?r=" + room;
     document.getElementById("homeModal").style.display = "block"; // if room DNE, when website is opened, show homeModal
 } else {
-    socket.emit('setRoom', {room:room}); // emit setRoom
-    socket.emit("playerName", {name:name}); // emit playerName
+    socket.emit("setRoom", { room: room }); // emit setRoom
+    socket.emit("playerName", { name: name }); // emit playerName
 }
 
 // if chosenRegion doesn't exist, set it to Ocean
-if(!localStorage.getItem("chosenRegion")) {
+if (!localStorage.getItem("chosenRegion")) {
     localStorage.setItem("chosenRegion", "Ocean");
 }

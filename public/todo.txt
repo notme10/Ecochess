@@ -1,10 +1,13 @@
 
 TODO:
-    promotion - partial
-    align facts box text to the left
-    captured pieces show up at the bottom
-    moves are logged in the box
+    Move Squares
+    Fix heroku
+    Move Logging
+    Fix UI
+    Captured Pieces
     revamp server (fix rooms[roomId])
+    Promotion
+    Piece deselection
 
 
 
