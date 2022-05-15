@@ -10,6 +10,7 @@ document.addEventListener("keypress", (e) => {
                 ""
             );
         }
+        clearMovableTiles();
         fromCoord = null;
     }
 });
@@ -73,7 +74,7 @@ function generateBoard(s) {
                     // clicked on a tile without piece
                     if (fromCoord) {
                         // clicked on a piece before
-                        console.log(e.target.className);
+                        // console.log(e.target.className);
                         makeMove(fromCoord, newCoord, side);
                     }
                 } else if (
@@ -98,9 +99,11 @@ function generateBoard(s) {
                             ""
                         ); // get rid of selected tag
                     }
+
                     pieceClicked = e.target.className.substring(0, 1);
                     fromCoord = e.target.className.split(" ")[1];
-                    document.getElementById(fromCoord).className += " selected";
+                    document.getElementById(fromCoord).className += " selected"; // add selected tag
+                    showMoveableTiles(game.moves(fromCoord));
                 } else if (
                     (turn % 2 == 1 &&
                         whitePieces.includes(
@@ -113,7 +116,7 @@ function generateBoard(s) {
                         ) &&
                         side == "w")
                 ) {
-                    console.log("clicked on opponent's piece!");
+                    // console.log("clicked on opponent's piece!");
 
                     if (fromCoord) {
                         newCoord = e.target.className.split(" ")[1];
@@ -157,6 +160,30 @@ function flipBoard() {
     }
 }
 
+/**
+ * clears movable tiles from the previous selected piece
+ */
+function clearMovableTiles() {
+    Array.from(document.querySelectorAll(".movable")).forEach(movableTile => {
+        // console.log(movableTile);
+        movableTile.classList.remove("movable");
+    });
+}
+
+/**
+ * adds circles to every coord in possibleMoves
+ * @param {array} possibleMoves
+ */
+function showMoveableTiles(possibleMoves) {
+    clearMovableTiles();
+
+    possibleMoves.forEach(coord => {
+        document.getElementById(coord).classList.add("movable"); // add movable tag
+    });
+
+    // 3) in the css, add some css for movableTiles
+}
+
 // piece at fromCoords moves to toCoords, movedSide is used to determine the message
 // that is sent to the other player
 // no return value
@@ -173,7 +200,7 @@ function makeMove(fromCoords, toCoords, movedSide) {
         alert("Invalid Move");
         return;
     }
-    console.log(pieceClicked, fromCoords, toCoords);
+    // console.log(pieceClicked, fromCoords, toCoords);
     oldPiece.remove(); // removes piece from old square
     socket.emit("makeMove", {
         fromCoords: fromCoords,
@@ -196,7 +223,7 @@ function makeMove(fromCoords, toCoords, movedSide) {
     // let newPiece = document.createElement("div");
     // newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
     // clickedCell.appendChild(newPiece);
-
+    clearMovableTiles();
     turn++;
 }
 
@@ -232,8 +259,6 @@ function pushMoveMessage() {
         var whiteMove = document.createElement("div");
 
         newMove.classList += "move";
-        // turn.classList += "move";
-        // whiteMove.classList += "move";
 
         turn.innerText = Math.ceil(moveList.length / 2);
 
@@ -244,7 +269,6 @@ function pushMoveMessage() {
         document.querySelector("#movesBox").appendChild(newMove);
     } else {
         var blackMove = document.createElement("div");
-        // blackMove.classList += "move";
         blackMove.innerText = lastMove.display;
 
         var moveBox = document.querySelector("#movesBox");

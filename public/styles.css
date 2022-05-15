@@ -218,6 +218,13 @@ body {
 	background-color: blue;
 }
 
+.movable {
+    background-image: url(https://static.vecteezy.com/system/resources/previews/001/192/291/large_2x/circle-png.png);
+	background-repeat: no-repeat;
+	background-position: center;
+    background-size: 50%;
+}
+
 .fp {
 	height: 100%;
 	width: 100%;
