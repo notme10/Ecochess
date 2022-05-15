@@ -69,7 +69,6 @@ function generateBoard(s) {
             var cell = document.createElement("div");
             cell.addEventListener("click", (e) => {
                 let newCoord = e.target.id; // get cellCoord
-
                 if (newCoord) {
                     // clicked on a tile without piece
                     if (fromCoord) {
@@ -77,6 +76,13 @@ function generateBoard(s) {
                         // console.log(e.target.className);
                         makeMove(fromCoord, newCoord, side);
                     }
+                } else if (
+                    document
+                        .getElementById(e.target.classList[1])
+                        .classList.contains("selected")
+                ) {
+                    document.getElementById(e.target.classList[1]).classList.remove("selected");
+                    clearMovableTiles();
                 } else if (
                     (turn % 2 == 0 &&
                         whitePieces.includes(
@@ -164,7 +170,7 @@ function flipBoard() {
  * clears movable tiles from the previous selected piece
  */
 function clearMovableTiles() {
-    Array.from(document.querySelectorAll(".movable")).forEach(movableTile => {
+    Array.from(document.querySelectorAll(".movable")).forEach((movableTile) => {
         // console.log(movableTile);
         movableTile.classList.remove("movable");
     });
@@ -177,7 +183,7 @@ function clearMovableTiles() {
 function showMoveableTiles(possibleMoves) {
     clearMovableTiles();
 
-    possibleMoves.forEach(coord => {
+    possibleMoves.forEach((coord) => {
         document.getElementById(coord).classList.add("movable"); // add movable tag
     });
 

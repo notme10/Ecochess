@@ -1,6 +1,5 @@
 
 TODO:
-    Move Squares
     Fix heroku
     Move Logging
     Fix UI
