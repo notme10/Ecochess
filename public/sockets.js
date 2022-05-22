@@ -103,7 +103,9 @@ socket.on("playerConnect", (data) => {
 // makes the move based on the info in data
 socket.on("sendMove", (data) => {
     if (data.room === room && data.side !== side) {
-        makeMove(data.fromCoords, data.toCoords, data.side);
+        let pieceOnCoord = game.board.configuration.pieces[data.toCoords];
+        let eatenPiece = pieceOnCoord ? pieceOnCoord : ""
+        makeMove(data.fromCoords, data.toCoords, data.side, eatenPiece);
 
         {
         // cellCoord = data.moves.newPos.substring(0, 2);

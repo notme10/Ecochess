@@ -1,12 +1,11 @@
 
 TODO:
-    Fix heroku
-    Move Logging
+    Fix heroku (almost)
     Fix UI
     Captured Pieces
     revamp server (fix rooms[roomId])
     Promotion
-    Piece deselection
+
 
 
 
@@ -32,5 +31,8 @@ FINISHED
     en passant
 
     HW FOR THE WEEK: 
+        Move Logging (moveList stuff)
+        
+        
         implement all of john's feedback for the ui
         

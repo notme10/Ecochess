@@ -74,15 +74,18 @@ function generateBoard(s) {
                     if (fromCoord) {
                         // clicked on a piece before
                         // console.log(e.target.className);
-                        makeMove(fromCoord, newCoord, side);
+                        makeMove(fromCoord, newCoord, side, "");
                     }
                 } else if (
                     document
                         .getElementById(e.target.classList[1])
                         .classList.contains("selected")
                 ) {
-                    document.getElementById(e.target.classList[1]).classList.remove("selected");
+                    document
+                        .getElementById(e.target.classList[1])
+                        .classList.remove("selected");
                     clearMovableTiles();
+                    fromCoord = "";
                 } else if (
                     (turn % 2 == 0 &&
                         whitePieces.includes(
@@ -125,9 +128,10 @@ function generateBoard(s) {
                     // console.log("clicked on opponent's piece!");
 
                     if (fromCoord) {
-                        newCoord = e.target.className.split(" ")[1];
+                        const classList = e.target.className.split(" ");
+                        newCoord = classList[1];
 
-                        makeMove(fromCoord, newCoord, side);
+                        makeMove(fromCoord, newCoord, side, classList[0]);
                     }
                 }
             });
@@ -193,7 +197,7 @@ function showMoveableTiles(possibleMoves) {
 // piece at fromCoords moves to toCoords, movedSide is used to determine the message
 // that is sent to the other player
 // no return value
-function makeMove(fromCoords, toCoords, movedSide) {
+function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -224,6 +228,10 @@ function makeMove(fromCoords, toCoords, movedSide) {
     }
 
     replaceBoard();
+
+    if (eatenPiece) {
+        recordCapturedPieces();
+    }
     // let clickedCell = document.getElementById(toCoords);
     // clickedCell.innerHTML = "";
     // let newPiece = document.createElement("div");
@@ -251,6 +259,52 @@ function convertIndexToRows(index) {
 // returns column of the given index
 function convertIndexToCols(index) {
     return columns[index];
+}
+
+/**
+ * puts captured piece in captured piece list. also makes the div
+ * @param {String} pieceToCapture 
+ */
+function recordCapturedPieces(pieceToCapture) {
+    capturedPieces.push(pieceToCapture);
+    var item = capturedPieces[capturedPieces.length - 1];
+    if (side !== getPieceSide(item)) {
+        var capturedPiece = document.createElement("div");
+        capturedPiece.className = "e" + item.toLowerCase();
+        capturedPiece.style.width = "75px";
+        capturedPiece.style.height = "75px";
+        document.getElementById("capturedPieces").appendChild(capturedPiece);
+    }
+}
+
+/**
+ * checks if piece is white
+ * @param {String} piece the piece
+ * @returns returns true if white
+ */
+function isWhitePiece(piece) {
+    return whitePieces.includes(piece);
+}
+
+/**
+ * checks if piece is black
+ * @param {String} piece 
+ * @returns true if piece is black
+ */
+function isBlackPiece(piece) {
+    return blackPieces.includes(piece);
+}
+
+/**
+ * gives the side/color of the piece
+ * @param {String} piece 
+ * @returns side/color of the piece ("w" or "b")
+ */
+function getPieceSide(piece) {
+    if (isWhitePiece(piece)) {
+        return "w";
+    }
+    return "b";
 }
 
 // sends the moveMessage that will be displayed on the opponent's screen
