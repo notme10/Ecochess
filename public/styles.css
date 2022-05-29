@@ -106,7 +106,7 @@ body {
 
 #infoBox {
 		display: grid;
-		grid-template-rows: 10% 40% 50%;
+		grid-template-rows: 10% 5% 55% 30%;
 
 		height: 80vmin;
 		width: 30vmin;
@@ -148,6 +148,24 @@ body {
 
 #Regions {
 	font-size: 25px;
+}
+
+#movesBox {
+	display: block;
+}
+
+#capturedPieces {
+	display: none;
+}
+
+#plugs {
+	display: none;
+}
+
+#tabs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 }
 
 .modalContent {

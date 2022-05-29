@@ -1,15 +1,15 @@
 
 TODO:
     Fix heroku (almost)
-    Fix UI
-    Captured Pieces
     revamp server (fix rooms[roomId])
     Promotion
-
+    TABS!!
 
 
 
 FINISHED
+    Fix UI
+    Captured Pieces
     Eating does not work
     commented all the files in the code
     finish my side is always fish, opponent side is always trash
@@ -30,9 +30,5 @@ FINISHED
     castling
     en passant
 
-    HW FOR THE WEEK: 
-        Move Logging (moveList stuff)
-        
-        
-        implement all of john's feedback for the ui
+
         

@@ -39,6 +39,28 @@ function pieceIdentifier(side, pieceName) {
     }
 }
 
+listIcon.addEventListener("click", (e) => {
+    console.log("list icon clicked!");
+    document.getElementById("movesBox").style.display = "block";
+    document.getElementById("capturedPieces").style.display = "none";
+    document.getElementById("plugs").style.display = "none";
+});
+
+capturedPieceIcon.addEventListener("click", (e) => {
+    console.log("captured piece icon clicked!");
+    document.getElementById("movesBox").style.display = "none";
+    document.getElementById("capturedPieces").style.display = "block";
+    document.getElementById("plugs").style.display = "none";
+});
+
+plugIcon.addEventListener("click", (e) => {
+    console.log("plug icon clicked!");
+    document.getElementById("movesBox").style.display = "none";
+    document.getElementById("capturedPieces").style.display = "none";
+    document.getElementById("plugs").style.display = "block";
+});
+
+
 function replaceBoard() {
     var arr = Array.prototype.slice.call(
         document.getElementsByClassName("cell")
@@ -231,7 +253,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
 
     if (eatenPiece) {
         clearMovableTiles();
-        recordCapturedPieces();
+        recordCapturedPieces(eatenPiece);
     }
     clearMovableTiles();
     turn++;
@@ -264,7 +286,7 @@ function convertIndexToCols(index) {
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
     // item  is undefined because capturedPIeces is literally empty, so no other code works
-    var item = capturedPieces[capturedPieces.length()-1];
+    var item = capturedPieces[capturedPieces.length-1];
     console.log(item);
     if (side !== getPieceSide(item)) {
         var capturedPiece = document.createElement("div");
