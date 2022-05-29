@@ -230,13 +230,9 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     replaceBoard();
 
     if (eatenPiece) {
+        clearMovableTiles();
         recordCapturedPieces();
     }
-    // let clickedCell = document.getElementById(toCoords);
-    // clickedCell.innerHTML = "";
-    // let newPiece = document.createElement("div");
-    // newPiece.className = `${pieceClasses[0]} ${toCoords} ${pieceClasses[2]}`;
-    // clickedCell.appendChild(newPiece);
     clearMovableTiles();
     turn++;
 }
