@@ -263,7 +263,9 @@ function convertIndexToCols(index) {
  */
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
-    var item = capturedPieces[capturedPieces.length - 1];
+    // item  is undefined because capturedPIeces is literally empty, so no other code works
+    var item = capturedPieces[capturedPieces.length()-1];
+    console.log(item);
     if (side !== getPieceSide(item)) {
         var capturedPiece = document.createElement("div");
         capturedPiece.className = "e" + item.toLowerCase();
