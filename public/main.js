@@ -40,21 +40,18 @@ function pieceIdentifier(side, pieceName) {
 }
 
 listIcon.addEventListener("click", (e) => {
-    console.log("list icon clicked!");
     document.getElementById("movesBox").style.display = "block";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "none";
 });
 
 capturedPieceIcon.addEventListener("click", (e) => {
-    console.log("captured piece icon clicked!");
     document.getElementById("movesBox").style.display = "none";
-    document.getElementById("capturedPieces").style.display = "block";
+    document.getElementById("capturedPieces").style.display = "flex";
     document.getElementById("plugs").style.display = "none";
 });
 
 plugIcon.addEventListener("click", (e) => {
-    console.log("plug icon clicked!");
     document.getElementById("movesBox").style.display = "none";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "block";
@@ -232,6 +229,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Invalid Move");
         return;
     }
+
+    pushMoveMessage();
     // console.log(pieceClicked, fromCoords, toCoords);
     oldPiece.remove(); // removes piece from old square
     socket.emit("makeMove", {
@@ -252,6 +251,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     replaceBoard();
 
     if (eatenPiece) {
+        console.log(eatenPiece);
         clearMovableTiles();
         recordCapturedPieces(eatenPiece);
     }
@@ -333,7 +333,7 @@ function getPieceSide(piece) {
 function pushMoveMessage() {
     var lastMove = moveList[moveList.length - 1];
 
-    if (lastMove.color == "w") {
+    if (lastMove.color === "w") {
         var newMove = document.createElement("div");
         var turn = document.createElement("div");
         var whiteMove = document.createElement("div");
