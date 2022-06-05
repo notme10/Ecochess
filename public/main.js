@@ -187,6 +187,26 @@ function flipBoard() {
     for (i = cellArray.length - 1; i >= 0; i--) {
         BOARD.appendChild(cellArray[i]);
     }
+
+    if (side === 'b') {
+        document.getElementById("firstL").innerHTML = 'h';
+        document.getElementById("secondL").innerHTML = 'g';
+        document.getElementById("thirdL").innerHTML = 'f';
+        document.getElementById("fourthL").innerHTML = 'e';
+        document.getElementById("fifthL").innerHTML = 'd';
+        document.getElementById("sixthL").innerHTML = 'c';
+        document.getElementById("seventhL").innerHTML = 'b';
+        document.getElementById("eighthL").innerHTML = 'a';
+
+        document.getElementById("firstN").innerHTML = '8';
+        document.getElementById("secondN").innerHTML = '7';
+        document.getElementById("thirdN").innerHTML = '6';
+        document.getElementById("fourthN").innerHTML = '5';
+        document.getElementById("fifthN").innerHTML = '4';
+        document.getElementById("sixthN").innerHTML = '3';
+        document.getElementById("seventhN").innerHTML = '2';
+        document.getElementById("eighthN").innerHTML = '1';
+    }
 }
 
 /**
