@@ -1,42 +1,48 @@
-// MaYBE TRY RESTARTING THE SERVERY :)
-
-/* The express module is used to look at the address of the request and send it to the correct function */
-var express = require("express");
+var express = require("express"); // The express module is used to look at the address of the request and send it to the correct function 
 var bodyParser = require("body-parser");
-var http = require("http"); /* The http module is used to listen for requests from a web browser */
-var path = require("path"); /* The path module is used to transform relative paths to absolute paths */
-// var mongoose = require('mongoose');
+var http = require("http"); // The http module is used to listen for requests from a web browser
+var path = require("path"); // The path module is used to transform relative paths to absolute paths
 var Io = require("socket.io");
-// var dbAddress = process.env.MONGODB_URI || 'mongodb://127.0.0.1/spacecrash';
 
-/* Creates an express application */
-var app = express();
+var app = express(); // creates an express application
 
-/* Creates the web server */
-var server = http.createServer(app);
+var server = http.createServer(app); // Creates the web server
 
 var io = Io(server);
 var axios = require("axios").default;
 
-/* Defines what port to use to listen to web requests */
-var port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
+var port = process.env.PORT ? parseInt(process.env.PORT) : 8080; // Defines what port to use to listen to web requests
 
-function addSockets() { /* initialize everything when there is a connection*/
+/**
+ * @desc emit everything when there is a connection
+ * @return a bunch of emits
+ */
+function addSockets() {
+    var rooms = {}; // stores all the rooms
 
-    var rooms = {}; // something to store all the rooms??
-
-
-    io.on('connection', (socket) => { // server listens for a connection from a client
+    /**
+     * @desc listens for connection from client, initializes everything
+     */
+    io.on('connection', (socket) => {
 
         var name; // server-side variables for specific connections
         var roomId; // the actual roomId that that a player gets 
-        socket.on('setRoom', (data) => { //sets te room id to the the room of the connected user
+
+        
+        /**
+         * @desc sets roomId to room of the connected user
+         */
+        socket.on('setRoom', (data) => {
             roomId = data.room;
             if (!rooms[roomId]) {
                 rooms[roomId] = { w: null, b: null, config: null, history: null };
             }
         })
-        socket.on('playerName', (data) => { // sets name to the connected player's name
+
+        /**
+         * @desc sets name to name of the connected user
+         */
+        socket.on('playerName', (data) => {
             name = data.name;
 
             if (rooms[roomId]["w"] == null) {
@@ -45,27 +51,24 @@ function addSockets() { /* initialize everything when there is a connection*/
                 rooms[roomId]["b"] = name;
             }
 
-            console.log(rooms, roomId, rooms[roomId])
-            io.emit('sidesInfo', rooms[roomId]) // sends the rooms through sidesInfo
+            io.emit('sidesInfo', rooms[roomId]);
             io.emit('playerConnect', {
                 name: name,
                 info: rooms[roomId]
-            }); // emits a message
+            });
         })
 
-        socket.on('makeMove', (data) => { // server listens for a move 
-            // rooms[roomId]["pieces"] = data.pieces;
-            // rooms[roomId]["turn"] = data.turn;
-            // var movesListArray = rooms[roomId]["moveList"];
-            // var lastPiece = movesListArray[movesListArray.length - 1];
-            // if(!lastPiece || lastPiece.pieceName !== data.moves.pieceName) {
-            // 	rooms[roomId]["moveList"].push(data.moves);
-            // }
-
-            io.emit("sendMove", (data)); // sends move
+        /**
+         * @desc emits sendMove
+         */
+        socket.on('makeMove', (data) => {
+            io.emit("sendMove", (data));
         });
 
-        socket.on('disconnect', (data) => { // server listens for a disconnection
+        /**
+         * @desc emits playerDisconnect
+         */
+        socket.on('disconnect', (data) => {
 
             if (rooms[roomId]) {
                 if (rooms[roomId]["w"] == name) {
@@ -79,12 +82,8 @@ function addSockets() { /* initialize everything when there is a connection*/
                 rooms[roomId] = null;
             }
             else {
-                // if (rooms[roomId]["w"] == name) {
                 rooms[roomId]["w"] = null;
-                // }
-                // if (rooms[roomId]["b"] == name) {
                 rooms[roomId]["b"] = null;
-                // }
             }
             io.emit('sidesInfo', rooms[roomId]) // server sends the side info
         });
@@ -92,10 +91,11 @@ function addSockets() { /* initialize everything when there is a connection*/
 
 }
 
-function startServer() { // probably starts the server
-    addSockets(); // calls addSockets to initialize everything once the connections happen
-
-    // I have no clue how to decipher this
+/**
+ * @desc starts server, initializes all sockets
+ */
+function startServer() {
+    addSockets();
 
     app.use(bodyParser.json({ limit: "16mb" }));
     app.use(express.static(path.join(__dirname, "public")));
@@ -124,11 +124,8 @@ function startServer() { // probably starts the server
             .request(options)
             .then(function (response) {
 
-                var curX = response.data.longitude; // gets the longitude of the location for assignment
-                var curY = response.data.latitude; // gets the lat
-
-                // curX = 117;
-                // curY = 25;
+                var curX = response.data.longitude; // assigns longitude
+                var curY = response.data.latitude; // assigns latitude
 
                 let citiesObject = {
 
@@ -137,7 +134,6 @@ function startServer() { // probably starts the server
                     //     y: YCOORD,
                     //     biome: "BIOME",
                     // },
-
 
                     Anchorage: {
                         x: -150,
@@ -492,9 +488,17 @@ function startServer() { // probably starts the server
                         y: -34,
                         biome: "Ocean",
                     }
-                };
+                }; // object with all the cities' information
 
-                function distCalc(curX, curY, targetX, targetY) { //calculates distance from an important city
+                /**
+                 * @desc calculates distance between two given points
+                 * @param {int} curX 
+                 * @param {int} curY 
+                 * @param {int} targetX 
+                 * @param {int} targetY 
+                 * @returns distance between two gieven points
+                 */
+                function distCalc(curX, curY, targetX, targetY) {
                     return Math.abs(
                         Math.sqrt(
                             (curX - targetX) * (curX - targetX) +
@@ -504,7 +508,7 @@ function startServer() { // probably starts the server
                 }
 
                 var nearestCity; // the nearest city is found and set into here
-                var shortestDistance = Number.MAX_SAFE_INTEGER; // shortest possible distance is set here, which is the max number allowed 
+                var shortestDistance = Number.MAX_SAFE_INTEGER; // nearest distance will be assigned here
                 var cityBiome; // biome that will be assigned to the city
 
                 for (var cityKey in citiesObject) {
@@ -528,7 +532,6 @@ function startServer() { // probably starts the server
                 );
 
                 console.log(response.data);
-                // let city = `${response.data.city}, ${response.data.region}`;
                 let city = `The nearest city is ${nearestCity}. Its biome is ${cityBiome}.`
                 res.send(city);
             })
@@ -536,23 +539,18 @@ function startServer() { // probably starts the server
                 console.error(error);
                 res.send(error);
             });
-        // console.dir(req.ip)
-        // res.send(req.ip);
     });
 
-    /* Defines what function to all when the server recieves any request from http://localhost:8080 */
+    /**
+     * @desc Defines what function to all when the server recieves any request from http://localhost:8080
+     */
     server.on("listening", () => {
-        /* Determining what the server is listening for */
         var addr = server.address(),
             bind =
                 typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-        /* Outputs to the console that the webserver is ready to start listenting to requests */
         console.log("Listening on " + bind);
     });
-
-    /* Tells the server to start listening to requests from defined port */
     server.listen(port);
 }
 
-// mongoose.connect(dbAddress, startServer);
 startServer();

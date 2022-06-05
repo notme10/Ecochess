@@ -5,34 +5,10 @@ TODO:
     Promotion
     TABS!! (almost finished)
     moveList fix/add
-
-
-
-FINISHED
-    Fix UI
-    Captured Pieces
-    Eating does not work
-    commented all the files in the code
-    finish my side is always fish, opponent side is always trash
-    both sides show up as black on spectator's screen
-    remove settings icon
-    proportions for letters
-    write special characters for moves
-    added logo thing
-    room reset bug
-    castling bug
-    promotion prompt bug
-    promotion update bug
-    black side castling bug
-    en passant for multiplayer fix
-    captured pieces bug
-    home screen
-    layout stretch bug
-    castling
-    en passant
+    
 
     HW FOR WEEK:
     1. (DONE) heroku work in console (type heroku something in console and it will do something (no error))
-    2. play around with colors for good colors
-    3. actually flip the board (letter order should be changed on black side)
+    2. (DONE) play around with colors for good colors
+    3. (DONE) actually flip the board (letter order should be changed on black side)
         

@@ -1,6 +1,6 @@
-// listening in the playerConnect channel
-// info from the channel is stored in data
-// logs the name and info of the player
+/**
+ * @desc listens for playerConnect, logs player's name and information
+ */
 socket.on("playerConnect", (data) => {
     console.log(data.name);
     console.log(data.info);
@@ -97,10 +97,9 @@ socket.on("playerConnect", (data) => {
     }
 });
 
-
-// listening in the sendMove channel
-// info from the channel is stored in data
-// makes the move based on the info in data
+/**
+ * @desc listens for sendMove, makes move
+ */
 socket.on("sendMove", (data) => {
     if (data.room === room && data.side !== side) {
         let pieceOnCoord = game.board.configuration.pieces[data.toCoords];
@@ -123,9 +122,9 @@ socket.on("sendMove", (data) => {
     }
 });
 
-// listening in the sidesInfo channel
-// info from the channel is stored in data
-// initializes side variable
+/**
+ * @desc listens for sidesInfo, initializes side variable
+ */
 socket.on("sidesInfo", (data) => {
     // data is null pls fix
     console.log(data);
@@ -147,9 +146,9 @@ socket.on("sidesInfo", (data) => {
     // if there are two boards, fix this code
 })
 
-// listening on the playerDisconnect channel
-// info from the channel is stored in data
-// when a player disconnects, show text on the opponent's screen that the user has disconnected
+/**
+ * @desc listens for playerDisconnect, show text on opponent's screen that opponent has disconnected
+ */
 socket.on("playerDisconnect", (data) => {
     if(data == "w") {
         document.getElementById("messageBoard").innerText = "white has disconnected";

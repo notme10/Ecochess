@@ -1,5 +1,6 @@
-// if key Q is pressed, remove selected tag
-// set fromCoord to null
+/**
+ * @desc when key Q is pressed, remove selected tag, and set fromCoord to null
+ */
 document.addEventListener("keypress", (e) => {
     if (e.key == "q") {
         let selectedCell = document.querySelector(".selected");
@@ -15,18 +16,21 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
-let board = document.getElementById("board"); // We are getting the board into the JS
+let board = document.getElementById("board"); // board
 let width = 8; // width of the board
 let height = 8; // height of the board
 let columns = ["A", "B", "C", "D", "E", "F", "G", "H"]; // column letters, from left to right
 let rows = ["8", "7", "6", "5", "4", "3", "2", "1"]; // row numbers ,from top to bottom
 
-let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // self explanatory
-let blackPieces = ["p", "r", "b", "n", "q", "k"]; // self explanatory
+let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // all white piece names
+let blackPieces = ["p", "r", "b", "n", "q", "k"]; // all black piece names
 
-// function that determines the piece name of the given info
-// parameters: side (black or white) and pieceName (in arrays whitePieces and blackPieces)
-// returns either friendly pieceName or enemy pieceName
+/**
+ * @desc determines the name of the piece with the given info
+ * @param {String} side 
+ * @param {String} pieceName 
+ * @returns piece's name
+ */
 function pieceIdentifier(side, pieceName) {
     if (
         (side == "w" && whitePieces.includes(pieceName)) ||
@@ -39,6 +43,9 @@ function pieceIdentifier(side, pieceName) {
     }
 }
 
+/**
+ * @desc when one tab is clicked, hide the other two
+ */
 listIcon.addEventListener("click", (e) => {
     document.getElementById("movesBox").style.display = "block";
     document.getElementById("capturedPieces").style.display = "none";
@@ -57,7 +64,9 @@ plugIcon.addEventListener("click", (e) => {
     document.getElementById("plugs").style.display = "block";
 });
 
-
+/**
+ * @desc clear and then refill the board
+ */
 function replaceBoard() {
     var arr = Array.prototype.slice.call(
         document.getElementsByClassName("cell")
@@ -72,6 +81,11 @@ function replaceBoard() {
 
 // generates board in the perspective of the s side
 // no return
+
+/**
+ * 
+ * @param {String} s 
+ */
 function generateBoard(s) {
     var topLeft = s !== "b";
 

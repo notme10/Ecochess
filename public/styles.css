@@ -44,11 +44,6 @@ body {
 	height: 13vh;
 }
 
-.promotionItem {
-	width: 13vh;
-	height: 13vh;
-}
-
 #close {
 	float: right;
 }
@@ -137,14 +132,6 @@ body {
 	grid-template-columns: 10% 45% 45%;
 }
 
-/* #settings {
-	position: absolute;
-	left: 20px;
-	top: 20px;
-	background-color: transparent;
-	border: none;
-} */
-
 #Regions {
 	font-size: 25px;
 }
@@ -171,6 +158,19 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
+}
+
+/* #settings {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	background-color: transparent;
+	border: none;
+} */
+
+.promotionItem {
+	width: 13vh;
+	height: 13vh;
 }
 
 .modalContent {

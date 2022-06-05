@@ -25,7 +25,6 @@
   document.querySelector("#Regions").value = localStorage.getItem("chosenRegion");
   document.querySelector("#Regions").addEventListener("change", e => {
 
-    // console.log("selection is: " + e.target.value);
     localStorage.setItem('chosenRegion', e.target.value);
 
   })
