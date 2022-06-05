@@ -230,7 +230,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         return;
     }
 
-    pushMoveMessage();
+    //pushMoveMessage();
     // console.log(pieceClicked, fromCoords, toCoords);
     oldPiece.remove(); // removes piece from old square
     socket.emit("makeMove", {

@@ -32,7 +32,7 @@ FINISHED
     en passant
 
     HW FOR WEEK:
-    1. heroku work in console (type heroku something in console and it will do something (no error))
+    1. (DONE) heroku work in console (type heroku something in console and it will do something (no error))
     2. play around with colors for good colors
     3. actually flip the board (letter order should be changed on black side)
         
