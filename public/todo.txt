@@ -1,14 +1,14 @@
 
 TODO:
-    Fix heroku (almost)
     revamp server (fix rooms[roomId])
-    Promotion
-    TABS!! (almost finished)
-    moveList fix/add
-    
+    spectators need to load into the current state of the game
+    Promotion (low priority)
+
 
     HW FOR WEEK:
-    1. (DONE) heroku work in console (type heroku something in console and it will do something (no error))
-    2. (DONE) play around with colors for good colors
-    3. (DONE) actually flip the board (letter order should be changed on black side)
+    1.  add messages for connect, check, checkmate, invalid move
+    2. indicator or which tab you are on
+    3. adjust css for moveList 
         
+
+(check and checkmate work in game.exportJson()) + other things

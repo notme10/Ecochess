@@ -247,7 +247,7 @@ function showMoveableTiles(possibleMoves) {
     // 3) in the css, add some css for movableTiles
 }
 
-// piece at fromCoords moves to toCoords, movedSide is used to determine the message
+// piece at  moves to toCoords, movedSide is used to determine the message
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
@@ -290,7 +290,15 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         recordCapturedPieces(eatenPiece);
     }
     clearMovableTiles();
+
+    pushMoveMessage(fromCoords, toCoords);
+
+    if (isCheckMate()) {
+        alert("Game Over");
+    }
     turn++;
+    
+
 }
 
 // returns index value of the given row
@@ -361,35 +369,53 @@ function getPieceSide(piece) {
     return "b";
 }
 
+function writeMessageBoard(message) {
+    document.getElementById("messageBoard").innerHTML = message;
+}
+
+/**
+ * checks if there is a checkmate
+ * @returns true if checkmate and false when not
+ */
+function isCheckMate() {
+    return JSON.stringify(game.moves()) === '{}'
+}
+
 // sends the moveMessage that will be displayed on the opponent's screen
 // no params
 // no returns
-function pushMoveMessage() {
-    var lastMove = moveList[moveList.length - 1];
-
-    if (lastMove.color === "w") {
+function pushMoveMessage(fromCoords, toCoords) {
+    const movedPiece = game.board.configuration.pieces[toCoords];
+    if (isWhitePiece(movedPiece)) {
         var newMove = document.createElement("div");
-        var turn = document.createElement("div");
+        var turnDiv = document.createElement("div");
         var whiteMove = document.createElement("div");
 
         newMove.classList += "move";
 
-        turn.innerText = Math.ceil(moveList.length / 2);
+        turnDiv.innerText = Math.floor(turn / 2)+1;
 
-        whiteMove.innerText = lastMove.display;
+        whiteMove.innerText = `w ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
-        newMove.appendChild(turn);
+        newMove.appendChild(turnDiv);
         newMove.appendChild(whiteMove);
         document.querySelector("#movesBox").appendChild(newMove);
-    } else {
+    }
+
+    else {
         var blackMove = document.createElement("div");
-        blackMove.innerText = lastMove.display;
+        blackMove.innerText = `b ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
         var moveBox = document.querySelector("#movesBox");
         var newMove = moveBox.lastElementChild;
         newMove.appendChild(blackMove);
     }
+
 }
+    
+
+    
+
 
 var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
 var randomizerButton = document.getElementById("randomRoom");

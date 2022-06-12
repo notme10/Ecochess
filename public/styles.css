@@ -84,7 +84,7 @@ body {
 	flex-direction: column-reverse;
 	align-items: center;
 	justify-content: space-around;
-	color: rgb(157, 157, 157);
+	color: rgb(35 54 122);
 }
 
 #bottombar {
@@ -95,7 +95,7 @@ body {
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-around;
-	color: rgb(157, 157, 157);
+	color: rgb(35 54 122);
 }
 
 #infoBox {
