@@ -107,7 +107,7 @@ function generateBoard(s) {
                     if (fromCoord) {
                         // clicked on a piece before
                         // console.log(e.target.className);
-                        makeMove(fromCoord, newCoord, side, "");
+                        makeMove(fromCoord, newCoord, side, "", false);
                     }
                 } else if (
                     document
@@ -164,7 +164,7 @@ function generateBoard(s) {
                         const classList = e.target.className.split(" ");
                         newCoord = classList[1];
 
-                        makeMove(fromCoord, newCoord, side, classList[0]);
+                        makeMove(fromCoord, newCoord, side, classList[0], false);
                     }
                 }
             });
@@ -250,7 +250,7 @@ function showMoveableTiles(possibleMoves) {
 // piece at  moves to toCoords, movedSide is used to determine the message
 // that is sent to the other player
 // no return value
-function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+function makeMove(fromCoords, toCoords, movedSide, eatenPiece, updating) {
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -267,12 +267,17 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     //pushMoveMessage();
     // console.log(pieceClicked, fromCoords, toCoords);
     oldPiece.remove(); // removes piece from old square
-    socket.emit("makeMove", {
-        fromCoords: fromCoords,
-        toCoords: toCoords,
-        room: room,
-        side: movedSide,
-    });
+
+    if (!updating) {
+        socket.emit("makeMove", {
+            fromCoords: fromCoords,
+            toCoords: toCoords,
+            room: room,
+            side: movedSide,
+        });
+
+        socket.emit("updateBoardState", game.board.history)
+    }
 
     let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
     if (selectedCell) {
@@ -297,7 +302,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
     turn++;
-    
+
 
 }
 
@@ -328,7 +333,7 @@ function convertIndexToCols(index) {
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
     // item  is undefined because capturedPIeces is literally empty, so no other code works
-    var item = capturedPieces[capturedPieces.length-1];
+    var item = capturedPieces[capturedPieces.length - 1];
     console.log(item);
     if (side !== getPieceSide(item)) {
         var capturedPiece = document.createElement("div");
@@ -393,7 +398,7 @@ function pushMoveMessage(fromCoords, toCoords) {
 
         newMove.classList += "move";
 
-        turnDiv.innerText = Math.floor(turn / 2)+1;
+        turnDiv.innerText = Math.floor(turn / 2) + 1;
 
         whiteMove.innerText = `w ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
@@ -412,9 +417,9 @@ function pushMoveMessage(fromCoords, toCoords) {
     }
 
 }
-    
 
-    
+
+
 
 
 var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes

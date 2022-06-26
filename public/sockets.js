@@ -20,20 +20,20 @@ socket.on("sendMove", (data) => {
     if (data.room === room && data.side !== side) {
         let pieceOnCoord = game.board.configuration.pieces[data.toCoords];
         let eatenPiece = pieceOnCoord ? pieceOnCoord : ""
-        makeMove(data.fromCoords, data.toCoords, data.side, eatenPiece);
+        makeMove(data.fromCoords, data.toCoords, data.side, eatenPiece, true);
 
         {
-        // cellCoord = data.moves.newPos.substring(0, 2);
-        // pieceInfo = [data.moves.pieceName, data.moves.oldPos];
-        // enemyPromotion = data.moves.display.split("=")[1];
-        // console.log(data);
-        // if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
-        //     if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
-        //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
-        //     } else {
-        //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
-        //     }
-        // }
+            // cellCoord = data.moves.newPos.substring(0, 2);
+            // pieceInfo = [data.moves.pieceName, data.moves.oldPos];
+            // enemyPromotion = data.moves.display.split("=")[1];
+            // console.log(data);
+            // if (virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])]) {
+            //     if(virtualBoard[convertRowsToIndex(cellCoord[1])][convertColsToIndex(cellCoord[0])]) {
+            //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].eat();
+            //     } else {
+            //         virtualBoard[convertRowsToIndex(data.moves.oldPos[1])][convertColsToIndex(data.moves.oldPos[0])].move();
+            //     }
+            // }
         }
     }
 });
@@ -45,16 +45,16 @@ socket.on("sidesInfo", (data) => {
     // data is null pls fix
     console.log(data);
     if (!data) {
-    } else if(data.w == name && side !== "w") {
+    } else if (data.w == name && side !== "w") {
         side = "w";
         // board.innerHTML = '';
         // generateBoard(side);
-    } else if(data.b == name && side !== "b") {
+    } else if (data.b == name && side !== "b") {
         side = "b";
         // board.innerHTML = '';
         flipBoard();
         // generateBoard(side);
-    } else if(side !== "w" && side !== "b") {
+    } else if (side !== "w" && side !== "b") {
         side = "s";
         // board.innerHTML = '';
         // generateBoard(side);
@@ -66,11 +66,21 @@ socket.on("sidesInfo", (data) => {
  * @desc listens for playerDisconnect, show text on opponent's screen that opponent has disconnected
  */
 socket.on("playerDisconnect", (data) => {
-    if(data == "w") {
+    if (data == "w") {
         writeMessageBoard("white has disconnected");
     } else {
         writeMessageBoard("black has disconnected");
     }
 });
 
-
+socket.on("sendBoardState", (data) => {
+    if (turn === 0) {
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+            let pieceOnCoord = game.board.configuration.pieces[data[i].to];
+            let eatenPiece = pieceOnCoord ? pieceOnCoord : "";
+            const relevantSide = turn % 2 === 0 ? "w" : "b";
+            makeMove(data[i].from, data[i].to, relevantSide, eatenPiece, true)
+        }
+    }
+})
