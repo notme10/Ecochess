@@ -28,7 +28,7 @@ function addSockets() {
         var name; // server-side variables for specific connections
         var roomId; // the actual roomId that that a player gets 
 
-        
+
         /**
          * @desc sets roomId to room of the connected user
          */
@@ -51,6 +51,8 @@ function addSockets() {
                 rooms[roomId]["b"] = name;
             }
 
+            console.log(rooms[roomId])
+
             io.emit('sidesInfo', rooms[roomId]);
             io.emit('playerConnect', {
                 name: name,
@@ -65,26 +67,41 @@ function addSockets() {
             io.emit("sendMove", (data));
         });
 
+        socket.on('updateBoardState', (data) => {
+            rooms[roomId]["history"] = data;
+        })
+
+        socket.on('getBoardState', (data) => {
+            io.emit("sendBoardState", rooms[roomId]["history"])
+        })
+
         /**
          * @desc emits playerDisconnect
          */
         socket.on('disconnect', (data) => {
 
             if (rooms[roomId]) {
-                if (rooms[roomId]["w"] == name) {
+                if (rooms[roomId]["w"] === name) {
                     io.emit('playerDisconnect', "w");
-                } else if (rooms[roomId]["b"] == name) {
+                } else if (rooms[roomId]["b"] === name) {
                     io.emit('playerDisconnect', "b");
                 }
             }
 
-            if (rooms[roomId] == null || rooms[roomId]["w"] == null && rooms[roomId]["b"] == null) {
+            if (!rooms[roomId] || (rooms[roomId]["w"] === null && rooms[roomId]["b"] === null)) {
                 rooms[roomId] = null;
-            }
-            else {
+            } else if (rooms[roomId]["w"] === name) {
                 rooms[roomId]["w"] = null;
+            } else if (rooms[roomId]["b"] === name) {
                 rooms[roomId]["b"] = null;
             }
+            // else {
+            //     rooms[roomId]["w"] = null;
+            //     rooms[roomId]["b"] = null;
+            // }
+
+            console.log(rooms[roomId])
+
             io.emit('sidesInfo', rooms[roomId]) // server sends the side info
         });
     });
