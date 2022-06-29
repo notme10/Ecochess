@@ -124,8 +124,7 @@ body {
 #movesBox {
 	overflow: auto;
 	font-family: 'Verdana', sans-serif;
-	font-size: 0.60em;
-	padding-right: 20px;
+	font-size: 0.75em;
 }
 
 .move {
@@ -137,20 +136,22 @@ body {
 	font-size: 25px;
 }
 
+#movesBox {
+	display: block;
+}
+
 #capturedPieces {
 	display: none;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
 	overflow: auto;
-	height: 90%;
-	width: 90%
+	height: 100%;
 	align-items: start;
 }
 
 #plugs {
 	display: none;
-	overflow: auto;
 }
 
 #tabs {
