@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<!-- cd desktop/important/ecohero/game -->
+
 <html>
     <head>
         <link rel="stylesheet" href="styles.css" />
@@ -50,6 +53,11 @@
         <div id="layout">
             <div id="board"></div>
 
+            <div id="turnIndicator">
+                <div id="blackTI"></div>
+                <div id="whiteTI"></div>
+            </div>
+
             <div id="sidebar">
                 <div id = "firstN">1</div>
                 <div id = "secondN">2</div>
@@ -76,7 +84,7 @@
                 <div id="messageBoard"></div>
 
                 <div id="tabs">
-                    <div id="listIcon">
+                    <div id="listIcon" class="tabIcon">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="48"
@@ -97,7 +105,7 @@
                         </svg>
                     </div>
 
-                    <div id="capturedPieceIcon">
+                    <div id="capturedPieceIcon" class="tabIcon">
                         <svg
                             id="Layer_1"
                             data-name="Layer 1"
@@ -130,7 +138,7 @@
                         </svg>
                     </div>
 
-                    <div id="plugIcon">
+                    <div id="plugIcon" class="tabIcon">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="48"

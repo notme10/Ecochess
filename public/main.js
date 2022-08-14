@@ -47,18 +47,30 @@ function pieceIdentifier(side, pieceName) {
  * @desc when one tab is clicked, hide the other two
  */
 listIcon.addEventListener("click", (e) => {
+    document.getElementById("listIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
+    document.getElementById("plugIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "block";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "none";
 });
 
 capturedPieceIcon.addEventListener("click", (e) => {
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("listIcon").style.backgroundColor = "";
+    document.getElementById("plugIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "none";
     document.getElementById("capturedPieces").style.display = "flex";
     document.getElementById("plugs").style.display = "none";
 });
 
 plugIcon.addEventListener("click", (e) => {
+    document.getElementById("plugIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
+    document.getElementById("listIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "none";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "block";
@@ -220,6 +232,7 @@ function flipBoard() {
         document.getElementById("sixthN").innerHTML = '3';
         document.getElementById("seventhN").innerHTML = '2';
         document.getElementById("eighthN").innerHTML = '1';
+        document.getElementById("turnIndicator").style.flexDirection = "column-reverse";
     }
 }
 
@@ -251,6 +264,7 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -298,6 +312,15 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
     turn++;
     
+    if(turn%2 == 0) {
+        console.log("white's turn");
+        document.getElementById("whiteTI").style.backgroundColor = "#006592";
+        document.getElementById("blackTI").style.backgroundColor = "transparent";
+    } else {
+        console.log("black's turn");
+        document.getElementById("blackTI").style.backgroundColor = "#006592";
+        document.getElementById("whiteTI").style.backgroundColor = "transparent";
+    }
 
 }
 
