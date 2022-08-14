@@ -47,18 +47,30 @@ function pieceIdentifier(side, pieceName) {
  * @desc when one tab is clicked, hide the other two
  */
 listIcon.addEventListener("click", (e) => {
+    document.getElementById("listIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
+    document.getElementById("plugIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "block";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "none";
 });
 
 capturedPieceIcon.addEventListener("click", (e) => {
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("listIcon").style.backgroundColor = "";
+    document.getElementById("plugIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "none";
     document.getElementById("capturedPieces").style.display = "flex";
     document.getElementById("plugs").style.display = "none";
 });
 
 plugIcon.addEventListener("click", (e) => {
+    document.getElementById("plugIcon").style.backgroundColor = "#459dcc";
+    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
+    document.getElementById("listIcon").style.backgroundColor = "";
+
     document.getElementById("movesBox").style.display = "none";
     document.getElementById("capturedPieces").style.display = "none";
     document.getElementById("plugs").style.display = "block";
