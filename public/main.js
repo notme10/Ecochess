@@ -232,6 +232,7 @@ function flipBoard() {
         document.getElementById("sixthN").innerHTML = '3';
         document.getElementById("seventhN").innerHTML = '2';
         document.getElementById("eighthN").innerHTML = '1';
+        document.getElementById("turnIndicator").style.flexDirection = "column-reverse";
     }
 }
 
@@ -263,6 +264,7 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -310,6 +312,15 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
     turn++;
     
+    if(turn%2 == 0) {
+        console.log("white's turn");
+        document.getElementById("whiteTI").style.backgroundColor = "#006592";
+        document.getElementById("blackTI").style.backgroundColor = "transparent";
+    } else {
+        console.log("black's turn");
+        document.getElementById("blackTI").style.backgroundColor = "#006592";
+        document.getElementById("whiteTI").style.backgroundColor = "transparent";
+    }
 
 }
 

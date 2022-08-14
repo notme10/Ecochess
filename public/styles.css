@@ -12,6 +12,26 @@ body {
 	background-size: cover;
 }
 
+#turnIndicator {
+	grid-area: t;
+	display: flex;
+	flex-direction: column;
+}
+
+#whiteTI {
+	background-color: #006592;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+}
+
+#blackTI {
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+}
+
 #homeModal {
 	display: none;
 	position: fixed;
@@ -50,12 +70,13 @@ body {
 
 #layout {
 	display: grid;
-	grid-template-columns: 1fr 10fr 5fr;
-	grid-template-rows: 10fr 1fr;
+	grid-template-columns: 0.5fr 1fr 10fr 5fr;
+	grid-template-rows: 10fr 1fr 1fr;
 	grid-template-areas:
-		"s g i"
-		". b i"
-		". c i";
+		"t s g i"
+		". . b i"
+		". . c i";
+	
 }
 
 #capturedPieces {
