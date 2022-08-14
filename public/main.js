@@ -413,7 +413,9 @@ function pushMoveMessage(fromCoords, toCoords) {
 
 }
     
-
+function getNewCoords() {
+    return game.board.history[game.board.history['length']-1].to
+}
     
 
 
