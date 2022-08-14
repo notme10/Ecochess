@@ -168,9 +168,19 @@ body {
 	border: none;
 } */
 
+
+
+
+
+
+
 .promotionItem {
 	width: 13vh;
 	height: 13vh;
+}
+
+.tabIcon {
+	border-radius: 13px;
 }
 
 .modalContent {
