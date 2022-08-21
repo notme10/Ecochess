@@ -263,6 +263,9 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+    if (game.board.history.length !== 0) {
+        clearHighlightHistory();
+    }
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -309,7 +312,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
     turn++;
-    
+    console.log(turn);
+    highlightHistory();
 
 }
 
@@ -425,6 +429,48 @@ function pushMoveMessage(fromCoords, toCoords) {
 
 }
 
+function getPrvCoords() {
+    return game.board.history[game.board.history['length']-1].from;
+}
+
+function getNewCoords() {
+    return game.board.history[game.board.history['length']-1].to;
+}
+
+/**
+ * highlights moved tiles
+ * @returns undefined
+ */
+//light: #dbb8ff ; dark: #ad5cff
+function highlightHistory() {
+    let light = "#dbb8ff";
+    let dark = "#ad5cff";
+
+    if (isBlackTile(getPrvCoords())) {
+        document.getElementById(getPrvCoords()).style.backgroundColor = dark;
+        if (isWhiteTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
+        }
+        else {
+        document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        }
+        
+    }
+    else {
+        document.getElementById(getPrvCoords()).style.backgroundColor = light;
+        if (isBlackTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        }
+        else {
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
+        }
+    }
+}
+
+function clearHighlightHistory() {
+    document.getElementById(getPrvCoords()).style.backgroundColor = "";
+    document.getElementById(getNewCoords()).style.backgroundColor = "";
+}
 
 /**
  * 
@@ -450,7 +496,7 @@ function isBlackTile(coordinate) {
  * @param {String} coordinate 
  * @returns true if tile is white
  */
-function isWhiteTIle(coordinate) {
+function isWhiteTile(coordinate) {
     let letter = "ABCDEFGH";
     let number = "12345678";
     let total = 0;
