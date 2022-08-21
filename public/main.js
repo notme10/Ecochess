@@ -16,6 +16,15 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
+// resize sidebar and bottombar
+// document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
+// document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
+
+// document.addEventListener('resize', (event) => {
+//     document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
+//     document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
+// });
+
 /**
  * @desc determines the name of the piece with the given info
  * @param {String} side 
