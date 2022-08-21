@@ -3,24 +3,71 @@ let fromCoord; // where the piece was at before the move was made
 let pieceClicked; // piece that was clicked (that the player wants to move)
 let fillBoard;
 
-var socket = io();
-var enemyPromotion;
-//var pieces = {};
+let board = document.getElementById("board"); // board
+let width = 8; // width of the board
+let height = 8; // height of the board
+let columns = ["A", "B", "C", "D", "E", "F", "G", "H"]; // column letters, from left to right
+let rows = ["8", "7", "6", "5", "4", "3", "2", "1"]; // row numbers ,from top to bottom
 
-var pieceInfo; // information of the piece you want to move
-var cellCoord; // clicked cell's coordinates
+let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // all white piece names
+let blackPieces = ["p", "r", "b", "n", "q", "k"]; // all black piece names
 
-var turn = 0; // turn counter
+let socket = io();
+let enemyPromotion;
+//let pieces = {};
 
-var moveList = []; // list of moves that either player made, which is printed in the box
-var capturedPieces = []; // list of captured pieces
+let pieceInfo; // information of the piece you want to move
+let cellCoord; // clicked cell's coordinates
 
-var loser = ""; // stores the loser, which is used in the end screen
-var side = "s"; // side of the player
+let turn = 0; // turn counter
+
+let moveList = []; // list of moves that either player made, which is printed in the box
+let capturedPieces = []; // list of captured pieces
+
+let loser = ""; // stores the loser, which is used in the end screen
+let side = "s"; // side of the player
 
 const params = new URLSearchParams(window.location.search);
-var room = Object.fromEntries(params.entries())["r"]; // room code
-var name = Object.fromEntries(params.entries())["n"]; // inputted name of the player
+let room = Object.fromEntries(params.entries())["r"]; // room code
+let name = Object.fromEntries(params.entries())["n"]; // inputted name of the player
+
+let whiteTI = document.getElementById("whiteTI");
+let blackTI = document.getElementById("blackTI");
+
+let messageBoard = document.getElementById("messageBoard");
+let modal = document.getElementById("homeModal");
+let randomizerButton = document.getElementById("randomRoom");
+let goToRoom = document.getElementById("goToRoom");
+let nameInput = document.getElementById("nameInput");
+let roomInput = document.getElementById("roomInput");
+
+let firstL = document.getElementById("firstL");
+let secondL = document.getElementById("secondL");
+let thirdL = document.getElementById("thirdL");
+let fourthL = document.getElementById("fourthL");
+let fifthL = document.getElementById("fifthL");
+let sixthL = document.getElementById("sixthL");
+let seventhL = document.getElementById("seventhL");
+let eighthL = document.getElementById("eighthL");
+
+let firstN = document.getElementById("firstN");
+let secondN = document.getElementById("secondN");
+let thirdN = document.getElementById("thirdN");
+let fourthN = document.getElementById("fourthN");
+let fifthN = document.getElementById("fifthN");
+let sixthN = document.getElementById("sixthN");
+let seventhN = document.getElementById("seventhN");
+let eighthN = document.getElementById("eighthN");
+
+let turnIndicator = document.getElementById("turnIndicator");
+
+let listIcon = document.getElementById("listIcon");
+let capturedPieceIcon = document.getElementById("capturedPieceIcon");
+let plugIcon = document.getElementById("plugIcon");
+
+let movesBox = document.getElementById("movesBox");
+let capturedPiecesList = document.getElementById("capturedPieces");
+let plugs = document.getElementById("plugs");
 
 if (!room) {
     // room = prompt("Which room would you like to join?");

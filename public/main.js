@@ -16,15 +16,6 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
-let board = document.getElementById("board"); // board
-let width = 8; // width of the board
-let height = 8; // height of the board
-let columns = ["A", "B", "C", "D", "E", "F", "G", "H"]; // column letters, from left to right
-let rows = ["8", "7", "6", "5", "4", "3", "2", "1"]; // row numbers ,from top to bottom
-
-let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // all white piece names
-let blackPieces = ["p", "r", "b", "n", "q", "k"]; // all black piece names
-
 /**
  * @desc determines the name of the piece with the given info
  * @param {String} side 
@@ -47,33 +38,33 @@ function pieceIdentifier(side, pieceName) {
  * @desc when one tab is clicked, hide the other two
  */
 listIcon.addEventListener("click", (e) => {
-    document.getElementById("listIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
-    document.getElementById("plugIcon").style.backgroundColor = "";
+    listIcon.style.backgroundColor = "#459dcc";
+    capturedPieceIcon.style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "block";
-    document.getElementById("capturedPieces").style.display = "none";
-    document.getElementById("plugs").style.display = "none";
+    movesBox.style.display = "block";
+    capturedPiecesList.style.display = "none";
+    plugs.style.display = "none";
 });
 
 capturedPieceIcon.addEventListener("click", (e) => {
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("listIcon").style.backgroundColor = "";
-    document.getElementById("plugIcon").style.backgroundColor = "";
+    capturedPieceIcon.style.backgroundColor = "#459dcc";
+    listIcon.style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "none";
-    document.getElementById("capturedPieces").style.display = "flex";
-    document.getElementById("plugs").style.display = "none";
+    movesBox.style.display = "none";
+    capturedPieces.style.display = "flex";
+    plugs.style.display = "none";
 });
 
 plugIcon.addEventListener("click", (e) => {
-    document.getElementById("plugIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
-    document.getElementById("listIcon").style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "#459dcc";
+    capturedPieceIcon.style.backgroundColor = "";
+    listIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "none";
-    document.getElementById("capturedPieces").style.display = "none";
-    document.getElementById("plugs").style.display = "block";
+    movesBox.style.display = "none";
+    capturedPieces.style.display = "none";
+    plugs.style.display = "block";
 });
 
 /**
@@ -215,24 +206,24 @@ function flipBoard() {
     }
 
     if (side === 'b') {
-        document.getElementById("firstL").innerHTML = 'h';
-        document.getElementById("secondL").innerHTML = 'g';
-        document.getElementById("thirdL").innerHTML = 'f';
-        document.getElementById("fourthL").innerHTML = 'e';
-        document.getElementById("fifthL").innerHTML = 'd';
-        document.getElementById("sixthL").innerHTML = 'c';
-        document.getElementById("seventhL").innerHTML = 'b';
-        document.getElementById("eighthL").innerHTML = 'a';
+        firstL = 'h';
+        secondL = 'g';
+        thirdL = 'f';
+        fourthL = 'e';
+        fifthL = 'd';
+        sixthL = 'c';
+        seventhL = 'b';
+        eighthL = 'a';
 
-        document.getElementById("firstN").innerHTML = '8';
-        document.getElementById("secondN").innerHTML = '7';
-        document.getElementById("thirdN").innerHTML = '6';
-        document.getElementById("fourthN").innerHTML = '5';
-        document.getElementById("fifthN").innerHTML = '4';
-        document.getElementById("sixthN").innerHTML = '3';
-        document.getElementById("seventhN").innerHTML = '2';
-        document.getElementById("eighthN").innerHTML = '1';
-        document.getElementById("turnIndicator").style.flexDirection = "column-reverse";
+        firstN = '8';
+        secondN = '7';
+        thirdN = '6';
+        fourthN = '5';
+        fifthN = '4';
+        sixthN = '3';
+        seventhN = '2';
+        eighthN = '1';
+        turnIndicator = "column-reverse";
     }
 }
 
@@ -314,12 +305,12 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     
     if(turn%2 == 0) {
         console.log("white's turn");
-        document.getElementById("whiteTI").style.backgroundColor = "#006592";
-        document.getElementById("blackTI").style.backgroundColor = "transparent";
+        whiteTI.style.backgroundColor = "#006592";
+        blackTI.style.backgroundColor = "transparent";
     } else {
         console.log("black's turn");
-        document.getElementById("blackTI").style.backgroundColor = "#006592";
-        document.getElementById("whiteTI").style.backgroundColor = "transparent";
+        blackTI.style.backgroundColor = "#006592";
+        whiteTI.style.backgroundColor = "transparent";
     }
 
 }
@@ -393,7 +384,7 @@ function getPieceSide(piece) {
 }
 
 function writeMessageBoard(message) {
-    document.getElementById("messageBoard").innerHTML = message;
+    messageBoard.innerHTML = message;
 }
 
 /**
@@ -439,14 +430,6 @@ function pushMoveMessage(fromCoords, toCoords) {
 function getNewCoords() {
     return game.board.history[game.board.history['length']-1].to
 }
-    
-
-
-var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
-var randomizerButton = document.getElementById("randomRoom");
-var goToRoom = document.getElementById("goToRoom");
-var nameInput = document.getElementById("nameInput");
-var roomInput = document.getElementById("roomInput");
 
 // assigns a random value using Math.random to roomInput.value
 // no params
