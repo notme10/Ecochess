@@ -424,10 +424,45 @@ function pushMoveMessage(fromCoords, toCoords) {
     }
 
 }
-    
 
-    
 
+/**
+ * 
+ * @param {String} coordinate 
+ * @returns true if tile is black
+ */
+function isBlackTile(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * 
+ * @param {String} coordinate 
+ * @returns true if tile is white
+ */
+function isWhiteTIle(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return false;
+    }
+
+    return true;
+}
 
 var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
 var randomizerButton = document.getElementById("randomRoom");
