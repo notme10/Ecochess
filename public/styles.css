@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 @media screen and (max-width: 5200px) {
     body {
         height: 100vh;
@@ -247,64 +248,94 @@
 	grid-template-columns: repeat(8, 1fr);
 	grid-template-rows: repeat(8, 1fr);
 	border: 2px solid black;
+=======
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    background-image: "oecan.png";
+    background-repeat: no-repeat;
+    background-size: cover;
+>>>>>>> Stashed changes
 }
 
 #turnIndicator {
-	grid-area: t;
-	display: flex;
-	flex-direction: column;
+    grid-area: t;
+    display: flex;
+    flex-direction: column;
 }
 
 #whiteTI {
-	background-color: #006592;
-	width: 100%;
-	height: 100%;
-	border-radius: 10px;
+    background-color: #006592;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+#listIcon {
+	width: 3vh;
+	height: 3vh;
+}
+
+#capturedPieceIcon {
+	width: 3vh;
+	height: 3vh;
+}
+
+#plugIcon {
+	width: 3vh;
+	height: 3vh;
 }
 
 #blackTI {
-	background-color: transparent;
-	width: 100%;
-	height: 100%;
-	border-radius: 10px;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
 
 #homeModal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 #promotionModal {
-	/* display: none; */
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
+    /* display: none; */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 #promotionSelector {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-around;
-	height: 13vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 13vh;
 }
 
 #close {
-	float: right;
+    float: right;
 }
 
+<<<<<<< Updated upstream
 
 
 
@@ -325,6 +356,131 @@
 	display: none;
 }
 
+=======
+#layout {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 10fr 5fr;
+    grid-template-rows: 10fr 1fr 1fr;
+    grid-template-areas:
+        "t s g i"
+        ". . b i"
+        ". . c i";
+}
+
+#capturedPieces {
+    height: 100px;
+    grid-area: c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#board {
+    height: 80vmin;
+    width: 80vmin;
+    grid-area: g;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    border: 2px solid black;
+}
+
+#sidebar {
+    grid-area: s;
+    display: flex;
+    font-size: 2em;
+    font-family: "Verdana", sans-serif;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: space-around;
+    color: rgb(35 54 122);
+}
+
+#bottombar {
+    grid-area: b;
+    display: flex;
+    font-size: 2em;
+    font-family: "Verdana", sans-serif;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    color: rgb(35 54 122);
+}
+
+#infoBox {
+    display: grid;
+    grid-template-rows: 10% 5% 55% 30%;
+    height: 80vmin;
+    width: 30vmin;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    grid-area: i;
+    padding-top: 1em;
+    border-radius: 0px;
+    color: white;
+    text-align: left;
+    font-family: "Verdana", sans-serif;
+    font-size: 1.5vh;
+    margin-left: 50px;
+	box-sizing: border-box;
+}
+
+#infoBox > div {
+	padding: 10px;
+	height: 100%;
+}
+
+#messageBoard {
+    font-size: 1em;
+}
+
+#movesBox {
+    font-family: "Verdana", sans-serif;
+    font-size: 0.75em;
+	overflow-y: auto;
+	height: 100%;
+}
+
+.move {
+    display: grid;
+    grid-template-columns: 10% 45% 45%;
+}
+
+#Regions {
+    font-size: 25px;
+}
+
+#capturedPieces {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: auto;
+    height: 100%;
+    align-items: start;
+}
+
+#plugs {
+    display: none;
+}
+
+#tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+/* #settings {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	background-color: transparent;
+	border: none;
+} */
+
+>>>>>>> Stashed changes
 .promotionItem {
     width: 13vh;
     height: 13vh;

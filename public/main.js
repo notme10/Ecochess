@@ -62,7 +62,7 @@ capturedPieceIcon.addEventListener("click", (e) => {
     plugIcon.style.backgroundColor = "";
 
     movesBox.style.display = "none";
-    capturedPieces.style.display = "flex";
+    capturedPieces.style.display = "flex"; // change to grid
     plugs.style.display = "none";
 });
 
