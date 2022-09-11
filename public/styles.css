@@ -1,5 +1,4 @@
-<<<<<<< Updated upstream
-@media screen and (max-width: 5200px) {
+
     body {
         height: 100vh;
         width: 100vw;
@@ -104,138 +103,8 @@
         flex-direction: row;
         justify-content: space-around;
     }
-}
 
-@media screen and (max-width: 1400px) {
-    body {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-
-        background-image: "oecan.png";
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    #layout {
-        display: grid;
-        grid-template-columns: 0.5fr 1fr 10fr 5fr;
-        grid-template-rows: 10fr 1fr 1fr;
-        grid-template-areas:
-            "t s g i"
-            ". . b i"
-            ". . c i";
-    }
-
-	#environmentFacts {
-		font-size: 15px;
-	}
-
-    #capturedPieces {
-        height: 100px;
-        grid-area: c;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    #sidebar {
-        grid-area: s;
-        display: flex;
-        font-size: 1.5em;
-        font-family: "Verdana", sans-serif;
-        flex-direction: column-reverse;
-        align-items: center;
-        justify-content: space-around;
-        color: rgb(35 54 122);
-    }
-
-    #bottombar {
-        grid-area: b;
-        display: flex;
-		width: b;
-        font-size: 1.5em;
-        font-family: "Verdana", sans-serif;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        color: rgb(35 54 122);
-    }
-
-    #infoBox {
-        display: grid;
-        grid-template-rows: 10% 5% 55% 30%;
-
-        height: 80vmin;
-        width: 30vmin;
-        padding-left: 1em;
-        padding-right: 1em;
-        padding-top: 1em;
-        padding-bottom: 1em;
-        grid-area: i;
-        padding-top: 1em;
-        border-radius: 0px;
-        color: white;
-        text-align: left;
-        font-family: "Verdana", sans-serif;
-        font-size: 1.5em;
-        margin-left: 50px;
-    }
-
-    #movesBox {
-        overflow: auto;
-        font-family: "Verdana", sans-serif;
-        font-size: 0.75em;
-    }
-
-    .move {
-        display: grid;
-        grid-template-columns: 10% 45% 45%;
-    }
-
-    #movesBox {
-        display: block;
-    }
-
-    #capturedPieces {
-        display: none;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        overflow: auto;
-        height: 100%;
-        align-items: start;
-    }
-
-    #tabs {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* #messageBoard {
-	font-size: 10px;
-} */
-
+    
 #Regions {
 	font-size: 25px;
 }
@@ -248,7 +117,8 @@
 	grid-template-columns: repeat(8, 1fr);
 	grid-template-rows: repeat(8, 1fr);
 	border: 2px solid black;
-=======
+}
+
 body {
     height: 100vh;
     width: 100vw;
@@ -261,7 +131,6 @@ body {
     background-image: "oecan.png";
     background-repeat: no-repeat;
     background-size: cover;
->>>>>>> Stashed changes
 }
 
 #turnIndicator {
@@ -335,20 +204,6 @@ body {
     float: right;
 }
 
-<<<<<<< Updated upstream
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -356,7 +211,6 @@ body {
 	display: none;
 }
 
-=======
 #layout {
     display: grid;
     grid-template-columns: 0.5fr 1fr 10fr 5fr;
@@ -472,15 +326,6 @@ body {
     justify-content: space-around;
 }
 
-/* #settings {
-	position: absolute;
-	left: 20px;
-	top: 20px;
-	background-color: transparent;
-	border: none;
-} */
-
->>>>>>> Stashed changes
 .promotionItem {
     width: 13vh;
     height: 13vh;
