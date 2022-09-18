@@ -65,12 +65,12 @@ socket.on("sidesInfo", (data) => {
 /**
  * @desc listens for playerDisconnect, show text on opponent's screen that opponent has disconnected
  */
-socket.on("playerDisconnect", (data) => {
-    if(data == "w") {
-        writeMessageBoard("white has disconnected");
-    } else {
-        writeMessageBoard("black has disconnected");
-    }
-});
+// socket.on("playerDisconnect", (data) => {
+//     if(data == "w") {
+//         writeMessageBoard("white has disconnected");
+//     } else {
+//         writeMessageBoard("black has disconnected");
+//     }
+// });
 
 

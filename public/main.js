@@ -324,6 +324,53 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
 
 }
 
+// TIMER!!
+
+// 600 seconds = 10 minutes
+var timer1 = 600;
+var timer2 = 600;
+
+function decreaseTimer() {
+    if(turn%2==0) {
+        // white's turn
+        timer1--;
+
+        var minutes = Math.floor(timer1 / 60);
+        var seconds = timer1 - minutes * 60;
+        if(seconds.toString().length == 1) {
+            seconds = "0" + seconds;
+        }
+        convertedTime = "" + minutes + ":" + seconds;
+
+        console.log("White's timer: " + convertedTime);
+
+        if(timer1==0) {
+            alert("Black wins!");
+            clearInterval(timer);
+        }
+
+    } else {
+        timer2--;
+
+        var minutes = Math.floor(timer2 / 60);
+        var seconds = timer2 - minutes * 60;
+        if(seconds.toString().length == 1) {
+            seconds = "0" + seconds;
+        }
+        convertedTime = "" + minutes + ":" + seconds;
+
+        console.log("Black's timer: " + timer2);
+
+        if(timer2 == 0) {
+            alert("White wins!");
+            clearInterval(timer)
+        }
+    }
+}
+
+timer = setInterval(decreaseTimer, 1000);
+
+
 // returns index value of the given row
 function convertRowsToIndex(row) {
     return rows.indexOf(row);
