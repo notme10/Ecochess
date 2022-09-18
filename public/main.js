@@ -314,7 +314,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
 
-    highlightTiles();
+    highlightHistory();
     turn++;
     
 
@@ -440,12 +440,16 @@ function getNewCoords() {
     return moveList[moveList.length-1].to;
 }
 
+function isWhiteTile(tile) {
+    
+}
+
 /**
  * highlights moved tiles
  * @returns undefined
  */
 //light: #dbb8ff ; dark: #ad5cff
-function highlightTiles() {
+function highlightHistory() {
     let light = "#dbb8ff";
     let dark = "#ad5cff";
 
@@ -483,6 +487,39 @@ function clearHighlightHistory() {
     // document.getElementById(getPrvCoords()).style.backgroundColor = "";
     // document.getElementById(getNewCoords()).style.backgroundColor = "";
 
+}
+
+function isBlackTile(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * 
+ * @param {String} coordinate 
+ * @returns true if tile is white
+ */
+function isWhiteTIle(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return false;
+    }
+
+    return true;
 }
 
 var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
