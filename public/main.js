@@ -16,6 +16,10 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
+
+document.getElementById("myTimer").innerText = "Player1 time: " + convertTime(maxTimer);
+document.getElementById("opponentTimer").innerText = "Player2 time: " + convertTime(maxTimer);
+
 // resize sidebar and bottombar
 // document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
 // document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
@@ -27,8 +31,8 @@ document.addEventListener("keypress", (e) => {
 
 /**
  * @desc determines the name of the piece with the given info
- * @param {String} side 
- * @param {String} pieceName 
+ * @param {String} side
+ * @param {String} pieceName
  * @returns piece's name
  */
 function pieceIdentifier(side, pieceName) {
@@ -95,8 +99,8 @@ function replaceBoard() {
 // no return
 
 /**
- * 
- * @param {String} s 
+ *
+ * @param {String} s
  */
 function generateBoard(s) {
     var topLeft = s !== "b";
@@ -214,24 +218,24 @@ function flipBoard() {
         BOARD.appendChild(cellArray[i]);
     }
 
-    if (side === 'b') {
-        firstL = 'h';
-        secondL = 'g';
-        thirdL = 'f';
-        fourthL = 'e';
-        fifthL = 'd';
-        sixthL = 'c';
-        seventhL = 'b';
-        eighthL = 'a';
+    if (side === "b") {
+        firstL = "h";
+        secondL = "g";
+        thirdL = "f";
+        fourthL = "e";
+        fifthL = "d";
+        sixthL = "c";
+        seventhL = "b";
+        eighthL = "a";
 
-        firstN = '8';
-        secondN = '7';
-        thirdN = '6';
-        fourthN = '5';
-        fifthN = '4';
-        sixthN = '3';
-        seventhN = '2';
-        eighthN = '1';
+        firstN = "8";
+        secondN = "7";
+        thirdN = "6";
+        fourthN = "5";
+        fifthN = "4";
+        sixthN = "3";
+        seventhN = "2";
+        eighthN = "1";
         turnIndicator = "column-reverse";
     }
 }
@@ -264,7 +268,6 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
-
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -311,8 +314,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
     turn++;
-    
-    if(turn%2 == 0) {
+
+    if (turn % 2 == 0) {
         console.log("white's turn");
         whiteTI.style.backgroundColor = "#006592";
         blackTI.style.backgroundColor = "transparent";
@@ -321,52 +324,49 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         blackTI.style.backgroundColor = "#006592";
         whiteTI.style.backgroundColor = "transparent";
     }
-
 }
 
 // TIMER!!
+var timer1 = maxTimer;
+var timer2 = maxTimer;
 
-// 600 seconds = 10 minutes
-var timer1 = 600;
-var timer2 = 600;
+function convertTime(timeSeconds) {
+    var minutes = Math.floor(timeSeconds / 60);
+    var seconds = timeSeconds - minutes * 60;
+    if (seconds.toString().length == 1) {
+        seconds = "0" + seconds;
+    }
+    convertedTime = "" + minutes + ":" + seconds;
+    return convertedTime;
+}
 
 function decreaseTimer() {
-    if(turn%2==0) {
+    if(turn == 0) {
+        return;
+    }
+
+    if (turn % 2 == 0) {
         // white's turn
         timer1--;
+        document.getElementById("myTimer").innerText =
+            "Player1 time: " + convertTime(timer1);
 
-        var minutes = Math.floor(timer1 / 60);
-        var seconds = timer1 - minutes * 60;
-        if(seconds.toString().length == 1) {
-            seconds = "0" + seconds;
-        }
-        convertedTime = "" + minutes + ":" + seconds;
-
-        console.log("White's timer: " + convertedTime);
-
-        if(timer1==0) {
+        if (timer1 == 0) {
             alert("Black wins!");
             clearInterval(timer);
         }
-
     } else {
         timer2--;
+        document.getElementById("opponentTimer").innerText =
+            "Player2 time: " + convertTime(timer2);
 
-        var minutes = Math.floor(timer2 / 60);
-        var seconds = timer2 - minutes * 60;
-        if(seconds.toString().length == 1) {
-            seconds = "0" + seconds;
-        }
-        convertedTime = "" + minutes + ":" + seconds;
-
-        console.log("Black's timer: " + timer2);
-
-        if(timer2 == 0) {
+        if (timer2 == 0) {
             alert("White wins!");
-            clearInterval(timer)
+            clearInterval(timer);
         }
     }
 }
+
 
 timer = setInterval(decreaseTimer, 1000);
 
@@ -393,12 +393,12 @@ function convertIndexToCols(index) {
 
 /**
  * puts captured piece in captured piece list. also makes the div
- * @param {String} pieceToCapture 
+ * @param {String} pieceToCapture
  */
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
     // item  is undefined because capturedPIeces is literally empty, so no other code works
-    var item = capturedPieces[capturedPieces.length-1];
+    var item = capturedPieces[capturedPieces.length - 1];
     console.log(item);
     if (side !== getPieceSide(item)) {
         var capturedPiece = document.createElement("div");
@@ -420,7 +420,7 @@ function isWhitePiece(piece) {
 
 /**
  * checks if piece is black
- * @param {String} piece 
+ * @param {String} piece
  * @returns true if piece is black
  */
 function isBlackPiece(piece) {
@@ -429,7 +429,7 @@ function isBlackPiece(piece) {
 
 /**
  * gives the side/color of the piece
- * @param {String} piece 
+ * @param {String} piece
  * @returns side/color of the piece ("w" or "b")
  */
 function getPieceSide(piece) {
@@ -448,7 +448,7 @@ function writeMessageBoard(message) {
  * @returns true if checkmate and false when not
  */
 function isCheckMate() {
-    return JSON.stringify(game.moves()) === '{}'
+    return JSON.stringify(game.moves()) === "{}";
 }
 
 // sends the moveMessage that will be displayed on the opponent's screen
@@ -463,16 +463,14 @@ function pushMoveMessage(fromCoords, toCoords) {
 
         newMove.classList += "move";
 
-        turnDiv.innerText = Math.floor(turn / 2)+1;
+        turnDiv.innerText = Math.floor(turn / 2) + 1;
 
         whiteMove.innerText = `w ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
         newMove.appendChild(turnDiv);
         newMove.appendChild(whiteMove);
         document.querySelector("#movesBox").appendChild(newMove);
-    }
-
-    else {
+    } else {
         var blackMove = document.createElement("div");
         blackMove.innerText = `b ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
@@ -480,11 +478,10 @@ function pushMoveMessage(fromCoords, toCoords) {
         var newMove = moveBox.lastElementChild;
         newMove.appendChild(blackMove);
     }
-
 }
-    
+
 function getNewCoords() {
-    return game.board.history[game.board.history['length']-1].to
+    return game.board.history[game.board.history["length"] - 1].to;
 }
 
 // assigns a random value using Math.random to roomInput.value

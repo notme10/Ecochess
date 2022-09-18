@@ -69,6 +69,8 @@ let movesBox = document.getElementById("movesBox");
 let capturedPiecesList = document.getElementById("capturedPieces");
 let plugs = document.getElementById("plugs");
 
+let maxTimer = 600;
+
 if (!room) {
     // room = prompt("Which room would you like to join?");
     // location.href = "/?r=" + room;

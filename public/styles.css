@@ -73,6 +73,23 @@
         margin-left: 50px;
     }
 
+    #timer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #myTimer {
+        height: 100%;
+        width: 50%;
+        text-align: center;
+    }
+
+    #opponentTimer {
+        height: 100%;
+        width: 50%;
+        text-align: center;
+    }
+
     #movesBox {
         overflow: auto;
         font-family: "Verdana", sans-serif;
@@ -84,8 +101,8 @@
         grid-template-columns: 10% 45% 45%;
     }
 
-    #movesBox {
-        display: block;
+    .move > div {
+        padding: 5px;
     }
 
     #capturedPieces {
