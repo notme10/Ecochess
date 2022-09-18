@@ -313,9 +313,11 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     if (isCheckMate()) {
         alert("Game Over");
     }
+
+    highlightTiles();
     turn++;
-    highlightManager();
-    le.log(turn);
+    
+
 }
 
 // returns index value of the given row
@@ -438,60 +440,32 @@ function getNewCoords() {
     return moveList[moveList.length-1].to;
 }
 
-function highlightManager() {
-    if (turn % 2 == 1) {
-        var greatest = 0;
-        // white just moved
-        for (i = 0; i < game.board.history.length-1; i++) {
-            if (i % 2 == 0) {
-                if (i > greatest) {
-                    greatest = i;
-                }
-            }   
-        }
-        highlightTiles(game.board.history[greatest].from, game.board.history[greatest].to);
-    }
-
-    else {
-        // black just moved
-        var greatest = 0;
-
-        for (i = 0; i < game.board.history.length-1; i++) {
-            if (i % 2 == 1) {
-                if (i > greatest) {
-                    greatest = i;
-                }
-            }
-        }
-        highlightTiles(game.board.history[greatest].from, game.board.history[greatest].to)
-    }
-}
 /**
  * highlights moved tiles
  * @returns undefined
  */
 //light: #dbb8ff ; dark: #ad5cff
-function highlightTiles(prvCoord, newCoord) {
+function highlightTiles() {
     let light = "#dbb8ff";
     let dark = "#ad5cff";
 
-    if (isBlackTile(prvCoord)) {
-        document.getElementById(prvCood).style.backgroundColor = dark;
-        if (isWhiteTile(newCoord)) {
-            document.getElementById(newCoord).style.backgroundColor = light;
+    if (isBlackTile(getPrvCoords())) {
+        document.getElementById(getPrvCoords()).style.backgroundColor = dark;
+        if (isWhiteTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
         }
         else {
-        document.getElementById(newCoord).style.backgroundColor = dark;
+        document.getElementById(getNewCoords()).style.backgroundColor = dark;
         }
         
     }
     else {
-        document.getElementById(prvCoord).style.backgroundColor = light;
-        if (isBlackTile(newCoord)) {
-            document.getElementById(newCoord).style.backgroundColor = dark;
+        document.getElementById(getPrvCoords()).style.backgroundColor = light;
+        if (isBlackTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = dark;
         }
         else {
-            document.getElementById(newCoord).style.backgroundColor = light;
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
         }
     }
     
@@ -509,44 +483,6 @@ function clearHighlightHistory() {
     // document.getElementById(getPrvCoords()).style.backgroundColor = "";
     // document.getElementById(getNewCoords()).style.backgroundColor = "";
 
-}
-
-/**
- * 
- * @param {String} coordinate 
- * @returns true if tile is black
- */
-function isBlackTile(coordinate) {
-    let letter = "ABCDEFGH";
-    let number = "12345678";
-    let total = 0;
-
-    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
-
-    if (total % 2 == 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * 
- * @param {String} coordinate 
- * @returns true if tile is white
- */
-function isWhiteTile(coordinate) {
-    let letter = "ABCDEFGH";
-    let number = "12345678";
-    let total = 0;
-
-    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
-
-    if (total % 2 == 0) {
-        return false;
-    }
-
-    return true;
 }
 
 var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
