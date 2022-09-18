@@ -264,9 +264,6 @@ function showMoveableTiles(possibleMoves) {
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     let madeMoves = {};
-    if (game.board.history.length !== 0) {
-        clearHighlightHistory();
-    }
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -314,10 +311,12 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
 
+    if (game.board.history.length !== 0) {
+        clearHighlightHistory();
+    }
+
     highlightHistory();
     turn++;
-    
-
 }
 
 // returns index value of the given row
@@ -450,6 +449,8 @@ function isWhiteTile(tile) {
  */
 //light: #dbb8ff ; dark: #ad5cff
 function highlightHistory() {
+    console.log("should come after")
+    console.trace()
     let light = "#dbb8ff";
     let dark = "#ad5cff";
 
@@ -476,7 +477,13 @@ function highlightHistory() {
 }
 
 function clearHighlightHistory() {
-    for (tile in board) {
+    console.log("should come before")
+    console.trace()
+    tiles = document.getElementsByClassName("cell")
+
+    for (let i = 0; i < tiles.length; i++) {
+        tile = tiles[i]
+
         if (isBlackTile(tile.id)) {
             tile.style.backgroundColor = "#0f6796";
         }
