@@ -263,6 +263,7 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+    let madeMoves = {};
     if (game.board.history.length !== 0) {
         clearHighlightHistory();
     }
@@ -288,6 +289,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         room: room,
         side: movedSide,
     });
+    madeMoves = {from: fromCoords, to: toCoords};
+    moveList.push(madeMoves);
 
     let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
     if (selectedCell) {
@@ -298,7 +301,6 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
 
     replaceBoard();
-
     if (eatenPiece) {
         console.log(eatenPiece);
         clearMovableTiles();
@@ -312,9 +314,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         alert("Game Over");
     }
     turn++;
-    console.log(turn);
-    highlightHistory();
-
+    highlightManager();
+    le.log(turn);
 }
 
 // returns index value of the given row
@@ -430,46 +431,84 @@ function pushMoveMessage(fromCoords, toCoords) {
 }
 
 function getPrvCoords() {
-    return game.board.history[game.board.history['length']-1].from;
+    return moveList[moveList.length-1].from;
 }
 
 function getNewCoords() {
-    return game.board.history[game.board.history['length']-1].to;
+    return moveList[moveList.length-1].to;
 }
 
+function highlightManager() {
+    if (turn % 2 == 1) {
+        var greatest = 0;
+        // white just moved
+        for (i = 0; i < game.board.history.length-1; i++) {
+            if (i % 2 == 0) {
+                if (i > greatest) {
+                    greatest = i;
+                }
+            }   
+        }
+        highlightTiles(game.board.history[greatest].from, game.board.history[greatest].to);
+    }
+
+    else {
+        // black just moved
+        var greatest = 0;
+
+        for (i = 0; i < game.board.history.length-1; i++) {
+            if (i % 2 == 1) {
+                if (i > greatest) {
+                    greatest = i;
+                }
+            }
+        }
+        highlightTiles(game.board.history[greatest].from, game.board.history[greatest].to)
+    }
+}
 /**
  * highlights moved tiles
  * @returns undefined
  */
 //light: #dbb8ff ; dark: #ad5cff
-function highlightHistory() {
+function highlightTiles(prvCoord, newCoord) {
     let light = "#dbb8ff";
     let dark = "#ad5cff";
 
-    if (isBlackTile(getPrvCoords())) {
-        document.getElementById(getPrvCoords()).style.backgroundColor = dark;
-        if (isWhiteTile(getNewCoords())) {
-            document.getElementById(getNewCoords()).style.backgroundColor = light;
+    if (isBlackTile(prvCoord)) {
+        document.getElementById(prvCood).style.backgroundColor = dark;
+        if (isWhiteTile(newCoord)) {
+            document.getElementById(newCoord).style.backgroundColor = light;
         }
         else {
-        document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        document.getElementById(newCoord).style.backgroundColor = dark;
         }
         
     }
     else {
-        document.getElementById(getPrvCoords()).style.backgroundColor = light;
-        if (isBlackTile(getNewCoords())) {
-            document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        document.getElementById(prvCoord).style.backgroundColor = light;
+        if (isBlackTile(newCoord)) {
+            document.getElementById(newCoord).style.backgroundColor = dark;
         }
         else {
-            document.getElementById(getNewCoords()).style.backgroundColor = light;
+            document.getElementById(newCoord).style.backgroundColor = light;
         }
     }
+    
 }
 
 function clearHighlightHistory() {
-    document.getElementById(getPrvCoords()).style.backgroundColor = "";
-    document.getElementById(getNewCoords()).style.backgroundColor = "";
+    for (tile in board) {
+        if (isBlackTile(tile.id)) {
+            tile.style.backgroundColor = "#0f6796";
+        }
+        else {
+            tile.style.backgroundColor = "#ffffff";
+        }
+    }
+    // document.getElementById(getPrvCoords()).style.backgroundColor = "";
+    // document.getElementById(getNewCoords()).style.backgroundColor = "";
+
 }
 
 /**
