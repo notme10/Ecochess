@@ -72,8 +72,6 @@ let plugs = document.getElementById("plugs");
 let maxTimer = 600;
 
 if (!room) {
-    // room = prompt("Which room would you like to join?");
-    // location.href = "/?r=" + room;
     document.getElementById("homeModal").style.display = "block"; // if room DNE, when website is opened, show homeModal
 } else {
     socket.emit("setRoom", { room: room }); // emit setRoom
@@ -84,3 +82,5 @@ if (!room) {
 if (!localStorage.getItem("chosenRegion")) {
     localStorage.setItem("chosenRegion", "Ocean");
 }
+
+let gameInProgress = false;

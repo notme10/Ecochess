@@ -20,15 +20,6 @@ document.addEventListener("keypress", (e) => {
 document.getElementById("myTimer").innerText = "Player1 time: " + convertTime(maxTimer);
 document.getElementById("opponentTimer").innerText = "Player2 time: " + convertTime(maxTimer);
 
-// resize sidebar and bottombar
-// document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
-// document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
-
-// document.addEventListener('resize', (event) => {
-//     document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
-//     document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
-// });
-
 /**
  * @desc determines the name of the piece with the given info
  * @param {String} side
@@ -95,15 +86,12 @@ function replaceBoard() {
     fillBoard();
 }
 
-// generates board in the perspective of the s side
-// no return
-
 /**
  *
  * @param {String} s
  */
 function generateBoard(s) {
-    var topLeft = s !== "b";
+    let topLeft = s !== "b";
 
     for (
         row = topLeft ? 0 : height - 1;
@@ -117,12 +105,16 @@ function generateBoard(s) {
         ) {
             var cell = document.createElement("div");
             cell.addEventListener("click", (e) => {
+
+                if(!gameInProgress) {
+                    return;
+                }
+
                 let newCoord = e.target.id; // get cellCoord
                 if (newCoord) {
                     // clicked on a tile without piece
                     if (fromCoord) {
                         // clicked on a piece before
-                        // console.log(e.target.className);
                         makeMove(fromCoord, newCoord, side, "");
                     }
                 } else if (
@@ -174,8 +166,6 @@ function generateBoard(s) {
                         ) &&
                         side == "w")
                 ) {
-                    // console.log("clicked on opponent's piece!");
-
                     if (fromCoord) {
                         const classList = e.target.className.split(" ");
                         newCoord = classList[1];
@@ -260,8 +250,6 @@ function showMoveableTiles(possibleMoves) {
     possibleMoves.forEach((coord) => {
         document.getElementById(coord).classList.add("movable"); // add movable tag
     });
-
-    // 3) in the css, add some css for movableTiles
 }
 
 // piece at  moves to toCoords, movedSide is used to determine the message
@@ -282,8 +270,6 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         return;
     }
 
-    //pushMoveMessage();
-    // console.log(pieceClicked, fromCoords, toCoords);
     oldPiece.remove(); // removes piece from old square
     socket.emit("makeMove", {
         fromCoords: fromCoords,
@@ -374,6 +360,7 @@ function decreaseTimer() {
 
         if (timer1 == 0) {
             alert("Black wins!");
+            gameInProgress = false;
             clearInterval(timer);
         }
     } else {
@@ -383,6 +370,7 @@ function decreaseTimer() {
 
         if (timer2 == 0) {
             alert("White wins!");
+            gameInProgress = false;
             clearInterval(timer);
         }
     }
@@ -530,7 +518,7 @@ function highlightHistory() {
             document.getElementById(getNewCoords()).style.backgroundColor = light;
         }
         else {
-            document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        document.getElementById(getNewCoords()).style.backgroundColor = dark;
         }
         
     }
@@ -585,7 +573,7 @@ function isBlackTile(coordinate) {
  * @param {String} coordinate 
  * @returns true if tile is white
  */
-function isWhiteTile(coordinate) {
+function isWhiteTIle(coordinate) {
     let letter = "ABCDEFGH";
     let number = "12345678";
     let total = 0;
@@ -617,3 +605,5 @@ randomizerButton.addEventListener("click", (e) => {
 goToRoom.addEventListener("click", (e) => {
     location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
+
+
