@@ -1,6 +1,4 @@
-// info box
 
-// facts that are randomly chosen and cycled through in the facts box
 var factsList = {
   Standard: [
     "The years 2016 and 2020 hold the tied record for the hottest recorded temperatures on earth.",
