@@ -1,0 +1,3 @@
+current solution does not works
+
+tried to highlight sides on one end using the indexes of the move history, still does not works

@@ -268,6 +268,7 @@ function showMoveableTiles(possibleMoves) {
 // that is sent to the other player
 // no return value
 function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
+    let madeMoves = {};
     let oldPiece = document.getElementById(fromCoords).childNodes[0];
     if (!oldPiece) {
         return;
@@ -290,6 +291,8 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         room: room,
         side: movedSide,
     });
+    madeMoves = {from: fromCoords, to: toCoords};
+    moveList.push(madeMoves);
 
     let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
     if (selectedCell) {
@@ -300,7 +303,6 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
 
     replaceBoard();
-
     if (eatenPiece) {
         console.log(eatenPiece);
         clearMovableTiles();
@@ -313,8 +315,14 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     if (isCheckMate()) {
         alert("Game Over");
     }
-    turn++;
 
+    if (game.board.history.length !== 0) {
+        clearHighlightHistory();
+    }
+
+    highlightHistory();
+    turn++;
+    
     if (turn % 2 == 0) {
         console.log("white's turn");
         whiteTI.style.backgroundColor = "#006592";
@@ -479,6 +487,110 @@ function pushMoveMessage(fromCoords, toCoords) {
         newMove.appendChild(blackMove);
     }
 }
+
+function getPrvCoords() {
+    return moveList[moveList.length-1].from;
+}
+
+function getNewCoords() {
+    return moveList[moveList.length-1].to;
+}
+
+function isWhiteTile(tile) {
+    
+}
+
+/**
+ * highlights moved tiles
+ * @returns undefined
+ */
+//light: #dbb8ff ; dark: #ad5cff
+function highlightHistory() {
+    console.log("should come after")
+    console.trace()
+    let light = "#dbb8ff";
+    let dark = "#ad5cff";
+
+    if (isBlackTile(getPrvCoords())) {
+        document.getElementById(getPrvCoords()).style.backgroundColor = dark;
+        if (isWhiteTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
+        }
+        else {
+        document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        }
+        
+    }
+    else {
+        document.getElementById(getPrvCoords()).style.backgroundColor = light;
+        if (isBlackTile(getNewCoords())) {
+            document.getElementById(getNewCoords()).style.backgroundColor = dark;
+        }
+        else {
+            document.getElementById(getNewCoords()).style.backgroundColor = light;
+        }
+    }
+    
+}
+
+function clearHighlightHistory() {
+    console.log("should come before")
+    console.trace()
+    tiles = document.getElementsByClassName("cell")
+
+    for (let i = 0; i < tiles.length; i++) {
+        tile = tiles[i]
+
+        if (isBlackTile(tile.id)) {
+            tile.style.backgroundColor = "#0f6796";
+        }
+        else {
+            tile.style.backgroundColor = "#ffffff";
+        }
+    }
+    // document.getElementById(getPrvCoords()).style.backgroundColor = "";
+    // document.getElementById(getNewCoords()).style.backgroundColor = "";
+
+}
+
+function isBlackTile(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * 
+ * @param {String} coordinate 
+ * @returns true if tile is white
+ */
+function isWhiteTIle(coordinate) {
+    let letter = "ABCDEFGH";
+    let number = "12345678";
+    let total = 0;
+
+    total = letter.indexOf(coordinate[0]) + number.indexOf(coordinate[1]);
+
+    if (total % 2 == 0) {
+        return false;
+    }
+
+    return true;
+}
+
+var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
+var randomizerButton = document.getElementById("randomRoom");
+var goToRoom = document.getElementById("goToRoom");
+var nameInput = document.getElementById("nameInput");
+var roomInput = document.getElementById("roomInput");
 
 function getNewCoords() {
     return game.board.history[game.board.history["length"] - 1].to;
