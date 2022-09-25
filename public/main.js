@@ -517,7 +517,7 @@ function highlightHistory() {
             document.getElementById(getNewCoords()).style.backgroundColor = light;
         }
         else {
-        document.getElementById(getNewCoords()).style.backgroundColor = dark;
+            document.getElementById(getNewCoords()).style.backgroundColor = dark;
         }
         
     }
@@ -572,7 +572,7 @@ function isBlackTile(coordinate) {
  * @param {String} coordinate 
  * @returns true if tile is white
  */
-function isWhiteTIle(coordinate) {
+function isWhiteTile(coordinate) {
     let letter = "ABCDEFGH";
     let number = "12345678";
     let total = 0;
