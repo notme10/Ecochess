@@ -188,7 +188,7 @@ function generateBoard(s) {
                 )}`;
             }
 
-            var bgFileName = `images/${localStorage.getItem(
+            var bgFileName = `images/background_images/${localStorage.getItem(
                 "chosenRegion"
             )}.png`;
             document.body.style.backgroundImage = "url(" + bgFileName + ")";
