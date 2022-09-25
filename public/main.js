@@ -586,12 +586,6 @@ function isWhiteTIle(coordinate) {
     return true;
 }
 
-var modal = document.getElementById("homeModal"); // white screen that contains all the buttons and boxes
-var randomizerButton = document.getElementById("randomRoom");
-var goToRoom = document.getElementById("goToRoom");
-var nameInput = document.getElementById("nameInput");
-var roomInput = document.getElementById("roomInput");
-
 function getNewCoords() {
     return game.board.history[game.board.history["length"] - 1].to;
 }
