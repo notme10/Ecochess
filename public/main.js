@@ -497,10 +497,6 @@ function getNewCoords() {
     return moveList[moveList.length-1].to;
 }
 
-function isWhiteTile(tile) {
-    
-}
-
 /**
  * highlights moved tiles
  * @returns undefined
@@ -573,7 +569,7 @@ function isBlackTile(coordinate) {
  * @param {String} coordinate 
  * @returns true if tile is white
  */
-function isWhiteTIle(coordinate) {
+function isWhiteTile(coordinate) {
     let letter = "ABCDEFGH";
     let number = "12345678";
     let total = 0;
