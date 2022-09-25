@@ -16,19 +16,23 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
-let board = document.getElementById("board"); // board
-let width = 8; // width of the board
-let height = 8; // height of the board
-let columns = ["A", "B", "C", "D", "E", "F", "G", "H"]; // column letters, from left to right
-let rows = ["8", "7", "6", "5", "4", "3", "2", "1"]; // row numbers ,from top to bottom
 
-let whitePieces = ["P", "R", "B", "N", "Q", "K"]; // all white piece names
-let blackPieces = ["p", "r", "b", "n", "q", "k"]; // all black piece names
+document.getElementById("myTimer").innerText = "Player1 time: " + convertTime(maxTimer);
+document.getElementById("opponentTimer").innerText = "Player2 time: " + convertTime(maxTimer);
+
+// resize sidebar and bottombar
+// document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
+// document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
+
+// document.addEventListener('resize', (event) => {
+//     document.getElementById("bottombar").style.width = `${document.getElementById("board").offsetWidth}px`;
+//     document.getElementById("sidebar").style.height = `${document.getElementById("board").offsetHeight}px`;
+// });
 
 /**
  * @desc determines the name of the piece with the given info
- * @param {String} side 
- * @param {String} pieceName 
+ * @param {String} side
+ * @param {String} pieceName
  * @returns piece's name
  */
 function pieceIdentifier(side, pieceName) {
@@ -47,33 +51,33 @@ function pieceIdentifier(side, pieceName) {
  * @desc when one tab is clicked, hide the other two
  */
 listIcon.addEventListener("click", (e) => {
-    document.getElementById("listIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
-    document.getElementById("plugIcon").style.backgroundColor = "";
+    listIcon.style.backgroundColor = "#459dcc";
+    capturedPieceIcon.style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "block";
-    document.getElementById("capturedPieces").style.display = "none";
-    document.getElementById("plugs").style.display = "none";
+    movesBox.style.display = "block";
+    capturedPiecesList.style.display = "none";
+    plugs.style.display = "none";
 });
 
 capturedPieceIcon.addEventListener("click", (e) => {
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("listIcon").style.backgroundColor = "";
-    document.getElementById("plugIcon").style.backgroundColor = "";
+    capturedPieceIcon.style.backgroundColor = "#459dcc";
+    listIcon.style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "none";
-    document.getElementById("capturedPieces").style.display = "flex";
-    document.getElementById("plugs").style.display = "none";
+    movesBox.style.display = "none";
+    capturedPieces.style.display = "flex"; // change to grid
+    plugs.style.display = "none";
 });
 
 plugIcon.addEventListener("click", (e) => {
-    document.getElementById("plugIcon").style.backgroundColor = "#459dcc";
-    document.getElementById("capturedPieceIcon").style.backgroundColor = "";
-    document.getElementById("listIcon").style.backgroundColor = "";
+    plugIcon.style.backgroundColor = "#459dcc";
+    capturedPieceIcon.style.backgroundColor = "";
+    listIcon.style.backgroundColor = "";
 
-    document.getElementById("movesBox").style.display = "none";
-    document.getElementById("capturedPieces").style.display = "none";
-    document.getElementById("plugs").style.display = "block";
+    movesBox.style.display = "none";
+    capturedPieces.style.display = "none";
+    plugs.style.display = "block";
 });
 
 /**
@@ -95,8 +99,8 @@ function replaceBoard() {
 // no return
 
 /**
- * 
- * @param {String} s 
+ *
+ * @param {String} s
  */
 function generateBoard(s) {
     var topLeft = s !== "b";
@@ -214,24 +218,25 @@ function flipBoard() {
         BOARD.appendChild(cellArray[i]);
     }
 
-    if (side === 'b') {
-        document.getElementById("firstL").innerHTML = 'h';
-        document.getElementById("secondL").innerHTML = 'g';
-        document.getElementById("thirdL").innerHTML = 'f';
-        document.getElementById("fourthL").innerHTML = 'e';
-        document.getElementById("fifthL").innerHTML = 'd';
-        document.getElementById("sixthL").innerHTML = 'c';
-        document.getElementById("seventhL").innerHTML = 'b';
-        document.getElementById("eighthL").innerHTML = 'a';
+    if (side === "b") {
+        firstL = "h";
+        secondL = "g";
+        thirdL = "f";
+        fourthL = "e";
+        fifthL = "d";
+        sixthL = "c";
+        seventhL = "b";
+        eighthL = "a";
 
-        document.getElementById("firstN").innerHTML = '8';
-        document.getElementById("secondN").innerHTML = '7';
-        document.getElementById("thirdN").innerHTML = '6';
-        document.getElementById("fourthN").innerHTML = '5';
-        document.getElementById("fifthN").innerHTML = '4';
-        document.getElementById("sixthN").innerHTML = '3';
-        document.getElementById("seventhN").innerHTML = '2';
-        document.getElementById("eighthN").innerHTML = '1';
+        firstN = "8";
+        secondN = "7";
+        thirdN = "6";
+        fourthN = "5";
+        fifthN = "4";
+        sixthN = "3";
+        seventhN = "2";
+        eighthN = "1";
+        turnIndicator = "column-reverse";
     }
 }
 
@@ -317,7 +322,62 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
 
     highlightHistory();
     turn++;
+    
+    if (turn % 2 == 0) {
+        console.log("white's turn");
+        whiteTI.style.backgroundColor = "#006592";
+        blackTI.style.backgroundColor = "transparent";
+    } else {
+        console.log("black's turn");
+        blackTI.style.backgroundColor = "#006592";
+        whiteTI.style.backgroundColor = "transparent";
+    }
 }
+
+// TIMER!!
+var timer1 = maxTimer;
+var timer2 = maxTimer;
+
+function convertTime(timeSeconds) {
+    var minutes = Math.floor(timeSeconds / 60);
+    var seconds = timeSeconds - minutes * 60;
+    if (seconds.toString().length == 1) {
+        seconds = "0" + seconds;
+    }
+    convertedTime = "" + minutes + ":" + seconds;
+    return convertedTime;
+}
+
+function decreaseTimer() {
+    if(turn == 0) {
+        return;
+    }
+
+    if (turn % 2 == 0) {
+        // white's turn
+        timer1--;
+        document.getElementById("myTimer").innerText =
+            "Player1 time: " + convertTime(timer1);
+
+        if (timer1 == 0) {
+            alert("Black wins!");
+            clearInterval(timer);
+        }
+    } else {
+        timer2--;
+        document.getElementById("opponentTimer").innerText =
+            "Player2 time: " + convertTime(timer2);
+
+        if (timer2 == 0) {
+            alert("White wins!");
+            clearInterval(timer);
+        }
+    }
+}
+
+
+timer = setInterval(decreaseTimer, 1000);
+
 
 // returns index value of the given row
 function convertRowsToIndex(row) {
@@ -341,12 +401,12 @@ function convertIndexToCols(index) {
 
 /**
  * puts captured piece in captured piece list. also makes the div
- * @param {String} pieceToCapture 
+ * @param {String} pieceToCapture
  */
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
     // item  is undefined because capturedPIeces is literally empty, so no other code works
-    var item = capturedPieces[capturedPieces.length-1];
+    var item = capturedPieces[capturedPieces.length - 1];
     console.log(item);
     if (side !== getPieceSide(item)) {
         var capturedPiece = document.createElement("div");
@@ -368,7 +428,7 @@ function isWhitePiece(piece) {
 
 /**
  * checks if piece is black
- * @param {String} piece 
+ * @param {String} piece
  * @returns true if piece is black
  */
 function isBlackPiece(piece) {
@@ -377,7 +437,7 @@ function isBlackPiece(piece) {
 
 /**
  * gives the side/color of the piece
- * @param {String} piece 
+ * @param {String} piece
  * @returns side/color of the piece ("w" or "b")
  */
 function getPieceSide(piece) {
@@ -388,7 +448,7 @@ function getPieceSide(piece) {
 }
 
 function writeMessageBoard(message) {
-    document.getElementById("messageBoard").innerHTML = message;
+    messageBoard.innerHTML = message;
 }
 
 /**
@@ -396,7 +456,7 @@ function writeMessageBoard(message) {
  * @returns true if checkmate and false when not
  */
 function isCheckMate() {
-    return JSON.stringify(game.moves()) === '{}'
+    return JSON.stringify(game.moves()) === "{}";
 }
 
 // sends the moveMessage that will be displayed on the opponent's screen
@@ -411,16 +471,14 @@ function pushMoveMessage(fromCoords, toCoords) {
 
         newMove.classList += "move";
 
-        turnDiv.innerText = Math.floor(turn / 2)+1;
+        turnDiv.innerText = Math.floor(turn / 2) + 1;
 
         whiteMove.innerText = `w ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
         newMove.appendChild(turnDiv);
         newMove.appendChild(whiteMove);
         document.querySelector("#movesBox").appendChild(newMove);
-    }
-
-    else {
+    } else {
         var blackMove = document.createElement("div");
         blackMove.innerText = `b ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
@@ -428,7 +486,6 @@ function pushMoveMessage(fromCoords, toCoords) {
         var newMove = moveBox.lastElementChild;
         newMove.appendChild(blackMove);
     }
-
 }
 
 function getPrvCoords() {
@@ -534,6 +591,10 @@ var randomizerButton = document.getElementById("randomRoom");
 var goToRoom = document.getElementById("goToRoom");
 var nameInput = document.getElementById("nameInput");
 var roomInput = document.getElementById("roomInput");
+
+function getNewCoords() {
+    return game.board.history[game.board.history["length"] - 1].to;
+}
 
 // assigns a random value using Math.random to roomInput.value
 // no params

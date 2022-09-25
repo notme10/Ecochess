@@ -51,7 +51,13 @@
         </template>
 
         <div id="layout">
+
             <div id="board"></div>
+
+            <div id="turnIndicator">
+                <div id="blackTI"></div>
+                <div id="whiteTI"></div>
+            </div>
 
             <div id="sidebar">
                 <div id = "firstN">1</div>
@@ -76,14 +82,19 @@
             </div>
 
             <div id="infoBox">
-                <div id="messageBoard"></div>
+                <div id="timer">
+                    <div id="myTimer">
+                        myTimer
+                    </div>
+                    <div id="opponentTimer">
+                        
+                    </div>
+                </div>
 
                 <div id="tabs">
                     <div id="listIcon" class="tabIcon">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="48"
-                            height="48"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="#ffffff"
@@ -106,8 +117,6 @@
                             data-name="Layer 1"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16.05 16.05"
-                            width="48"
-                            height="48"
                         >
                             <defs>
                                 <style>
@@ -136,8 +145,6 @@
                     <div id="plugIcon" class="tabIcon">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="48"
-                            height="48"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="#ffffff"
