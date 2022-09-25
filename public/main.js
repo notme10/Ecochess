@@ -325,12 +325,25 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     
     if (turn % 2 == 0) {
         console.log("white's turn");
-        whiteTI.style.backgroundColor = "#006592";
-        blackTI.style.backgroundColor = "transparent";
+        if (side === 'b') {
+            whiteTI.style.backgroundColor = "transparent";
+            blackTI.style.backgroundColor = "#006592";
+        }
+        else {
+            whiteTI.style.backgroundColor = "#006592";
+            blackTI.style.backgroundColor = "transparent";
+        }
     } else {
         console.log("black's turn");
-        blackTI.style.backgroundColor = "#006592";
-        whiteTI.style.backgroundColor = "transparent";
+        if (side === 'b') {
+            blackTI.style.backgroundColor = "transparent";
+        whiteTI.style.backgroundColor = "#006592";
+        }
+        else {
+            blackTI.style.backgroundColor = "#006592";
+            whiteTI.style.backgroundColor = "transparent";
+        }
+        
     }
 }
 
