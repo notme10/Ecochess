@@ -138,6 +138,32 @@ body {
 }
 
 
+/* The alert message box */
+#roomCodeAlert {
+   display: none;
+    padding: 20px;
+    background-color: #058700;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: fixed;
+    width: 40vw;
+    top: 10vh; 
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .closebtn:hover {
+    color: black;
+  }
 
 /* PROMOTION */
 #promotionModal {

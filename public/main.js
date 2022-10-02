@@ -593,7 +593,7 @@ function getNewCoords() {
 randomizerButton.addEventListener("click", (e) => {
     roomInput.value = Math.floor(Math.random() * 10000000);
     navigator.clipboard.writeText(roomInput.value);
-    alert("Room Code copied to clipboard");
+    copyModal.style.display = "block";
     //make into a popup later
 });
 
