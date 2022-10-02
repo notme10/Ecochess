@@ -78,7 +78,7 @@ body {
     color: rgb(255, 255, 255);
     text-align: left;
     font-family: "Verdana", sans-serif;
-    font-size: 1.5em;
+    font-size: 1.5vh;
     margin-left: 1em;
 }
 
@@ -197,9 +197,9 @@ body {
     height: 100%;
 }
 
-#Regions {
+/* #Regions {
     font-size: 25px;
-}
+} */
 
 #capturedPieces {
     display: none;
@@ -236,7 +236,7 @@ body {
     padding: 20px;
     border: 1px solid #000000;
     width: 70%;
-    font-size: 30px;
+    font-size: 1.5vh;
     font-family: "Verdana", sans-serif;
 }
 
