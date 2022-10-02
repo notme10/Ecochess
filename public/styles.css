@@ -197,10 +197,6 @@ body {
     height: 100%;
 }
 
-/* #Regions {
-    font-size: 25px;
-} */
-
 #capturedPieces {
     display: none;
     flex-direction: row;
