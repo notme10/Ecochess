@@ -298,8 +298,13 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
 
     pushMoveMessage(fromCoords, toCoords);
 
+    function checkmateMessage() {
+        alert("Checkmate! Game over!");
+    }
+
     if (isCheckMate()) {
-        alert("Game Over");
+        let message = setTimeout(checkmateMessage, 20);
+        gameInProgress = false;
     }
 
     if (game.board.history.length !== 0) {
