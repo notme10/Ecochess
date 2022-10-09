@@ -303,8 +303,16 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
 
     if (isCheckMate()) {
-        let message = setTimeout(checkmateMessage, 20);
-        gameInProgress = false;
+        if (turn%2 == 0) {
+            copyModal.style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            displayAlertModal("Game Over: White Wins.", "#ffffff");
+        }
+        else {
+            copyModal.style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            displayAlertModal("Game Over: Black Wins.", "#ffffff");
+        }
     }
 
     if (game.board.history.length !== 0) {
@@ -592,13 +600,20 @@ function getNewCoords() {
     return game.board.history[game.board.history["length"] - 1].to;
 }
 
+function displayAlertModal(msg, color) {
+    document.getElementById("modalMessage").innerText = msg;
+    copyModal.style.backgroundColor = color;
+    copyModal.style.display = "block";
+}
+
 // assigns a random value using Math.random to roomInput.value
 // no params
 // no return
 randomizerButton.addEventListener("click", (e) => {
     roomInput.value = Math.floor(Math.random() * 10000000);
     navigator.clipboard.writeText(roomInput.value);
-    alert("Room Code copied to clipboard");
+    copyModal.style.boxShadow = "none";
+    displayAlertModal("Room code successfully copied to clipboard.", "#058700")
     //make into a popup later
 });
 
@@ -606,5 +621,3 @@ randomizerButton.addEventListener("click", (e) => {
 goToRoom.addEventListener("click", (e) => {
     location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
-
-
