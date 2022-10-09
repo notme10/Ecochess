@@ -299,7 +299,16 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     pushMoveMessage(fromCoords, toCoords);
 
     if (isCheckMate()) {
-        alert("Game Over");
+        if (turn%2 == 0) {
+            copyModal.style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            displayAlertModal("Game Over: White Wins.", "#ffffff");
+        }
+        else {
+            copyModal.style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            displayAlertModal("Game Over: Black Wins.", "#ffffff");
+        }
     }
 
     if (game.board.history.length !== 0) {
@@ -599,6 +608,7 @@ function displayAlertModal(msg, color) {
 randomizerButton.addEventListener("click", (e) => {
     roomInput.value = Math.floor(Math.random() * 10000000);
     navigator.clipboard.writeText(roomInput.value);
+    copyModal.style.boxShadow = "none";
     displayAlertModal("Room code successfully copied to clipboard.", "#058700")
     //make into a popup later
 });

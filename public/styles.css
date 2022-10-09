@@ -140,6 +140,8 @@ body {
 
 /* The alert message box */
 #alertModal {
+    border: 3px solid black;
+    border-radius: 10px;
     display: none;
     padding: 10px;
     background-color: #058700;
@@ -149,6 +151,7 @@ body {
     position: fixed;
     width: 40vw;
     top: 10vh; 
+    box-shadow: 2px 2px 5px rgb(67, 67, 67);
   }
   
   .closebtn {
