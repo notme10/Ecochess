@@ -40,7 +40,7 @@ let randomizerButton = document.getElementById("randomRoom");
 let goToRoom = document.getElementById("goToRoom");
 let nameInput = document.getElementById("nameInput");
 let roomInput = document.getElementById("roomInput");
-let copyModal = document.getElementById("roomCodeAlert");
+let copyModal = document.getElementById("alertModal");
 
 let firstL = document.getElementById("firstL");
 let secondL = document.getElementById("secondL");

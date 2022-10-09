@@ -587,13 +587,19 @@ function getNewCoords() {
     return game.board.history[game.board.history["length"] - 1].to;
 }
 
+function displayAlertModal(msg, color) {
+    document.getElementById("modalMessage").innerText = msg;
+    copyModal.style.backgroundColor = color;
+    copyModal.style.display = "block";
+}
+
 // assigns a random value using Math.random to roomInput.value
 // no params
 // no return
 randomizerButton.addEventListener("click", (e) => {
     roomInput.value = Math.floor(Math.random() * 10000000);
     navigator.clipboard.writeText(roomInput.value);
-    copyModal.style.display = "block";
+    displayAlertModal("Room code successfully copied to clipboard.", "#058700")
     //make into a popup later
 });
 
@@ -601,5 +607,3 @@ randomizerButton.addEventListener("click", (e) => {
 goToRoom.addEventListener("click", (e) => {
     location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
-
-
