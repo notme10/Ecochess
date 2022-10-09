@@ -190,7 +190,7 @@ function generateBoard(s) {
 
             var bgFileName = `images/background_images/${localStorage.getItem(
                 "chosenRegion"
-            )}.png`;
+            ).toLowerCase()}.png`;
             document.body.style.backgroundImage = "url(" + bgFileName + ")";
             cell.id = columns[col] + rows[row];
         }
