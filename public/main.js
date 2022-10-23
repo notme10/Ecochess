@@ -188,7 +188,7 @@ function generateBoard(s) {
                 )}`;
             }
 
-            var bgFileName = `images/background_images/${localStorage.getItem(
+            var bgFileName = `/images/background_images/${localStorage.getItem(
                 "chosenRegion"
             )}.png`;
             document.body.style.backgroundImage = "url(" + bgFileName + ")";
@@ -604,7 +604,7 @@ randomizerButton.addEventListener("click", (e) => {
 
 // adds room code and name to the end of the game url
 goToRoom.addEventListener("click", (e) => {
-    location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
+    location.href = "/game/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
 
 

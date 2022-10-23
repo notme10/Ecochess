@@ -1,0 +1,9 @@
+#homepage {
+    display: flex;
+    flex-direction: column;
+}
+
+#bottom {
+    display: flex;
+    flex-direction: row;
+}
