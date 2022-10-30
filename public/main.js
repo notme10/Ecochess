@@ -592,19 +592,19 @@ function getNewCoords() {
     return game.board.history[game.board.history["length"] - 1].to;
 }
 
-// assigns a random value using Math.random to roomInput.value
-// no params
-// no return
-randomizerButton.addEventListener("click", (e) => {
-    roomInput.value = Math.floor(Math.random() * 10000000);
-    navigator.clipboard.writeText(roomInput.value);
-    alert("Room Code copied to clipboard");
-    //make into a popup later
-});
+// // assigns a random value using Math.random to roomInput.value
+// // no params
+// // no return
+// randomizerButton.addEventListener("click", (e) => {
+//     roomInput.value = Math.floor(Math.random() * 10000000);
+//     navigator.clipboard.writeText(roomInput.value);
+//     alert("Room Code copied to clipboard");
+//     //make into a popup later
+// });
 
-// adds room code and name to the end of the game url
-goToRoom.addEventListener("click", (e) => {
-    location.href = "/game/?r=" + roomInput.value + "&n=" + nameInput.value;
-});
+// // adds room code and name to the end of the game url
+// goToRoom.addEventListener("click", (e) => {
+//     location.href = "/game/?r=" + roomInput.value + "&n=" + nameInput.value;
+// });
 
 
