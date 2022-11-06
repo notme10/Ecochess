@@ -58,6 +58,35 @@ function addSockets() {
             });
         })
 
+        socket.on('getRooms', (data) => {
+            let roomsList = [];
+
+            for(room in rooms) {
+                if(rooms[room].w) {
+
+                    let playerCount_send = 0;
+                    let status_send = '';
+                    if(rooms[room].b) {
+                        playerCount_send = 2;
+                        status_send = "In Progress";
+                    } else {
+                        playerCount_send = 1;
+                        status_send = "Waiting";
+                    }
+
+                    roomsList.push({
+                        w: rooms[room].w,
+                        b: rooms[room].b,
+                        roomCode: room,
+                        playerCount: playerCount_send,
+                        status: status_send
+                    });
+                }
+            }
+
+            io.emit('updateRooms', roomsList);
+        })
+
         /**
          * @desc emits sendMove
          */

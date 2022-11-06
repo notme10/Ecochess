@@ -10,6 +10,9 @@
             rel="stylesheet"
             type="text/css"
         />
+
+        <script src="/socket.io.js" defer></script>
+
         <script src="home.js" defer></script>
 
         <link rel="stylesheet" href="/home.css" />
@@ -79,7 +82,10 @@
                                         class="input input-bordered"
                                         id="roomCode"
                                     />
-                                    <button id="generateCode" class="btn btn-info">
+                                    <button
+                                        id="generateCode"
+                                        class="btn btn-info"
+                                    >
                                         Generate Code
                                     </button>
                                 </label>
@@ -114,8 +120,7 @@
                             <button class="btn btn-info m-5">Quick Join</button>
 
                             <div class="overflow-x-auto m-5">
-                                <table class="table">
-                                    <!-- head -->
+                                <table id="table" class="table">
                                     <thead>
                                         <tr>
                                             <th>
@@ -128,161 +133,12 @@
                                             </th>
                                             <th>Name</th>
                                             <th>Room Code</th>
-                                            <th>Time Remaining</th>
+                                            <th>Players</th>
+                                            <th>Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <!-- row 1 -->
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <button
-                                                        class="btn btn-info"
-                                                    >
-                                                        Join
-                                                    </button>
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div
-                                                    class="flex items-center space-x-3"
-                                                >
-                                                    <div>
-                                                        <div class="font-bold">
-                                                            Harry Potter
-                                                        </div>
-                                                        <div
-                                                            class="text-sm opacity-50"
-                                                        >
-                                                            Mountains
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Harry's Room</td>
-                                            <td>9:42</td>
-                                            <th>
-                                                <button
-                                                    class="btn btn-ghost btn-xs"
-                                                >
-                                                    In Progress
-                                                </button>
-                                            </th>
-                                        </tr>
-                                        <!-- row 2 -->
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <button
-                                                        class="btn btn-info"
-                                                    >
-                                                        Join
-                                                    </button>
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div
-                                                    class="flex items-center space-x-3"
-                                                >
-                                                    <div>
-                                                        <div class="font-bold">
-                                                            Spongebob
-                                                            Squarepants
-                                                        </div>
-                                                        <div
-                                                            class="text-sm opacity-50"
-                                                        >
-                                                            Rainforest
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Spongebob's Room</td>
-                                            <td>3:13</td>
-                                            <th>
-                                                <button
-                                                    class="btn btn-ghost btn-xs"
-                                                >
-                                                    In Progress
-                                                </button>
-                                            </th>
-                                        </tr>
-                                        <!-- row 3 -->
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <button
-                                                        class="btn btn-info"
-                                                    >
-                                                        Join
-                                                    </button>
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div
-                                                    class="flex items-center space-x-3"
-                                                >
-                                                    <div>
-                                                        <div class="font-bold">
-                                                            Homer Simpson
-                                                        </div>
-                                                        <div
-                                                            class="text-sm opacity-50"
-                                                        >
-                                                            Desert
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Homer's Room</td>
-                                            <td>10:00</td>
-                                            <th>
-                                                <button
-                                                    class="btn btn-ghost btn-xs"
-                                                >
-                                                    Not Started
-                                                </button>
-                                            </th>
-                                        </tr>
-                                        <!-- row 4 -->
-                                        <tr>
-                                            <th>
-                                                <label>
-                                                    <button
-                                                        class="btn btn-info"
-                                                    >
-                                                        Join
-                                                    </button>
-                                                </label>
-                                            </th>
-                                            <td>
-                                                <div
-                                                    class="flex items-center space-x-3"
-                                                >
-                                                    <div>
-                                                        <div class="font-bold">
-                                                            Charlie Brown
-                                                        </div>
-                                                        <div
-                                                            class="text-sm opacity-50"
-                                                        >
-                                                            Ocean
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Charlie's Room</td>
-                                            <td>17:53</td>
-                                            <th>
-                                                <button
-                                                    class="btn btn-ghost btn-xs"
-                                                >
-                                                    In Progress
-                                                </button>
-                                            </th>
-                                        </tr>
-                                    </tbody>
+                                    <tbody id="tableBody"></tbody>
                                 </table>
                             </div>
                         </div>
