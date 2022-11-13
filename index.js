@@ -1,32 +1,32 @@
-var express = require("express"); // The express module is used to look at the address of the request and send it to the correct function 
-var bodyParser = require("body-parser");
-var http = require("http"); // The http module is used to listen for requests from a web browser
-var path = require("path"); // The path module is used to transform relative paths to absolute paths
-var Io = require("socket.io");
+let express = require("express"); // The express module is used to look at the address of the request and send it to the correct function 
+let bodyParser = require("body-parser");
+let http = require("http"); // The http module is used to listen for requests from a web browser
+let path = require("path"); // The path module is used to transform relative paths to absolute paths
+let Io = require("socket.io");
 
-var app = express(); // creates an express application
+let app = express(); // creates an express application
 
-var server = http.createServer(app); // Creates the web server
+let server = http.createServer(app); // Creates the web server
 
-var io = Io(server);
-var axios = require("axios").default;
+let io = Io(server);
+let axios = require("axios").default;
 
-var port = process.env.PORT ? parseInt(process.env.PORT) : 8080; // Defines what port to use to listen to web requests
+let port = process.env.PORT ? parseInt(process.env.PORT) : 8080; // Defines what port to use to listen to web requests
 
 /**
  * @desc emit everything when there is a connection
  * @return a bunch of emits
  */
 function addSockets() {
-    var rooms = {}; // stores all the rooms
+    let rooms = {}; // stores all the rooms
 
     /**
      * @desc listens for connection from client, initializes everything
      */
     io.on('connection', (socket) => {
 
-        var name; // server-side variables for specific connections
-        var roomId; // the actual roomId that that a player gets 
+        let name; // server-side letiables for specific connections
+        let roomId; // the actual roomId that that a player gets 
 
         
         /**
@@ -101,7 +101,7 @@ function startServer() {
     app.use(express.static(path.join(__dirname, "public")));
 
     app.get("/", (req, res, next) => {
-        var filePath = path.join(__dirname, "./game.html");
+        let filePath = path.join(__dirname, "./game.html");
         res.sendFile(filePath);
     });
 
@@ -110,7 +110,7 @@ function startServer() {
         res.send("OK");
     });
     app.get("/ipTest", (req, res, next) => {
-        var options = {
+        let options = {
             method: "GET",
             url: "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/",
             headers: {
@@ -124,8 +124,8 @@ function startServer() {
             .request(options)
             .then(function (response) {
 
-                var curX = response.data.longitude; // assigns longitude
-                var curY = response.data.latitude; // assigns latitude
+                let curX = response.data.longitude; // assigns longitude
+                let curY = response.data.latitude; // assigns latitude
 
                 let citiesObject = {
 
@@ -507,14 +507,14 @@ function startServer() {
                     );
                 }
 
-                var nearestCity; // the nearest city is found and set into here
-                var shortestDistance = Number.MAX_SAFE_INTEGER; // nearest distance will be assigned here
-                var cityBiome; // biome that will be assigned to the city
+                let nearestCity; // the nearest city is found and set into here
+                let shortestDistance = Number.MAX_SAFE_INTEGER; // nearest distance will be assigned here
+                let cityBiome; // biome that will be assigned to the city
 
-                for (var cityKey in citiesObject) {
-                    var targetX = citiesObject[cityKey].x;
-                    var targetY = citiesObject[cityKey].y;
-                    var distance = distCalc(curX, curY, targetX, targetY);
+                for (let cityKey in citiesObject) {
+                    let targetX = citiesObject[cityKey].x;
+                    let targetY = citiesObject[cityKey].y;
+                    let distance = distCalc(curX, curY, targetX, targetY);
 
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
@@ -545,7 +545,7 @@ function startServer() {
      * @desc Defines what function to all when the server recieves any request from http://localhost:8080
      */
     server.on("listening", () => {
-        var addr = server.address(),
+        let addr = server.address(),
             bind =
                 typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
         console.log("Listening on " + bind);

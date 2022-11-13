@@ -1,6 +1,3 @@
-/**
- * @desc when key Q is pressed, remove selected tag, and set fromCoord to null
- */
 document.addEventListener("keypress", (e) => {
     if (e.key == "q") {
         let selectedCell = document.querySelector(".selected");
@@ -16,16 +13,11 @@ document.addEventListener("keypress", (e) => {
     }
 });
 
+document.getElementById("myTimer").innerText =
+    "Player1 time: " + convertTime(maxTimer);
+document.getElementById("opponentTimer").innerText =
+    "Player2 time: " + convertTime(maxTimer);
 
-document.getElementById("myTimer").innerText = "Player1 time: " + convertTime(maxTimer);
-document.getElementById("opponentTimer").innerText = "Player2 time: " + convertTime(maxTimer);
-
-/**
- * @desc determines the name of the piece with the given info
- * @param {String} side
- * @param {String} pieceName
- * @returns piece's name
- */
 function pieceIdentifier(side, pieceName) {
     if (
         (side == "w" && whitePieces.includes(pieceName)) ||
@@ -38,9 +30,6 @@ function pieceIdentifier(side, pieceName) {
     }
 }
 
-/**
- * @desc when one tab is clicked, hide the other two
- */
 listIcon.addEventListener("click", (e) => {
     listIcon.style.backgroundColor = "#459dcc";
     capturedPieceIcon.style.backgroundColor = "";
@@ -71,11 +60,8 @@ plugIcon.addEventListener("click", (e) => {
     plugs.style.display = "block";
 });
 
-/**
- * @desc clear and then refill the board
- */
 function replaceBoard() {
-    var arr = Array.prototype.slice.call(
+    let arr = Array.prototype.slice.call(
         document.getElementsByClassName("cell")
     );
 
@@ -86,10 +72,6 @@ function replaceBoard() {
     fillBoard();
 }
 
-/**
- *
- * @param {String} s
- */
 function generateBoard(s) {
     let topLeft = s !== "b";
 
@@ -103,10 +85,9 @@ function generateBoard(s) {
             topLeft ? col < width : col >= 0;
             col = topLeft ? col + 1 : col - 1
         ) {
-            var cell = document.createElement("div");
+            let cell = document.createElement("div");
             cell.addEventListener("click", (e) => {
-
-                if(!gameInProgress) {
+                if (!gameInProgress) {
                     return;
                 }
 
@@ -188,18 +169,15 @@ function generateBoard(s) {
                 )}`;
             }
 
-            var bgFileName = `images/background_images/${localStorage.getItem(
-                "chosenRegion"
-            ).toLowerCase()}.png`;
+            let bgFileName = `images/background_images/${localStorage
+                .getItem("chosenRegion")
+                .toLowerCase()}.png`;
             document.body.style.backgroundImage = "url(" + bgFileName + ")";
             cell.id = columns[col] + rows[row];
         }
     }
 }
 
-// function that mirrors every piece from one side to the other
-// to make sure that my side is always fish, enemy side is trash
-// no params or return
 function flipBoard() {
     const BOARD = document.getElementById("board");
     let cellArray = Array.prototype.slice.call(BOARD.children);
@@ -230,9 +208,6 @@ function flipBoard() {
     }
 }
 
-/**
- * clears movable tiles from the previous selected piece
- */
 function clearMovableTiles() {
     Array.from(document.querySelectorAll(".movable")).forEach((movableTile) => {
         // console.log(movableTile);
@@ -240,10 +215,6 @@ function clearMovableTiles() {
     });
 }
 
-/**
- * adds circles to every coord in possibleMoves
- * @param {array} possibleMoves
- */
 function showMoveableTiles(possibleMoves) {
     clearMovableTiles();
 
@@ -277,7 +248,7 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
         room: room,
         side: movedSide,
     });
-    madeMoves = {from: fromCoords, to: toCoords};
+    madeMoves = { from: fromCoords, to: toCoords };
     moveList.push(madeMoves);
 
     let selectedCell = document.querySelector(".selected"); // gets the cell that is selected
@@ -303,14 +274,15 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
     }
 
     if (isCheckMate()) {
-        if (turn%2 == 0) {
+        if (turn % 2 == 0) {
             copyModal.style.color = "black";
-            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color =
+                "black";
             displayAlertModal("Game Over: White Wins.", "#ffffff");
-        }
-        else {
+        } else {
             copyModal.style.color = "black";
-            document.getElementsByClassName("closebtn").item(0).style.color = "black";
+            document.getElementsByClassName("closebtn").item(0).style.color =
+                "black";
             displayAlertModal("Game Over: Black Wins.", "#ffffff");
         }
     }
@@ -321,38 +293,35 @@ function makeMove(fromCoords, toCoords, movedSide, eatenPiece) {
 
     highlightHistory();
     turn++;
-    
+
     if (turn % 2 == 0) {
         console.log("white's turn");
-        if (side === 'b') {
+        if (side === "b") {
             whiteTI.style.backgroundColor = "transparent";
             blackTI.style.backgroundColor = "#006592";
-        }
-        else {
+        } else {
             whiteTI.style.backgroundColor = "#006592";
             blackTI.style.backgroundColor = "transparent";
         }
     } else {
         console.log("black's turn");
-        if (side === 'b') {
+        if (side === "b") {
             blackTI.style.backgroundColor = "transparent";
-        whiteTI.style.backgroundColor = "#006592";
-        }
-        else {
+            whiteTI.style.backgroundColor = "#006592";
+        } else {
             blackTI.style.backgroundColor = "#006592";
             whiteTI.style.backgroundColor = "transparent";
         }
-        
     }
 }
 
-// TIMER!!
-var timer1 = maxTimer;
-var timer2 = maxTimer;
+// TIMER
+let timer1 = maxTimer;
+let timer2 = maxTimer;
 
 function convertTime(timeSeconds) {
-    var minutes = Math.floor(timeSeconds / 60);
-    var seconds = timeSeconds - minutes * 60;
+    let minutes = Math.floor(timeSeconds / 60);
+    let seconds = timeSeconds - minutes * 60;
     if (seconds.toString().length == 1) {
         seconds = "0" + seconds;
     }
@@ -361,7 +330,7 @@ function convertTime(timeSeconds) {
 }
 
 function decreaseTimer() {
-    if(turn == 0) {
+    if (turn == 0) {
         return;
     }
 
@@ -389,9 +358,7 @@ function decreaseTimer() {
     }
 }
 
-
 timer = setInterval(decreaseTimer, 1000);
-
 
 // returns index value of the given row
 function convertRowsToIndex(row) {
@@ -420,10 +387,10 @@ function convertIndexToCols(index) {
 function recordCapturedPieces(pieceToCapture) {
     capturedPieces.push(pieceToCapture);
     // item  is undefined because capturedPIeces is literally empty, so no other code works
-    var item = capturedPieces[capturedPieces.length - 1];
+    let item = capturedPieces[capturedPieces.length - 1];
     console.log(item);
     if (side !== getPieceSide(item)) {
-        var capturedPiece = document.createElement("div");
+        let capturedPiece = document.createElement("div");
         capturedPiece.className = "e" + item.toLowerCase();
         capturedPiece.style.width = "75px";
         capturedPiece.style.height = "75px";
@@ -440,20 +407,10 @@ function isWhitePiece(piece) {
     return whitePieces.includes(piece);
 }
 
-/**
- * checks if piece is black
- * @param {String} piece
- * @returns true if piece is black
- */
 function isBlackPiece(piece) {
     return blackPieces.includes(piece);
 }
 
-/**
- * gives the side/color of the piece
- * @param {String} piece
- * @returns side/color of the piece ("w" or "b")
- */
 function getPieceSide(piece) {
     if (isWhitePiece(piece)) {
         return "w";
@@ -465,23 +422,16 @@ function writeMessageBoard(message) {
     messageBoard.innerHTML = message;
 }
 
-/**
- * checks if there is a checkmate
- * @returns true if checkmate and false when not
- */
 function isCheckMate() {
     return JSON.stringify(game.moves()) === "{}";
 }
 
-// sends the moveMessage that will be displayed on the opponent's screen
-// no params
-// no returns
 function pushMoveMessage(fromCoords, toCoords) {
     const movedPiece = game.board.configuration.pieces[toCoords];
     if (isWhitePiece(movedPiece)) {
-        var newMove = document.createElement("div");
-        var turnDiv = document.createElement("div");
-        var whiteMove = document.createElement("div");
+        let newMove = document.createElement("div");
+        let turnDiv = document.createElement("div");
+        let whiteMove = document.createElement("div");
 
         newMove.classList += "move";
 
@@ -493,74 +443,64 @@ function pushMoveMessage(fromCoords, toCoords) {
         newMove.appendChild(whiteMove);
         document.querySelector("#movesBox").appendChild(newMove);
     } else {
-        var blackMove = document.createElement("div");
+        let blackMove = document.createElement("div");
         blackMove.innerText = `b ${movedPiece} moved from ${fromCoords} to ${toCoords}`;
 
-        var moveBox = document.querySelector("#movesBox");
-        var newMove = moveBox.lastElementChild;
+        let moveBox = document.querySelector("#movesBox");
+        let newMove = moveBox.lastElementChild;
         newMove.appendChild(blackMove);
     }
 }
 
 function getPrvCoords() {
-    return moveList[moveList.length-1].from;
+    return moveList[moveList.length - 1].from;
 }
 
 function getNewCoords() {
-    return moveList[moveList.length-1].to;
+    return moveList[moveList.length - 1].to;
 }
 
-/**
- * highlights moved tiles
- * @returns undefined
- */
-//light: #dbb8ff ; dark: #ad5cff
 function highlightHistory() {
-    console.log("should come after")
-    console.trace()
+    console.log("should come after");
+    console.trace();
     let light = "#dbb8ff";
     let dark = "#ad5cff";
 
     if (isBlackTile(getPrvCoords())) {
         document.getElementById(getPrvCoords()).style.backgroundColor = dark;
         if (isWhiteTile(getNewCoords())) {
-            document.getElementById(getNewCoords()).style.backgroundColor = light;
+            document.getElementById(getNewCoords()).style.backgroundColor =
+                light;
+        } else {
+            document.getElementById(getNewCoords()).style.backgroundColor =
+                dark;
         }
-        else {
-        document.getElementById(getNewCoords()).style.backgroundColor = dark;
-        }
-        
-    }
-    else {
+    } else {
         document.getElementById(getPrvCoords()).style.backgroundColor = light;
         if (isBlackTile(getNewCoords())) {
-            document.getElementById(getNewCoords()).style.backgroundColor = dark;
-        }
-        else {
-            document.getElementById(getNewCoords()).style.backgroundColor = light;
+            document.getElementById(getNewCoords()).style.backgroundColor =
+                dark;
+        } else {
+            document.getElementById(getNewCoords()).style.backgroundColor =
+                light;
         }
     }
-    
 }
 
 function clearHighlightHistory() {
-    console.log("should come before")
-    console.trace()
-    tiles = document.getElementsByClassName("cell")
+    console.log("should come before");
+    console.trace();
+    tiles = document.getElementsByClassName("cell");
 
     for (let i = 0; i < tiles.length; i++) {
-        tile = tiles[i]
+        tile = tiles[i];
 
         if (isBlackTile(tile.id)) {
             tile.style.backgroundColor = "#0f6796";
-        }
-        else {
+        } else {
             tile.style.backgroundColor = "#ffffff";
         }
     }
-    // document.getElementById(getPrvCoords()).style.backgroundColor = "";
-    // document.getElementById(getNewCoords()).style.backgroundColor = "";
-
 }
 
 function isBlackTile(coordinate) {
@@ -577,11 +517,6 @@ function isBlackTile(coordinate) {
     return false;
 }
 
-/**
- * 
- * @param {String} coordinate 
- * @returns true if tile is white
- */
 function isWhiteTile(coordinate) {
     let letter = "ABCDEFGH";
     let number = "12345678";
@@ -606,18 +541,13 @@ function displayAlertModal(msg, color) {
     copyModal.style.display = "block";
 }
 
-// assigns a random value using Math.random to roomInput.value
-// no params
-// no return
 randomizerButton.addEventListener("click", (e) => {
     roomInput.value = Math.floor(Math.random() * 10000000);
     navigator.clipboard.writeText(roomInput.value);
     copyModal.style.boxShadow = "none";
-    displayAlertModal("Room code successfully copied to clipboard.", "#058700")
-    //make into a popup later
+    displayAlertModal("Room code successfully copied to clipboard.", "#058700");
 });
 
-// adds room code and name to the end of the game url
 goToRoom.addEventListener("click", (e) => {
     location.href = "/?r=" + roomInput.value + "&n=" + nameInput.value;
 });
