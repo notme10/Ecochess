@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Game-React",
+    "slug": "Game-React",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Game-React"
+}
