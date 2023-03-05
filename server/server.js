@@ -11,23 +11,26 @@ let io = Io(server);
 
 let port = process.env.PORT ? parseInt(process.env.PORT) : 8080; // Defines what port to use to listen to web requests
 
-const jsChessEngine = require('js-chess-engine')
-const game = new jsChessEngine.Game()
-game.printToConsole()
+app.use(express.json());
 
 app.listen(port, () => {
     console.log("listening on port" + port);
 });
 
 app.get("/isCheckmate", async(req, res) => {
-    const { board } = req.params
+    const moves = req.body.moves; // function takes in moves as the request
 
-    try {
-        res.status(200).send(True);
-    } catch(err) {
-        console.log(err);
+    console.log(req.body.moves);
+
+    if(moves) {
+        if(JSON.stringify(moves) === "{}") {
+            console.log("checkmate");
+            res.status(200).send("True");
+        } else {
+            res.status(200).send("False");
+        }
+    } else {
+        res.status(500).send("Error!");
     }
-})
-
-
+});
 
