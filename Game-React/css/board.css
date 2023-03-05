@@ -1,0 +1,35 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#layout {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 10fr 5fr;
+    grid-template-rows: 10fr 1fr 1fr;
+    grid-template-areas:
+        "t s g i"
+        ". . b i"
+        ". . c i";
+}
+
+#board {
+    height: 80vmin;
+    width: 80vmin;
+    grid-area: g;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    border: 2px solid black;
+}
+
+#row {
+    display: inline;
+}
