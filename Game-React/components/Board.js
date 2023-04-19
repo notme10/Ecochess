@@ -1,14 +1,18 @@
 import React from "react";
 import { View } from "react-native";
 import { Tile } from "./Tile";
+import { SideBar } from "./Sidebar"
+import { BottomBar } from "./bottombar"
 import "../css/board.css";
 
 export function Board() {
+    const board = [];
+    
     return (
         <View>
-            <div className="row">
-                <Tile /> <Tile /> <Tile /> <Tile /> <Tile /> <Tile /> <Tile /> <Tile />
-            </div>
+            <SideBar></SideBar>
+            {/* tiles */}
+            <BottomBar></BottomBar>
         </View>
     );
 }
