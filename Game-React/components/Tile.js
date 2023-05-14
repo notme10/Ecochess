@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from "react-native";
  * virtual board in the board component (?)
  */
 
-export function Tile(props) {
+export default function Tile(props) {
     // checking for which tile
     const r = props.row;
     const c = props.col;

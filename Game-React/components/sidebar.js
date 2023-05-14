@@ -3,21 +3,15 @@ import { View } from "react-native";
 import { Tile } from "./Tile";
 import "../css/board.css";
 
-export function Sidebar() {
-    const labels = [<span>1</span>, 
-                    <span>2</span>, 
-                    <span>3</span>, 
-                    <span>4</span>,
-                    <span>5</span>, 
-                    <span>6</span>, 
-                    <span>7</span>, 
-                    <span>8</span>];
+export default function Sidebar() {
+    const labels = ["1", "2", "3", "4", "5", "6", "7", "8"];
     return (
         <View>
-            <div className = "numLabels">
-                {labels.map((label) => (
-                    <span>{label}</span>
-                ))}
+            <div className = {"numLabels"}>
+                {/* static array iteration so this should be fine */}
+                {labels.map((label, i) => {
+                    return <span>{label}</span>
+                })}
             </div>
         </View>
     );
